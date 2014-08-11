@@ -1,0 +1,101 @@
+\documentclass[10pt,oneside]{article}
+\input{style/coursHeadings}
+
+\usepackage{style/schemabloc}
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{
+CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{
+}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 7 -- Réponses harmoniques -- Diagrammes de Bode}{
+}}
+
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent 2013 -- 2014 \\
+Xavier \textsc{Pessoles}}{
+}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI -- Cours \\
+Ch 7 : Réponses harmoniques -- \ifthenelse{\boolean{prof}}{P}{E}%
+}{
+}}
+
+\usepackage[%
+    pdftitle={SLCI - Réponses harmoniques},
+    pdfauthor={Xavier Pessoles},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+
+
+\usepackage{pifont}
+\sloppy
+\hyphenpenalty 10000
+
+
+\begin{document}
+
+
+\input{style/entete1}
+
+\begin{center}
+ \Large\textsc{\xxtitre}
+\end{center}
+
+\begin{center}
+ \large\textsc{\xxsoustitre}
+\end{center}
+
+\begin{center}
+ \large\textsc{Exercices d'application}
+\end{center}
+\vspace{.5cm}
+
+
+\subsection*{Exercice 1 : Tracé de diagramme de Bode}
+\textit{Tracer le diagramme de Bode des fonctions suivantes :}
+\begin{eqnarray*}
+H(p)&=&\dfrac{3}{0,02p^2 + 0,2 p + 2} \\
+H(p)&=&\dfrac{7}{p(1+p)} \\
+H(p)&=&\dfrac{67,5 \left(p+0,4\right)}{p\left(p+3 \right)\left(p+10 \right)} \\
+H(p)&=&\dfrac{0,05 p +2 }{0,1 p +1} \\
+H(p)&=&\dfrac{1+2p }{9+2p+p^2} 
+\end{eqnarray*}
+
+\begin{center}
+\rotatebox{90}{\includegraphics[width=1.1\textheight]{png/bode1.png}}
+\end{center}
+
+\begin{center}
+\rotatebox{90}{\includegraphics[width=1.1\textheight]{png/bode2.png}}
+\end{center}
+
+\begin{center}
+\rotatebox{90}{\includegraphics[width=1.1\textheight]{png/bode3.png}}
+\end{center}
+
+\begin{center}
+\rotatebox{90}{\includegraphics[width=1.1\textheight]{png/bode4.png}}
+\end{center}
+
+\begin{center}
+\rotatebox{90}{\includegraphics[width=1.1\textheight]{png/bode5.png}}
+\end{center}
+
+
+
+
+\end{document}
+ 

@@ -1,0 +1,10 @@
+latex 4_ordre1.tex
+latex 4_ordre1.tex
+latex 4_ordre1.tex
+dvips 4_ordre1.dvi
+echo 'Conversion en PDF'
+ps2pdf 4_ordre1.ps
+rm -f *.mtc*
+rm -f *.toc
+rm -f *.aux
+rm -f *.out

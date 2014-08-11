@@ -1,0 +1,11 @@
+rm -rf *.asy 
+rm -rf *.aux 
+rm -rf *.dvi 
+rm -rf *.log 
+rm -rf *.ps 
+rm -rf *.pdf
+latex exo1_c.tex
+asy exo1_c.asy
+latex exo1_c.tex
+dvips exo1_c.dvi
+ps2pdf exo1_c.ps

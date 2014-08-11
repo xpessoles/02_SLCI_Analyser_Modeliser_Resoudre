@@ -1,0 +1,380 @@
+\documentclass[11pt,oneside]{article}
+\input{coursHeadings}
+
+\usepackage[%
+    pdftitle={SLCI -- Modélisation par schémas blocs -- Applications},
+    pdfauthor={Xavier Pessoles},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+
+
+% \makeatletter \let\ps@plain\ps@empty \makeatother
+%% DEBUT DU DOCUMENT
+%% =================
+\sloppy
+\hyphenpenalty 10000
+
+\newcommand{\Pointilles}[1][3]{%
+\multido{}{#1}{\makebox[\linewidth]{\dotfill}\\[\parskip]
+}}
+
+
+\begin{document}
+
+
+\newboolean{prof}
+\setboolean{prof}{false}
+%------------- En tetes et Pieds de Pages ------------
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+
+\fancyhead{}
+\fancyhead[L]{%
+\noindent\noindent\begin{minipage}[c]{2.6cm}
+%Lycée Rouvière PTSI
+\includegraphics[width=2cm]{png/logo_ptsi.png}%
+\end{minipage}
+}
+
+\fancyhead[C]{\rule{12cm}{.5pt}}
+
+\fancyhead[R]{%
+\begin{minipage}[c]{3cm}
+\begin{flushright}
+\footnotesize{\textit{\textsf{Sciences Industrielles\\ de l'Ingénieur}}}%
+\end{flushright}
+\end{minipage}
+}
+
+\renewcommand{\footrulewidth}{0.2pt}
+
+\fancyfoot[C]{\footnotesize{\bfseries \thepage}}
+\fancyfoot[L]{\footnotesize{2013 -- 2014} \\ X. \textsc{Pessoles}}
+\ifthenelse{\boolean{prof}}{%
+\fancyfoot[R]{\footnotesize{CI 2 : SLCI -- Applications} \\ \footnotesize{Ch. 4 : Ordre 1 -- P}}
+}{%
+\fancyfoot[R]{\footnotesize{CI 2 : SLCI -- Applications} \\ \footnotesize{Ch. 4 : Ordre 1 -- E}}
+}
+
+
+%\begin{center}
+%\textit{Centre d'intérêt}
+%\end{center}
+
+
+
+\begin{center}
+ \Large\textsc{CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}
+\end{center}
+
+\begin{center}
+ \large\textsc{Chapitre 4 -- Étude des systèmes fondamentaux du premier ordre}
+\end{center}
+
+\begin{center}
+\textsc{Exercices d'application} 
+
+\end{center}
+
+\vspace{.5cm}
+
+\subsection*{Exercice 1}
+\begin{flushright}
+\textit{D'après ressources de Jean-Pierre Pupier.} 
+\end{flushright}
+
+ Un thermomètre initialement à 20\textdegree C, est brusquement placé dans un courant d’air à 10\textdegree C au niveau de la mer. On note les indications suivantes :
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Temps en seconde & 0 & 5 & 10 & 15 & 20 & 25 \\
+\hline
+Température indiquée \textdegree C & 20 & 17,8 & 16,1 & 14,7 & 13,7 & 12,9 \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\subparagraph{}
+\textit{Tracez sur le même graphique la courbe température = f(temps) de l’entrée et de la sortie du système thermomètre. }
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+
+\subparagraph{}
+\textit{Conclusion (ordre de la fonction de transfert).}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+
+\subparagraph{}
+\textit{Déterminez la fonction de transfert.}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+
+Le thermomètre est emporté en ballon en vue d’établir le gradient de température de ce jour. Le ballon monte à vitesse (250 m/min) constante et on note les indications suivantes :
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Temps en sec. & 0 & 10 & 20 & 30 & 40 & 50 & 60 & 70 & 80 & 90 & 100 & 150 & 160 & 170 \\
+\hline
+Température  \textdegree C	& 15 & 14.9 & 14.6 & 14.3 & 13.9 & 13.4 & 13 & 12.5 & 12 & 11.5 & 11 & 8.5 & 8 & 7.5 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subparagraph{}
+\textit{Tracez sur le même graphique la courbe température = f(temps) et 
+température = f(altitude).}
+\textit{}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+\subparagraph{}
+\textit{Déterminez alors la température à 600 m d’altitude.}
+\textit{}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+
+\subsection*{Exercice 2 : Robot de manutention}
+\begin{flushright}
+\textit{D'après ressources de Jean-Pierre Pupier.} 
+\end{flushright}
+
+\subsubsection*{Présentation}
+
+\setcounter{subparagraph}{0}
+
+
+Dans ce qui suivra on se placera dans l’hypothèse de systèmes linéaires continus et invariants.
+
+
+\begin{minipage}[c]{.3\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{png/fig_01}
+\end{center}
+\end{minipage} \hfill
+\begin{minipage}[c]{.65\linewidth}
+Principales notations utilisées : 
+\begin{itemize}
+\item $J_m$ : inertie du moteur, du réducteur et de la charge;
+\item $J_{me}$ : inertie globale équivalente sur l’arbre moteur;
+\item $C_m$ : couple électromagnétique délivré par le moteur;
+\item $C_{re}$ : couple résistant ramené sur l’arbre moteur ou couple équivalent;
+\item $R$, $Ke$, $Kt$ : constantes électriques du moteur (résistance de l’induit, constante 	de force contre électromotrice et constante de couple);
+\item $N$ : rapport de réduction;
+\item $\omega_m$, $\theta_m$ : vitesse et position angulaire du moteur;
+\item $\omega_c$, $\theta_c$ : vitesse et position angulaire de la charge.
+\end{itemize}
+\end{minipage}
+
+On se propose tout d’abord d’étudier le modèle du moteur à vide c’est à dire du moteur seul : dans un premier temps par un modèle théorique et dans un second temps par une étude expérimentale. Ensuite il sera fait mention de la charge puis de la réalisation de l’asservissement de position.
+
+
+\subsubsection*{Étude théorique du moteur seul}
+
+
+Le moteur retenu pour animer la rotation du fût par rapport à la base est un servomoteur PARVEX de type AXEM à induit plat qui présente l’avantage de posséder une très faible inertie. C’est un moteur à courant continu.
+
+Le comportement électromécanique de ce moteur dans l’hypothèse où l’inductance est négligeable, est donné par les équations suivantes :
+
+\begin{eqnarray*}
+u(t)=Ri(t)+e(t) \\
+C_m(t)=K_t i(t) \\
+e(t)= K_e \omega_m(t) \\
+J_m \dfrac{d\omega_m (t)}{dt} = C_m(t)
+\end{eqnarray*}
+
+
+
+
+
+\subparagraph{}
+\textit{En faisant l’hypothèse de conditions initiales sont nulles, calculez la transformée de Laplace $\Omega(m)$ en fonction de la transformée de Laplace $U(p)$.}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+
+\subparagraph{}
+\textit{Mettez le résultat sous la forme $\Omega_m(p)=\dfrac{K_m}{1+T_m p} U_m(p)$ en précisant $K_m$ et $T_m$.}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+
+Les données du constructeur permettent de connaître les valeurs suivantes : $K_e=25,5\; V/(1000\; tr/min))$, $K_t=0,244 \; Nm/A$, $R=0,46\, \Omega$.
+
+
+
+\subparagraph{}
+\textit{Faites un calcul approché permettant de déterminer $K_m$ et $T_m$ ($T_m$  sera fonction de $J_m$  pour l’instant non connu).}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+\textit{Remarque : pour toutes les applications numériques utilisez des unités S.I.}
+
+
+
+\subsubsection*{Étude pratique du moteur seul}
+
+Afin de valider le modèle précédent et de déterminer l’inertie du rotor du moteur on effectue une étude expérimentale sous la forme de l’observation de la réponse du moteur seul soumis à un échelon de tension de 50 V. Le résultat de cet essai est donné sur la courbe suivante.
+
+\begin{center}
+\includegraphics[width=.5\textwidth]{png/fig_02}
+\end{center}
+
+\subparagraph{}
+\textit{Cette courbe est-elle bien conforme au modèle du premier ordre de la question précédente ? Pourquoi ?}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+\subparagraph{}
+\textit{Déterminez les valeurs expérimentales de $K_m$ et $T_m$. Déduisez-en la valeur expérimentale de $J_m$. }
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+
+\subsubsection*{Motorisation complète avec réducteur et charge}
+
+La charge que devra entraîner le moteur est maintenant prise en compte ainsi que le réducteur qui permet de réduire la vitesse $\omega_m$ de rotation du moteur. En sortie du réducteur la vitesse de rotation est $\omega_c$.
+
+L’inertie du moteur seule $J_m$ devient $J_{me}$ inertie équivalente de l’ensemble  charge + moteur + réducteur.
+
+La charge crée un couple résistant équivalent $C_{re}$. On obtient donc l’équation suivante :
+$$
+C_m(t)=J_{me}\dfrac{d\omega_m(t)}{dt} + C_{re}(t)
+$$
+
+
+
+\subparagraph{}
+\textit{A partir des équations électriques du moteur et de l’équation précédente, exprimez la transformée $\Omega_m(p)$. Les dénominateurs seront mis sous la forme $(1+T_{me} p)$. On précisera l’expression de $T_{me}$.}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+\subparagraph{}
+\textit{A partir du résultat précédent complétez le schéma fonctionnel suivant et explicitez clairement $G_1$, $G_2$, $G_3$, $G_4$. $G_3$ sera exprimé sous la forme d’un premier ordre avec pour constante de temps $T_{me}$.}
+
+\begin{center}
+\includegraphics[width=0.5\textwidth]{png/fig_03}
+\end{center}
+
+
+\subsubsection*{Asservissement de position}
+
+Pour la suite on suppose $C_{re}(p)$  nul. 
+
+ Pour assurer l’asservissement de position angulaire du fût du robot (la sortie est alors un angle exprimé en radian), on associe au moteur un variateur de gain pur $K_a$ placé avant $G_1$ et on met en place un capteur de position angulaire de gain unitaire. Le capteur prendra l’information de position après le réducteur.
+
+
+
+\subparagraph{}
+\textit{Faites le schéma fonctionnel de l’asservissement ainsi constitué.}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+\subparagraph{}
+\textit{Calculez sa fonction de transfert. Donnez-en une interprétation pratique.}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+
+
+\subsection*{Identification des systèmes d'ordre 1}
+
+\subparagraph*{}
+\textit{Pour chacune des courbes suivantes, donner l'expression de la fonction de transfert.}
+
+\begin{minipage}[c]{.49\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{png/courbe1}
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[c]{.49\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{png/courbe2}
+\end{center}
+\end{minipage}
+
+\begin{minipage}[c]{.49\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{png/courbe3}
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[c]{.49\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{png/courbe4}
+\end{center}
+\end{minipage}
+
+
+
+
+\end{document}
+\subparagraph{}
+\textit{}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+\subparagraph{}
+\textit{}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+\subparagraph{}
+\textit{}
+
+\ifthenelse{\boolean{prof}}{
+\begin{corrige}
+\end{corrige}
+}{}
+
+

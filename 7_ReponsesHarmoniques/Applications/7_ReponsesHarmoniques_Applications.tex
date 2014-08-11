@@ -1,0 +1,115 @@
+\documentclass[10pt,oneside]{article}
+\input{style/coursHeadings}
+
+\usepackage{style/schemabloc}
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{
+CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{
+}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 7 -- Réponses harmoniques -- Diagrammes de Bode}{
+}}
+
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent 2013 -- 2014 \\
+Xavier \textsc{Pessoles}}{
+}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI -- Cours \\
+Ch 7 : Réponses harmoniques -- \ifthenelse{\boolean{prof}}{P}{E}%
+}{
+}}
+
+\usepackage[%
+    pdftitle={SLCI - Réponses harmoniques},
+    pdfauthor={Xavier Pessoles},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+
+
+\usepackage{pifont}
+\sloppy
+\hyphenpenalty 10000
+
+
+\begin{document}
+
+
+\input{style/entete1}
+
+\begin{center}
+ \Large\textsc{\xxtitre}
+\end{center}
+
+\begin{center}
+ \large\textsc{\xxsoustitre}
+\end{center}
+
+\begin{center}
+ \large\textsc{Exercices d'application}
+\end{center}
+\vspace{.5cm}
+
+
+\subsection*{Exercice 1 : Tracé de diagramme de Bode}
+\textit{Tracer le diagramme de Bode des fonctions suivantes :}
+$$
+H(p)=\dfrac{10}{1+0,1p} \quad \quad 
+H(p)=\dfrac{100}{p(1+p)} \quad \quad 
+H(p)=\dfrac{10}{1+0,01p + p^2} \quad \quad
+H(p)=\dfrac{1}{p(1+p)(1+0,1p)(1+0,01p)} 
+$$
+
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/bode_vierge.pdf}
+\end{center}
+
+
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/bode_vierge.pdf}
+\end{center}
+
+
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/bode_vierge.pdf}
+\end{center}
+
+
+
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/bode_vierge.pdf}
+\end{center}
+
+\newpage
+
+\subsection*{Exercice 2 : Identification du comportement des systèmes}
+
+On donne le diagramme de Bode d'une fonction de transfert :
+
+\begin{center}
+\includegraphics[width=.85\linewidth]{png/identification_1.pdf}
+\end{center}
+
+
+\begin{enumerate}
+\item \textit{Expérimentalement, avec quel type de signal doit-on solliciter un système pour tracer un diagramme de Bode ?}
+\item \textit{Tracer le diagramme asymptotique. De quel type de système s'agit-il ? Donner sa forme canonique. Justifier.}
+\item %\subparagraph{}
+\textit{Identifier les différentes constantes de ce système.}
+\end{enumerate}
+
+\end{document}
+ 

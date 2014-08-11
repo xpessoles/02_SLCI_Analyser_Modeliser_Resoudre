@@ -1,0 +1,937 @@
+\documentclass[11pt,oneside]{article}
+\input{style/coursHeadings}
+
+\usepackage{style/schemabloc}
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{
+CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{
+}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 5 -- Étude des systèmes fondamentaux du second ordre}{
+}}
+
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent 2013 -- 2014 \\
+Xavier \textsc{Pessoles}}{
+}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI -- Cours \\
+Ch 5 : Étude des systèmes d'ordre 2 -- \ifthenelse{\boolean{prof}}{P}{E}%
+}{
+}}
+
+\usepackage[%
+    pdftitle={SLCI - Systèmes du second ordre},
+    pdfauthor={Xavier Pessoles},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+
+
+\usepackage{pifont}
+\sloppy
+\hyphenpenalty 10000
+
+
+\begin{document}
+
+
+\input{style/entete1}
+
+\begin{center}
+ \huge\textsc{\xxtitre}
+\end{center}
+
+\begin{center}
+ \LARGE\textsc{\xxsoustitre}
+\end{center}
+
+\vspace{.5cm}
+
+
+
+
+\begin{center}
+\begin{tabular}{ccccc}
+\includegraphics[height=2.5cm]{png/amort1} &&
+\includegraphics[height=3.5cm]{png/schema} && 
+\includegraphics[height=1.5cm]{png/bloc}\\
+\textit{Amortisseur d'un véhicule automobile} &&
+\textit{Schématisation du mécanisme} &&
+\textit{Modélisation par schéma bloc}\\
+%\textit{Schéma bloc } \\
+\end{tabular}
+\end{center}
+
+
+\vspace{.2cm}
+
+
+\begin{obj}
+\textbf{Problématique :}
+\begin{itemize}
+\item Le comportement réel de certains systèmes asservis peut se modéliser par des systèmes dits du second ordre. Comment modéliser de tels systèmes ?
+%\item Comment modéliser un système complexe multiphysique en utilisant la modélisation en schéma bloc et la modélisation dans le domaine de Laplace ?
+%\item Comment déterminer la fonction de transfert d'un système dans le but de prévoir son comportement ?
+\end{itemize}
+\end{obj}
+
+\begin{savoir}
+\textbf{Savoirs :}
+\begin{itemize}
+\item Mod-C2.3 : Modèles canoniques du second ordre
+\begin{itemize}
+\item Mod-C2-S1 : Identifier le comportement d’un système pour l’assimiler à un modèle canonique, à partir d’une réponse temporelle 
+\item Mod-C2-S2 : Établir un modèle de comportement à partir de relevés expérimentaux
+%\item Mod-C2-S3 : On pourra étudier les systèmes du premier ordre présentant un retard pur
+\end{itemize}
+\end{itemize}
+\end{savoir}
+
+\setlength{\parskip}{0ex plus 0.2ex minus 0ex}
+ \renewcommand{\contentsname}{}
+ \renewcommand{\baselinestretch}{1}
+
+% \vspace{1cm}
+\textit{Ce document est en évolution permanente. Merci de signaler toutes
+erreurs ou coquilles.}
+
+\tableofcontents
+
+ \renewcommand{\baselinestretch}{1.2}
+\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+
+
+\section{Définition}
+
+
+Les systèmes du sont ordre sont régis par une équation différentielle de la
+forme suivante :
+$$
+\dfrac{1}{\omega_0^2} \dfrac{d^2 s(t)}{dt^2}+\dfrac{2\xi}{\omega_0} \dfrac{d s(t)}{dt}+s(t) = Ke(t)
+$$
+
+
+
+\begin{defi}
+Dans le domaine de Laplace, la fonction de transfert de ce système est donc
+donnée par :
+
+$$
+H(p) 
+= \dfrac{S(p)}{E(p)} 
+= \dfrac{K}{1+ \dfrac{2\xi}{\omega_0}p+\dfrac{p^2}{\omega_0^2}}
+$$
+
+On note :
+\begin{itemize}
+\item $K$ est appelé le gain statique du système (rapport des unités de $S$ et de $E$);
+\item $\xi$ (lire \textit{xi}) est appelé coefficient d'amortissement (sans unité);
+\item $\omega_0$ pulsation propre du système ($rad/s$ ou $s^{-1}$).
+\end{itemize}
+
+\end{defi}
+L'amortissement est parfois noté $m$ ou $z$.
+
+
+
+Schéma-bloc d'un système du second ordre :
+
+
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc[4]{B1}{$\dfrac{K}{1+ \dfrac{2\xi}{\omega_0}p+\dfrac{p^2}{\omega_0^2}}$}{E}
+\sbSortie[4]{S}{B1}
+\sbRelier[$E(p)$]{E}{B1}
+\sbRelier[$S(p)$]{B1}{S}
+\end{tikzpicture}
+\end{center}
+
+
+\begin{exemple}
+
+\textit{Amortisseur -- ressort}
+\ifthenelse{\boolean{prof}}{%
+On considère que la force $f(t)$ est l'entrée du système et que $y(t)$ est la
+valeur de sortie. $y(t)$ est la position mesurée par rapport à la position
+d'équilibre. 
+
+En isolant la masse $M$ et en appliquant le théorème fondamental de la
+dynamique, on obtient : 
+$$
+f(t)-ky(t)-\mu\dot{y}(t) = M\ddot{y}(t) 
+$$
+
+On obtient ainsi une équation classique de la mécanique vibratoire où on pose. En passant dans le domaine de Laplace, on a alors: 
+$$
+F(p)-kY(p)-\mu p Y(p) = Mp^2Y(p) 
+\Longleftrightarrow
+F(p)= Y(p) \left( Mp^2 + k + \mu p \right)
+$$
+
+On peut donc obtenir $H$ puis sa forme canonique :
+$$
+H(p)=\dfrac{Y(p)}{F(p)} 
+= \dfrac{1}{k + \mu p + Mp^2}
+= \dfrac{\dfrac{1}{k}}{1 + \dfrac{\mu}{k} p + \dfrac{M}{k}p^2}
+$$
+
+Par identification on a donc :
+$$K=\dfrac{1}{k} \quad \quad 
+\omega_0=\sqrt{\dfrac{k}{M}}\quad  \quad 
+\xi=\dfrac{\mu}{2k} \sqrt{\dfrac{k}{M}}
+=\dfrac{\mu}{2\sqrt{kM}}
+$$
+
+}{
+\rotatebox{90}{
+\begin{tabular}{p{8cm}}
+\\
+\end{tabular}}
+}
+\end{exemple}
+
+
+\section{Réponse impulsionnelle}
+La réponse impulsionnelle est donnée par une entrée du type $E(p)=1$.
+
+On a donc 
+$$
+S(p)=E(p)\cdot H(p) = \dfrac{K}{1+ \dfrac{2\xi}{\omega_0}p+\dfrac{p^2}{\omega_0^2}}
+=\dfrac{N(p)}{D(p)}
+$$
+
+Pour trouver les pôles de $S(p)$, calculons le discriminant associé à $D(p)$ :
+$$
+\Delta  = \left( \dfrac{2\xi}{\omega_0}\right)^2-4\dfrac{1}{\omega_0^2}
+=\dfrac{4}{\omega_0^2}\left( \xi^2 -1\right)
+$$
+
+La réponse impulsionnelle va donc dépendre de $\xi$.
+
+\subsection{Cas 1 : $\xi>1$}
+\begin{minipage}[c]{.46\linewidth}
+Dans ce cas, $D(p)$ possède 2 racines réelles notées $p_1$ et $p_2$ :
+
+$$
+p_{1,2} 
+=-\xi\omega_0\pm\omega_0\sqrt{ \xi^2 -1}
+$$
+
+
+D'après la transformée de Laplace inverse, on a : 
+$$
+s(t)=\dfrac{K\omega_0}{2\sqrt{\xi^2-1}} \left(e^{p_1 t}-e^{p_2 t} \right)\cdot
+u(t) 
+$$
+
+Lorsque $\xi>1$ on parle de système amorti (régime apériodique).
+%\subsubsection{Représentation graphique}
+\end{minipage} \hfill
+\begin{minipage}[c]{.46\linewidth}
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/ordre2_dirac_1}
+
+\textit{Réponse impulsionnelle d'un système \\ du second ordre -- Cas où $\xi > 1$}
+\end{center}
+\end{minipage}
+
+\subsection{Cas 2 : $\xi<1$}
+
+\begin{minipage}[c]{.46\linewidth}
+Dans le domaine temporel, on a :
+
+$$
+s(t)=\dfrac{K\omega_0}{\sqrt{1-\xi^2}}e^{-\xi\omega_0t}\sin\left(\omega_0
+t\sqrt{1-\xi^2} \right) u(t) 
+$$
+
+La pseudo-période des oscillations vaut :
+$$
+T=\dfrac{2\pi}{\omega_0\sqrt{1-\xi^2}}
+$$
+
+Lorsqu'il n'y a pas d'amortissement ($\xi=0$) on a une réponse sinusoïdale de
+pulsation $\omega_0$. 
+
+\end{minipage} \hfill
+\begin{minipage}[c]{.46\linewidth}
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/ordre2_dirac_c2_1}
+
+\textit{Réponse impulsionnelle d'un système \\ du second ordre -- Cas où $\xi<1$}
+\end{center}
+
+\end{minipage}
+
+\subsection{Cas 3 : $\xi=1$}
+Dans ce cas $D(p)$ possède une racine double.
+
+L'allure de la réponse serait comparable à celle obtenue dans le cas du régime
+apériodique mais ce cas est impossible dans la réalité : on ne peut avoir une
+valeur réelle de $\xi$ exactement égale à 1. 
+
+
+\section{Réponse indicielle}
+%\textbf{Remarque :}
+%La réponse indicielle est l'intégrale de 0 à $t$ de la réponse impulsionnelle. 
+%En effet, $S_{imp}=H(p)\cdot 1$ et $S_{ind}=H(p)\cdot 1=\dfrac{1}{p}$.
+
+%La réponse impulsionnelle étant nulle pour $t=0$, la pente de la réponse
+%indicielle est nulle à l'origine. 
+Dans ce cas, 
+$$
+S(p)=\dfrac{1}{p}\cdot H(p)
+$$
+\subsection{Cas 1 : $\xi > 1$}
+
+
+
+Dans ce cas, $D(p)$ possède 2 racines réelles notées $p_1$ et $p_2$ :
+$$
+\left\{
+\begin{array}{l}
+p_1 =
+\dfrac{-2\xi\omega_0-\sqrt{\Delta}}{2}=-\xi\omega_0-\omega_0\sqrt{\xi^2-1}\\ 
+p_2 =
+\dfrac{-2\xi\omega_0+\sqrt{\Delta}}{2}=-\xi\omega_0+\omega_0\sqrt{\xi^2-1}\\ 
+\end{array}
+\right.
+$$
+
+On a $p_1<p_2<0$.
+
+En notant $\tau_1=-\dfrac{1}{p_1}$ et $\tau_2=-\dfrac{1}{p_2}$, la fonction de
+transfert $H(p)$ peut s'écrire sous la forme suivante :  
+$$
+H(p)=\dfrac{K}{\left(1+ \tau_1 p \right)\left(1+ \tau_2 p  \right)}
+$$
+
+En conséquence, 
+$$
+S(p)=\dfrac{1}{p}\cdot\dfrac{K}{\left(1+ \tau_1 p \right)\left(1+ \tau_2 p 
+\right)} 
+$$
+
+\begin{minipage}[c]{.46\linewidth}
+
+En calculant alors la transformée de Laplace inverse, on obtient :
+$$
+s(t)=K\left(
+1-\dfrac{1}{\tau_1-\tau_2}\cdot\left(
+\tau_1e^{-t\dfrac{t}{\tau_1}}-\tau_2e^{-t\dfrac{t}{\tau_2}}
+\right)
+\right)
+$$
+
+On peut aussi mettre $s(t)$ sous la forme suivante : 
+$$
+s(t)=K\left(
+1-\dfrac{1}{2\sqrt{\xi^2-1}}\cdot
+\left(\dfrac{e^{p_1t}}{p_1} - \dfrac{e^{p_2t}}{p_2}
+\right)\right)
+$$
+
+\end{minipage}\hfill
+\begin{minipage}[c]{.46\linewidth}
+
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/ordre2_echelon_c1-1}
+
+\textit{Réponse indicielle d'un système \\ du second ordre -- Cas où $\xi>1$}
+\end{center}
+\end{minipage}
+
+
+En $t=0$, la courbe admet une \textbf{tangente horizontale}.
+
+La courbe ne dépasse pas son asymptote horizontale ($s(t)$ est monotone). 
+
+Il n'y a pas de formule pour déterminer le temps de réponse à 5\%.
+
+Nous pouvons remarquer cependant que le système ressemble à un système du
+premier ordre lorsqu'on s'éloigne de $t=0$.  
+
+Le temps de réponse à 5\% peut donc être approché par la valeur
+$tr_{5\%}=3\times2\xi\omega_0$. 
+
+ %En pratique on utilisera l'abaque des temps de réponse réduits.
+
+\subsection{Cas 2 : $\xi = 1$}
+
+Dans ce cas, $\tau_1=\tau_2=\tau_0$, on parle
+d'amortissement critique, l'existence d'un pôle double modifie le décomposition
+en éléments simples et on obtient : 
+
+$$
+s(t)=K\left(1-\left(1+\dfrac{1}{\tau_0}\right)e^{-\dfrac{t}{\tau_0}}\right)
+$$
+
+La réponse est plus rapide que si $\xi>1$ ($tr_{5\%}=5\omega_0$), mais l'allure
+de la courbe est très similaire. 
+
+\subsection{Cas 3 : $\xi<1$}
+\begin{minipage}[c]{.46\linewidth}
+Dans ce cas on parle de système sous amorti.
+
+Dans ce cas, $H(p)$ admet deux pôles complexes conjuguées :
+$$
+p=-\left( \xi \pm j\sqrt{1-\xi^2}\right)\omega_0
+$$
+
+La décomposition de $S(p)$ en éléments simples et le calcul de la transformée de
+Laplace inverse nous donne : 
+$$
+s(t)=K\left[ 1 -
+\dfrac{e^{-\xi\omega_0t}}{\sqrt{1-\xi^2}}\cdot\sin\left(\omega_0\sqrt{1-\xi^2}
+t+\arccos{\xi}\right)\right] 
+$$
+
+\end{minipage}\hfill
+\begin{minipage}[c]{.46\linewidth}
+
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/ordre2_echelon_c2}
+\end{center}
+\end{minipage}
+
+La courbe admet toujours une tangente horizontale à $t=0$.
+
+On observe l'apparition d'oscillations autour de la valeur finale (réponse
+pseudo-périodique), d'autant plus amorties que $\xi$ est élevé. Pour $\xi=0$, la
+réponse est sinusoïdale d'amplitude $2K$.  
+
+Les courbes enveloppes ont pour équation les courbes suivantes : 
+$$
+y(t)=K\left( 
+1\pm \dfrac{e^{-\xi\omega_0 t}}{\sqrt{1-\xi^2}}
+\right)
+$$
+
+\begin{rem}
+On définit parfois $\omega_p$ :
+$$
+\omega_p = \omega_0 \sqrt{1-\xi^2}
+$$
+\end{rem}
+
+\begin{resultat}
+La pseudo-période des oscillations est donnée par :
+
+$$
+T_p=\dfrac{2\pi}{\omega_0\sqrt{1-\xi^2}}
+$$
+
+\end{resultat}
+
+\subsubsection{Résultats sur les dépassements}
+
+\begin{minipage}[c]{.4\linewidth}
+Lorsque $\xi$ est inférieur à 1, la réponse indicielle génère des dépassements. 
+
+
+\begin{resultat}
+On montre que le premier dépassement est obtenu pour :
+\ifthenelse{\boolean{prof}}{%
+$$
+t_1 = \dfrac{\pi}{\omega_0\sqrt{1-\xi^2}}=\dfrac{T_p}{2}
+$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{1.5cm}}
+\\
+\end{tabular}}
+}
+
+\end{resultat}
+
+\end{minipage}\hfill
+\begin{minipage}[c]{.55\linewidth}
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/depassement2}
+\end{center}
+\end{minipage}
+
+
+La valeur du dépassement (en pourcentage) peut se calculer alors ainsi :
+
+$$
+D_{1\%} = \left| \dfrac{s(t_1)-s(\infty)}{s(\infty)-s(0)}\right|
+$$
+
+\begin{resultat}
+Le premier dépassement pour cent vaut : 
+
+\vfill
+
+\ifthenelse{\boolean{prof}}{%
+$$
+D_{1\%}=e^{\dfrac{-\pi \xi}{\sqrt{1-\xi^2}}}
+$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{1.5cm}}
+\\
+\end{tabular}}}
+
+\vfill
+
+La valeur du pic est donnée par $D_{1\%}\cdot K \cdot E_0$ ($E_0$ valeur de l'échelon d'entrée).
+
+\end{resultat}
+
+\begin{resultat}
+Le k\ieme dépassement pour cent vaut : 
+
+\ifthenelse{\boolean{prof}}{%
+
+$$
+D_{k\%}=e^{\dfrac{-k \pi \xi}{\sqrt{1-\xi^2}}}
+$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{1.5cm}}
+\\
+\end{tabular}}}
+\end{resultat}
+
+L'abaque ci-dessous permet de connaître la valeur du k\ieme  dépassement \textbf{pour cent} en fonction du facteur d'amortissement. 
+Lorsque l'amortissement tend vers 1, on peut ainsi mettre en évidence que la valeur des dépassements est de plus en plus faible.
+
+\begin{center}
+\includegraphics[width=.7\textwidth]{png/depassement}
+\end{center}
+
+
+
+
+\subsubsection{Résultat sur le temps de réponse à 5\%}
+\begin{minipage}[c]{.4\linewidth}
+La rapidité d'un système du second ordre va se calculer par le temps de réponse à 5\%. Le temps de réponse dépend de $\omega_0$ et $\xi$ et ne pas s'écrire sous une forme analytique simple. 
+
+L'abaque ci-contre donne le temps de réponse réduit $tr_{5\%} \omega_0$ en fonction du coefficient d'amortissement $\xi$. 
+\begin{resultat}
+On note que le temps de réponse est minimum lorsque $\xi\simeq 0,7$. Dans ces conditions :
+$$
+t_{r5\%} \cdot \omega_0 = 3
+$$
+\end{resultat}
+\end{minipage}\hfill
+\begin{minipage}[c]{.55\linewidth}
+\begin{center}
+\includegraphics[width=.95\textwidth]{png/tr}
+\end{center}
+\end{minipage}
+
+
+\subsection{Évolution de la réponse en fonction du coefficient d'amortissement}
+
+
+\begin{center}
+\includegraphics[width=.7\textwidth]{png/ordre2_echelon_z}
+\end{center}
+
+
+\begin{resultat}
+On peut montrer que pour la réponse indicielle d'un système du second ordre 
+\begin{itemize}
+\item il existe une tangente horizontale à l'origine;
+\item la valeur finale tend vers $K E_0$ (si l'échelon d'entrée vaut $E_0$).
+\end{itemize}
+\end{resultat}
+\end{document}
+
+\newpage
+
+%\section{Annexes}
+\subsection{Calcul de la réponse impulsionnelle}
+
+\subsubsection{Cas 1 : $\xi>1$}
+
+Dans ce cas, $D(p)$ possède 2 racines réelles notées $p_1$ et $p_2$ :
+%$$
+%\left\{
+%\begin{array}{l}
+%p_1 =
+%\dfrac{-2\xi\omega_0-\sqrt{\Delta}}{2}=\xi\omega_0-\omega_0\sqrt{\xi^2-1}\\ 
+%p_2 =
+%\dfrac{-2\xi\omega_0+\sqrt{\Delta}}{2}=\xi\omega_0+\omega_0\sqrt{\xi^2-1}\\ 
+%\end{array}
+%\right.
+%$$
+
+$$
+p_{1,2} 
+=
+\dfrac{-\dfrac{2\xi}{\omega_0}\pm\sqrt{\Delta}}{\dfrac{2}{\omega_0^2}}
+=\dfrac{-2\xi\omega_0\pm\omega_0^2\sqrt{\Delta}}{2}
+=-\xi\omega_0\pm\omega_0\sqrt{ \xi^2 -1}
+$$
+
+
+On peut donc écrire $S(p)$ sous la forme suivante : 
+$$
+S(p)=\dfrac{K}{\dfrac{1}{\omega_0^2}\left(p-p_1\right)\left(p-p_2\right)}
+$$
+
+%\end{minipage}\hfill
+%\begin{minipage}[c]{.46\linewidth}
+
+La décomposition en éléments simples de $S(p)$ donne : 
+$$
+S(p)
+%=K\omega_0^2\left( \dfrac{\alpha}{p-p_1} + \dfrac{\beta}{p-p_2} \right) 
+=\dfrac{K\omega_0^2}{2\omega_0\sqrt{\xi^2-1}}\left( \dfrac{1}{p-p_1} - \dfrac{1}{p-p_2} \right) 
+%\dfrac{K\omega_0}{2\sqrt{\xi^2-1}}\left( \dfrac{1}{p-p_1} - \dfrac{1}{p-p_2}
+%\right) 
+$$
+
+D'après la transformée de Laplace inverse, on a : 
+$$
+s(t)=\dfrac{K\omega_0}{2\sqrt{\xi^2-1}} \left(e^{p_1 t}-e^{p_2 t} \right)\cdot
+u(t) 
+$$
+
+
+
+\subsubsection{Cas 2 : $\xi<1$}
+
+
+Dans ce cas, $S(p)$ s'écrit sous la forme :
+$$
+S(p)=\dfrac{K\omega_0^2}{\left(p+\xi\omega_0 \right)^2+\omega_0^2\left(1-\xi^2
+\right)} 
+$$
+
+On note : 
+\begin{itemize}
+\item $\omega^2 = \omega_0^2 \left(1-\xi^2 \right)$
+\item $a=\xi\omega_0$
+\end{itemize}
+
+En conséquence : 
+$$
+S(p)=\dfrac{K\omega_0}{\sqrt{1-\xi^2}}
+\dfrac{\omega}{\left(p+a\right)^2+\omega^2} 
+$$
+
+En repassant dans le domaine temporel, on a :
+
+$$
+s(t)=\dfrac{K\omega_0}{\sqrt{1-\xi^2}}e^{-\xi\omega_0t}\sin\left(\omega_0
+t\sqrt{1-\xi^2} \right) u(t) 
+$$
+
+\subsection{Calcul de la réponse indicielle}
+
+\subsubsection{Cas 1 : $\xi\geq1$}
+%\subsubsection{Réponse temporelle}
+Dans ce cas, $D(p)$ possède 2 racines réelles notées $p_1$ et $p_2$ :
+$$
+\left\{
+\begin{array}{l}
+p_1 =
+\dfrac{-2\xi\omega_0-\sqrt{\Delta}}{2}=\xi\omega_0-\omega_0\sqrt{\xi^2-1}\\ 
+p_2 =
+\dfrac{-2\xi\omega_0+\sqrt{\Delta}}{2}=\xi\omega_0+\omega_0\sqrt{\xi^2-1}\\ 
+\end{array}
+\right.
+$$
+
+On a $p_1<p_2<0$.
+
+En notant $\tau_1=-\dfrac{1}{p_1}$ et $\tau_2=-\dfrac{1}{p_2}$, la fonction de
+transfert $H(p)$ peut s'écrire sous la forme suivante :  
+$$
+H(p)=\dfrac{K}{\left(1+ \tau_1 p \right)\left(1+ \tau_2 p  \right)}
+$$
+
+En conséquence, 
+$$
+S(p)=\dfrac{1}{p}\cdot\dfrac{K}{\left(1+ \tau_1 p \right)\left(1+ \tau_2 p 
+\right)} 
+$$
+En décomposant $S(p)$ en éléments simples et en calculant $\alpha$, $\beta$ et
+$\gamma$ on obtient : 
+
+$$
+S(p)=K\left[
+\dfrac{1}{p}-\dfrac{\tau_1^2}{\tau_1-\tau_2}\cdot\dfrac{1}{1+\tau_1 p} -
+\dfrac{\tau_2^2}{\tau_1-\tau_2}\cdot\dfrac{1}{1+\tau_2 p} 
+\right]
+$$
+
+
+En calculant alors la transformée de Laplace inverse, on obtient :
+$$
+s(t)=K\left(
+1-\dfrac{1}{\tau_1-\tau_2}\cdot\left(
+\tau_1e^{-t\dfrac{t}{\tau_1}}-\tau_2e^{-t\dfrac{t}{\tau_2}}
+\right)
+\right)
+$$
+
+On peut aussi mettre $s(t)$ sous la forme suivante : 
+$$
+s(t)=K\left(
+1-\dfrac{1}{2\sqrt{\xi^2-1}}\cdot
+\left(\dfrac{e^{p_1t}}{p_1} - \dfrac{e^{p_2t}}{p_2}
+\right)\right)
+$$
+
+
+\subsubsection{Cas 2 : $\xi<1$}
+Dans ce cas on parle de système sous amorti.
+
+Dans ce cas, $H(p)$ admet deux pôles complexes conjuguées :
+$$
+p=-\left( \xi \pm j\sqrt{1-\xi^2}\right)\omega_0
+$$
+
+La décomposition de $S(p)$ en éléments simples et le calcul de la transformée de
+Laplace inverse nous donne : 
+$$
+s(t)=K\left[ 1 -
+\dfrac{e^{-\xi\omega_0t}}{\sqrt{1-\xi^2}}\cdot\sin\left(\omega_0\sqrt{1-\xi^2}
+t+\arccos{\xi}\right)\right] 
+$$
+
+
+
+La courbe admet toujours une tangente horizontale à $t=0$.
+
+On observe l'apparition d'oscillations autour de la valeur finale (réponse
+pseudo-périodique), d'autant plus amorties que $\xi$ est élevé. Pour $\xi=0$, la
+réponse est sinusoïdale d'amplitude $2K$.  
+
+La pseudo-période des oscillations est donnée par :
+$$
+T=\dfrac{2\pi}{\omega_0\sqrt{1-\xi^2}}
+$$
+
+Les courbes enveloppes ont pour équation les courbes suivantes : 
+$$
+y(t)=K\left( 
+1\pm \dfrac{e^{-\xi\omega_0 t}}{\sqrt{1-\xi^2}}
+\right)
+$$
+
+
+
+%Diagramme de détermination du temps de réponse à 5\% d'un système du deuxième
+%ordre à une entrée indicielle. 
+\end{document}
+
+\subsubsection{Résultats sur les dépassements}
+Les valeurs des dépassements successifs peuvent être lus sur l'abaque des
+dépassements. Les dépassements sont parfois donnés en pourcentage de la valeur
+finales :  
+$$
+D_{1\%}=e^{\dfrac{-\pi \xi}{\sqrt{1-\xi^2}}}
+$$
+
+Le calcul du temps de réponse à 5\% est encore plus compliqué que dans le cas
+$\xi>1$ en raison du phénomène oscillatoire. On se reportera donc à l'abaque des
+temps de réponse réduits. 
+
+On remarque, sur l'abaque des temps de réponse, que le minimum est obtenu pour
+une valeur particulière : $\xi=\dfrac{\sqrt{2}}{2}\simeq0,7$. Cette valeur
+correspond à celle pour laquelle le premier dépassement vaut 5\%. Le système est
+dit alors juste amorti. On a donc $tr_{5\%}\simeq3\omega_0$. 
+
+%\subsubsection{Représentation graphique}
+\begin{center}
+\includegraphics[width=.7\textwidth]{png/ordre2_echelon_z}
+
+Évolution de la réponse avec les coefficient d'amortissement
+\end{center}
+
+
+\section{Identification des systèmes du second ordre}
+
+        Il s’agit de déterminer, à l’aide d’essais expérimentaux, la fonction de
+transfert d’un système
+que l’on désire asservir. En effet, même si la structure est déterminée (sous
+forme de schéma bloc),
+la mise en équations est difficile (indétermination de certains paramètres,
+inertie réelle, frottements,
+constantes de temps, etc.).
+
+        De plus, ces paramètres dépendent souvent des conditions dans lesquelles
+sont effectuées
+les mesures (atteinte de saturation, etc.). Il est donc préférable de les
+déterminer dans les conditions
+aussi proches que possible de l’utilisation normale du système (linéarisation
+autour d’un point de
+fonctionnement).
+
+        La détermination des paramètres intervenant dans la structure s’effectue
+principalement à
+partir des réponses indicielles et harmoniques (traité en seconde année). On
+obtient alors un
+modèle dit modèle de comportement.
+
+        L’identification sera largement abordée au cours des Travaux Pratiques.
+Nous nous
+limiterons, en PTSI, à l’identification de modèles d’ordre 1 ou 2, à partir de
+la réponse temporelle à
+une entrée type échelon.
+
+\subsection{Système d'ordre 2 oscillant amorti}
+Dans ce cas, 
+$$
+0<\xi<1
+$$
+
+La réponse indicielle d'un système à un échelon d'amplitude $Ec=5$ a été
+enregistrée.
+
+On obtient la courbe ci-dessous.
+\begin{center}
+% \includegraphics[width=0.7\textwidth]{png/im1}
+\end{center}
+Nous constatons une réponse pseudo périodique avec une pente à l’origine nulle
+et des dépassements de la réponse.
+
+\newpage
+
+Nous adoptons pour ces raisons le modèle suivant :
+$$
+H(p)=\dfrac{S(p)}{E(p)}=\dfrac{K}{1+\dfrac{2\xi}{\omega_0}p+\dfrac{p^2}{
+\omega_0^2}}
+$$
+
+
+\begin{multicols}{2}
+
+\begin{center}
+% \includegraphics[width=0.4\textwidth]{png/im2}
+\end{center}
+
+\begin{center}
+% \includegraphics[width=0.4\textwidth]{eps/im3}
+\end{center}
+
+L'asymptote horizontale permet de calculer le gain statique $K$ :
+$$
+K=\dfrac{S_{\infty}}{E_0} \text{ où } S_{\infty} = \lim\limits_{t \to \infty}
+s(t) 
+$$
+
+La réponse présente un dépassement $D_{\%}$ défini par :
+$$
+D_{1\%}=100 \cdot \left| \dfrac{S_{max} - S_{\infty}}{S_{\infty}} \right|
+$$
+
+Sa valeur permet de connaître le coefficient d'amortissement $\xi$ du système
+car pour un système du 2\up{nd} ordre oscillant amorti on a :
+$$
+D_{1\%}=100 \cdot e^{\dfrac{-\pi\xi}{\sqrt{1-\xi^2}}}
+$$
+
+La courbe donne le dépassement $D_{1\%}$ en fonction de l'amortissement $\xi$. 
+On peut y lire que pour $D_{1\%}\simeq 5\%$, $\xi\simeq 0,7$.
+
+\end{multicols}
+
+Il reste alors à déterminer la pulsation propre $\omega_0$ à partir de la
+pseudo-période $T_p$ des oscillations :
+$$
+T_p=\dfrac{2\pi}{\omega_p}=\dfrac{2\pi}{T_P\sqrt{1-\xi^2}}
+$$
+
+
+
+En appliquant cette méthode ici, on trouve :
+\begin{itemize}
+ \item $K$=1
+\item $\xi= 0,3$ 
+\item $\omega_0=2rad/s$
+\end{itemize}
+
+La courbe réponse issue du modèle est alors tracée pour vérifier sa validité :
+la fonction de transfert identifiée modélise correctement le système étudié.
+\begin{center}
+% \includegraphics[width=0.7\textwidth]{eps/im4}
+\end{center}
+
+\subsection{Système d'ordre 2 non oscillant amorti}
+On a donc $\xi\geq 1$.
+La réponse indicielle d'un système à un échelon d'amplitude $E_c=5$ a été
+enregistrée. On obtient la courbe ci-dessous.
+\begin{center}
+% \includegraphics[width=0.7\textwidth]{eps/im5}
+\end{center}
+
+Nous constatons une réponse apériodique avec une pente à l'origine nulle et
+aucun dépassement. Adoptons donc le modèle suivant : 
+$$
+H(p)=\dfrac{S(p)}{E(p)}=\dfrac{K}{1+\dfrac{2\xi}{\omega_0}p+\dfrac{p^2}{
+\omega_0^2}}
+$$
+
+Si $\xi>1$, le système peut être considéré comme le produit de deux fonctions
+de transfert du 1\up{er} ordre de constantes de temps $\tau_1$ et $\tau_2$
+telles que $\tau_1>\tau_2$ :
+
+$$
+\dfrac{S(p)}{E(p)}=H(p)=\dfrac{K}{\left(1+\tau_1 p \right)\left(1+\tau_2 p
+\right)}
+$$
+
+\newpage
+
+On peut alors poser $\alpha=\tau_2/\tau_1<1$. On a donc la fonction de transfert
+$H(p)$ que peut s'écrire (avec $\tau=\tau_1$):
+
+$$
+\dfrac{S(p)}{E(p)}=H(p)=\dfrac{K}{\left(1+\tau p \right)\left(1+\alpha \tau p
+\right)}
+$$
+
+\begin{multicols}{2}
+\begin{center}
+% \includegraphics[width=0.4\textwidth]{eps/im6}
+\end{center}
+
+\begin{center}
+ %\includegraphics[width=0.4\textwidth]{eps/im7}
+\end{center}
+
+L'asymptote horizontale permet de calculer le gain statique $K$: 
+$$
+K=\dfrac{S_{\infty}}{E_0} \text{ où } S_{\infty} = \lim\limits_{t\to\infty} s(t)
+$$
+
+Pour déterminer les valeurs de $\alpha$ et de $\tau$, on commence par tracer la
+tangente au point d'inflexion. Elle permet de définir les valeurs $T_a$ et
+$T_b$. On peut démontrer que : 
+$$
+\dfrac{T_a}{T_b} = \dfrac{\alpha^{\dfrac{\alpha}{\alpha-1}}}{1+\alpha}
+$$
+
+La courbe correspondante tracée permet d'obtenir la valeur de $\alpha$.
+Pour $\dfrac{T_a}{T_b}\simeq1,29$ on lit $\alpha\simeq 0,30$. 
+La valeur de $\tau$ est donnée par :
+$$
+\tau = \dfrac{T_b}{1+\alpha}
+$$
+
+\end{multicols}
+
+
+\end{document}
