@@ -1,0 +1,778 @@
+\documentclass[11pt,oneside]{article}
+\input{style/coursHeadings}
+\input{style/programHeadings}
+
+
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{false}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{
+CI 2 -- SLCI : Etude du comportement des Systèmes Linéaires Continus Invariants}{
+Chapitre 1 -- Le système informatique}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 1 -- Introduction aux Systèmes Linéaires Continus Invariants}{
+Partie 2 -- Cours et TD Systèmes d'exploitation et manipulation d'un environnement de développement}}
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent 2013 -- 2014 \\
+Xavier \textsc{Pessoles}}{
+Damien Iceta}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI -- Cours \\
+Ch 1 : Intro aux SLCI -- \ifthenelse{\boolean{prof}}{P}{E}%
+}{
+TD -- CI 3 : Ingénierie numérique et simulation}}
+
+
+
+\ifthenelse{\boolean{xp}}{
+\usepackage[%
+    pdftitle={SLCI - Intro aux SLCI},
+    pdfauthor={Xavier Pessoles},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}}{
+\usepackage[%
+    pdftitle={OS et Environnement de développement},
+    pdfauthor={Damien Iceta},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}}
+
+
+
+\usepackage{pifont}
+\sloppy
+\hyphenpenalty 10000
+
+\begin{document}
+
+
+\input{style/entete1}
+
+\begin{center}
+ \huge\textsc{\xxtitre}
+\end{center}
+
+\begin{center}
+ \LARGE\textsc{\xxsoustitre}
+\end{center}
+
+
+
+
+
+\vspace{.5cm}
+
+
+\begin{minipage}[c]{.4\linewidth}
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/clock}
+
+\textit{Horloge à eau (II\ieme s. av. J.C.)}
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[c]{.2\linewidth}
+\begin{center}
+\includegraphics[width=.8\textwidth]{png/fleche}
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[c]{.25\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{png/nao}
+
+\textit{Robot Nao (XXI\ieme s.)}
+\end{center}
+\end{minipage}
+%\includegraphics[width=.4\textwidth]{png/renault_frendzy}
+
+
+
+\vspace{.2cm}
+
+Depuis l'antiquité les Hommes cherchent à automatiser différentes tâches du quotidien. 
+\begin{itemize}
+\item Quelle a été l'évolution des systèmes automatisés au cours du temps ?
+\item Quelles sont les caractéristiques des systèmes automatisés ?
+\end{itemize}
+
+
+\begin{savoir}
+\begin{itemize}
+\item A-C11.1 : Définition et structure d'un système asservi : chaîne directe (ou chaîne d'action), chaîne de retour (ou chaîne d'acquisition), comparateur et écart.
+\item A-C11.2 : Consigne, perturbation.
+\item A-C11.3 : Régulation, poursuite.
+\item A-C11.4 : Définition des performances : rapidité, précision et stabilité.
+\end{itemize}
+\end{savoir}
+
+%
+%\begin{rem}
+%\textsc{Savoirs :}
+%\begin{itemize}
+%\item Définir ce qu'est un système asservi
+%\item Définir la nature des informations
+%\item Définir les performances d'un système
+%\end{itemize}
+%\end{rem}
+
+
+\setlength{\parskip}{0ex plus 0.2ex minus 0ex}
+ \renewcommand{\contentsname}{}
+ \renewcommand{\baselinestretch}{1}
+
+% \vspace{1cm}
+\textit{Ce document est en évolution permanente. Merci de signaler toutes
+erreurs ou coquilles.}
+
+\tableofcontents
+
+ \renewcommand{\baselinestretch}{1.2}
+\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+\section{Historique}
+L'automatique a pour origine étymologique le mot grec \textit{automatos} qui
+signifie «~qui se meut de soi-même~». Historiquement, cette science est
+plutôt née de techniques permettant de mettre en \oe{}vre la régulation de
+systèmes.
+
+Très tôt, les hommes ont donc chercher à automatiser des tâches afin
+d'améliorer le confort de leur existence ou pour améliorer leur sécurité. Plus
+tard, avec l'essor de l'industrie au XIX\ieme siècle, les hommes chercheront à
+automatiser les tâches répétitives et délicates afin d'accroître la
+productivité et d'améliorer la précision.
+
+\subsection{La mesure du temps}
+
+Dès l'antiquité s'est posé le problème de compter le temps. Dans le but
+d'améliorer la précision des clepsydres, Ctésibios d'Alexandrie, en 270 av.
+JC développa un système innovant. En s'apercevant que le débit d'un fluide
+devenait constant en maintenant une hauteur d'eau constante, il introduit un
+réservoir entre la source d'eau et réservoir aval. Un flotteur situé dans ce
+dernier et relié à une règle permet de mesurer le temps.
+
+ \begin{center}
+ \includegraphics[width=.8\textwidth]{png/clepsydre}
+ \end{center}
+
+\subsection{L'automatisation du calcul}
+\begin{minipage}[c]{0.7\textwidth}
+Pour faciliter le travail de son père, surintendant de Haute Normandie, Pascal
+mis au point la Pascaline, machine à calculer qui permettait de réaliser de
+façon automatique addition, soustraction et multiplication.  
+
+\end{minipage}\hfill
+\begin{minipage}[c]{0.2\textwidth}
+ \begin{center}
+ \includegraphics[height=2.5cm]{png/pascal}
+
+\textit{Machine à calculer de Pascal (XVII\ieme s.)}
+ \end{center}
+\end{minipage}
+
+\subsection{La régulation}
+
+Dans le but de réguler la vitesse de rotation des machines à vapeur, James Watt
+fut un des premiers ingénieurs à inventer un mécanisme à rétroaction. 
+
+Il utilisa pour cela un mécanisme rotatif équipé de deux boules reliées à la
+sortie d'une machine à vapeur. En tournant, et par le biais des forces
+d'inertie, les deux boules étaient animées d'un mouvement d'élévation. Par un
+mécanisme de biellettes, l'élévation de ces boules entraînaient une réduction
+du débit de vapeur dans la machine à vapeur. 
+
+A l'inverse, lors du ralentissement de la machine, les boules retombaient,
+provoquant une augmentation du débit de vapeur dans la machine à vapeur.
+
+\begin{center}
+ \includegraphics[width=0.8\textwidth]{png/watt}
+
+\textit{Régulateur à boules de Watt (XVIII\ieme s.)}
+ \end{center}
+
+
+\subsection{Les automates}
+\begin{minipage}[c]{0.7\textwidth}
+La période s'étalant du XVIII\ieme au XIX\ieme siècle est marquée par de
+nombreuses créations comme le « canard » de Vaucanson.
+Cet ingénieur avait réussi à créer un automate qui ingérait de la nourriture, en
+faisait une bouillie, et la rejetait par le postérieur. En outre le canard battait des ailes. 
+
+\end{minipage}\hfill
+\begin{minipage}[c]{0.2\textwidth}
+ \begin{center}
+ \includegraphics[height=2.5cm]{png/vaucanson}
+
+\textit{Canard digérateur de Vaucanson (XVIII\ieme s.)}
+ \end{center}
+\end{minipage}
+
+\subsection{L'automatisation des tâches}
+\begin{minipage}[c]{0.7\textwidth}
+Avec la révolution industrielle au XIX\ieme siècle, l'automatisation des tâches prend de l'ampleur. Dans tous les secteurs industriels, on cherche à accroître la productivité pour faire face à une demande croissante. Dans le domaine du textile en particulier, Jacquard met au point des métiers à tisser semi-automatiques en utilisant des cartes perforées.
+
+\end{minipage}\hfill
+\begin{minipage}[c]{0.25\textwidth}
+ \begin{center}
+ \includegraphics[height=3cm]{png/jacquard_p}
+
+\textit{Métier à tisser -- Jacquard (XIX\ieme s.)}
+ \end{center}
+\end{minipage}
+
+\subsection{L'arrivée de l'électronique}
+\begin{minipage}[c]{0.7\textwidth}
+Au fur et à mesure de l'évolution, les tâches se complexifient et le volume des informations à traiter aussi. C'est ainsi qu'au XX\ieme siècle, l'électronique va permettre d'intégrer une grande quantité d'informations et va pouvoir générer un grand nombre de commandes pour des actionneurs différents.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.2\textwidth}
+ \begin{center}
+ \includegraphics[height=2.5cm]{png/electro_p}
+ \end{center}
+\end{minipage}
+
+\subsection{La robotique}
+\begin{minipage}[c]{0.5\textwidth}
+Le début du XXI \ieme siècle voit l'arrivée des premiers robots humanoïdes grands publics. Les problèmes posés par la conception de ces produits provient de la difficulté de reproduire les comportements humains. En effet, il va falloir créer des robots qui ont d'une part des mouvements aussi fluides que les mouvements humains, qui ne doivent pas être déséquilibrés par leur propre poids, qui doivent gérer des situations de chutes, la marche sur des sols glissants.
+
+La robotique reste un domaine de pointe de la recherche française et internationale.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\textwidth}
+ \begin{center}
+ \includegraphics[height=4cm]{png/nao2}
+
+\textit{Robot Nao -- Aldebaran Robotics (XXI\ieme s.)}
+ \end{center}
+\end{minipage}
+
+\section{Les systèmes automatisés}
+\subsection{Présentation}
+
+
+Les systèmes techniques qui nous entourent peuvent être classés en trois
+catégories : 
+\begin{itemize}
+ \item les \textbf{systèmes manuels} (ou élémentaires) pour lesquels l'intervention humaine prédomine. L'utilisateur commande le système et fournit l'énergie (musculaire) nécessaire à la réalisation de la fonction de service (FS) pour laquelle le système a été conçu;
+\item les \textbf{systèmes mécanisés} conçus pour alléger la tâche de l'utilisateur. 
+Dans ces systèmes, l'énergie provient le plus souvent d'une source extérieure et le rôle de l'utilisateur consiste à commander le système;
+\item les \textbf{systèmes automatisés} pour lesquels l'intervention humaine se
+limite à la programmation du système et à son réglage préalable.
+\end{itemize}
+
+
+\begin{exemple}
+  Fonction de service : voler dans l'air
+\end{exemple}
+
+
+\begin{center}
+ \begin{tabular}{ccc}
+  \multicolumn{3}{c}{FS : Voler dans l'air} \\
+  \includegraphics[height=3cm]{png/machineLDV} &
+  \includegraphics[height=3cm]{png/ulm} &
+  \includegraphics[height=3cm]{png/a350} \\
+  Système manuel & Système mécanisé & Système automatisé \\
+  \textit{Machine volante de De Vinci} & \textit{ULM} & \textit{Avion -- Airbus
+A350}
+ \end{tabular}
+\end{center}
+
+Réaliser un système automatisé c'est concevoir un système capable d'effectuer une ou plusieurs opérations sans intervention d'un opérateur humain. 
+
+Les systèmes automatisés ont plusieurs objectifs : 
+\subparagraph*{Améliorer la sécurité}
+\begin{minipage}[c]{0.7\textwidth}
+ Les systèmes automatisés permettent de réaliser des opérations qui peuvent
+s'avérer trop dangereuses pour les hommes. Ainsi ont-été conçu des systèmes
+pour envoyer des satellites dans l'espace, pour inspecter les bassins de
+combustibles dans les centrales nucléaires, pour assurer l'entretien sur des
+monuments \textit{etc.}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.2\textwidth}
+ \begin{center}
+ \includegraphics[height=3cm]{png/satellite}
+ \end{center}
+\end{minipage}
+
+\subparagraph*{Améliorer le confort}
+\begin{minipage}[c]{0.7\textwidth}
+Afin d'améliorer le quotidien des hommes aussi bien dans leur vie personnelle
+que professionnelle, les entreprises développent des produits qui permettent de
+faire évoluer notre confort : régulateur de vitesse, aspirateurs robotisés, ...
+\end{minipage}\hfill
+\begin{minipage}[c]{0.2\textwidth}
+ \begin{center}
+ \includegraphics[height=2.5cm]{png/aspi}
+ \end{center}
+\end{minipage}
+
+\subparagraph*{Améliorer la qualité}
+\begin{minipage}[c]{0.7\textwidth}
+Dans le but d'améliorer la qualité des opérations réalisées par les hommes, des
+robots chirurgicaux et d'autres produits sont en cours de développement. Ils
+assurent ainsi la précision, la stabilité et la reproductibilité d'opérations
+de précision.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.2\textwidth}
+ \begin{center}
+ \includegraphics[height=3cm]{png/robot_chir.png}
+ \end{center}
+\end{minipage}
+
+\subparagraph*{Améliorer la productivité}
+
+\begin{minipage}[c]{0.6\textwidth}
+Pour améliorer la productivité industrielle et diminuer les tâches trop
+répétitives pour les hommes, les chaînes de
+fabrication et d'assemblage ont été largement automatisées et robotisées.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.3\textwidth}
+ \begin{center}
+ \includegraphics[height=3cm]{png/chaine_prod.png}
+ \end{center}
+\end{minipage}
+
+\subsection{Définitions}
+
+\begin{minipage}[c]{0.55\linewidth}
+\begin{defi}
+ \textit{\textsf{Systèmes à logique combinatoire}}
+
+Les fonctions de sorties $S_j$ ne dépendent que des entrées $E_i$ à l'instant
+considéré. $E_i$ et $S_j$ sont respectivement des variables et des fonctions
+binaires ne pouvant prendre que les valeurs $0$ et $1$ par convention.
+\end{defi} 
+\end{minipage} \hfill
+\begin{minipage}[c]{0.4\linewidth}
+ \begin{center}
+    \includegraphics[width=\textwidth]{png/comb}
+  \end{center}
+\end{minipage}
+
+
+
+
+L'outil mathématique rigoureux permettant de représenter et traiter de tels
+systèmes est \textbf{l'algèbre de Boole}. Ces systèmes ont un comportement de
+type \textbf{logique combinatoire}.
+
+
+\begin{exemple}
+ Afficheurs 7 segments
+\end{exemple}
+
+
+\begin{minipage}[c]{0.55\linewidth}
+\begin{defi}
+ \textit{\textsf{Systèmes à logique séquentielle}}
+
+Si une même combinaison des variables d'entrée peut donner deux sorties
+différentes, il faut tenir compte de l'état du système à l'instant $t$. On
+s'intéresse à ce système en le faisant évoluer séquence par séquence d'un état
+fini à un autre. L'état précédent conditionnant l'état présent et ainsi de
+suite. Un tel système est dit à comportement séquentiel. 
+
+\end{defi} 
+\end{minipage} \hfill
+\begin{minipage}[c]{0.4\linewidth}
+ \begin{center}
+    \includegraphics[width=\textwidth]{png/seq}
+  \end{center}
+\end{minipage}
+
+Avec de tels systèmes, toutes les situations sont envisagées. Les événements
+prévus perturbateurs du cycle entraînent, dans la plupart des cas l'arrêt de
+l'automatisme (les états successifs répétitifs et prévus sont momentanément
+arrêtés). Les outils généralement utilisés pour décrire et analyser ces
+systèmes sont le \textbf{GRAFCET} ou les diagrammes SysML (diagramme d'état ou diagramme d'activités).
+
+\begin{exemple}
+ Ligne d'assemblage automatisée
+\end{exemple}
+
+\begin{defi}
+ \textit{\textsf{Systèmes automatiques ou asservis}}
+
+%\ifthenelse{\boolean{prof}}{%
+Un système asservi est commandé par \textbf{une (ou des) entrée(s)} qu'il
+transforme en \textbf{grandeur(s) de sortie}.
+Les entrées sont de deux types : 
+\begin{itemize}
+ \item la loi de consigne $e(t)$ est une grandeur de commande qui est
+modifiable;
+\item la perturbation : c'est une entrée parasite qui nuit au bon
+fonctionnement du système. On ne peut pas modifier les perturbations.
+\end{itemize}
+
+La sortie $s(t)$ est une grandeur \textbf{observable} (par des capteurs) qui
+permet de juger de la qualité de la tâche accomplie.
+%}{
+%\rotatebox{90}{
+%\begin{tabular}{p{5cm}}
+%\\
+%\end{tabular}}
+%}
+\end{defi} 
+
+ \begin{center}
+    \includegraphics[width=.6\textwidth]{png/asservi}
+  \end{center}
+	
+
+\begin{exemple}
+Pilote automatique d'avion
+
+ \begin{center}
+    \includegraphics[width=.8\textwidth]{png/piloteauto}
+  \end{center}
+\end{exemple}
+
+
+
+\subsection{Nature des informations}
+
+\begin{defi}
+ \textit{\textsf{Informations logiques}}
+
+%\ifthenelse{\boolean{prof}}{%
+Les informations logiques sont des informations binaires. Elles sont de type 0
+ou 1, vrai ou faux, ouvert ou fermé, tout ou rien (TOR).
+%}{
+%\rotatebox{90}{
+%\begin{tabular}{p{3cm}}
+%\\
+%\end{tabular}}
+%}
+
+\end{defi}
+
+\begin{defi}
+ \textit{\textsf{Informations analogiques}}
+
+%\ifthenelse{\boolean{prof}}{%
+Une information analogique peut prendre, de manière continue, toutes les valeurs
+possibles dans un intervalle donné. Un signal analogique peut être représenté
+par une courbe continue. Les grandeurs physiques (température, vitesse,
+position, tension, ...) sont des informations analogiques.
+%}{
+%\rotatebox{90}{
+%\begin{tabular}{p{3cm}}
+%\\
+%\end{tabular}}
+%}
+
+\end{defi}
+
+
+\begin{defi}
+ \textit{\textsf{Informations numériques}}
+
+%\ifthenelse{\boolean{prof}}{%
+L'information numérique sous la forme d'un mot binaire est constituée de
+plusieurs bits (variables binaires 0/1). Cette information numérique est en
+général issue d'un traitement (échantillonnage et codage) d'une information
+analogique. On parle de conversion analogique numérique (CAN).
+%}{
+%\rotatebox{90}{
+%\begin{tabular}{p{3cm}}
+%\\
+%\end{tabular}}
+%}
+
+\end{defi}
+
+
+\begin{exemple}
+  \begin{center}
+    \includegraphics[width=.9\textwidth]{png/info}
+  \end{center}
+\end{exemple}
+
+
+
+
+\section{Structure des systèmes asservis}
+
+%\subsection{Définitions}
+%\begin{defi}
+% \textit{\textsf{Systèmes Linéaires Continus Invariants -- SLCI}}
+%
+%Les systèmes que nous utiliserons auront les propriétés suivantes :
+%\begin{itemize}
+%\item linéaire :
+%\item continus :
+%\item invariants :
+%\end{itemize}
+%\end{defi}
+
+\begin{defi}
+ \textit{\textsf{Systèmes suiveurs}}
+
+Dans le cas de ces systèmes, la consigne $e(t)$ fluctue au cours du temps. Le système doit faire son possible pour qu'à chaque instant la cible soit suivie.
+\end{defi}
+
+\begin{exemple}
+\begin{minipage}[c]{.5\textwidth}
+ \begin{itemize}
+\item Centres d'usinage
+\item Radars
+\end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{.3\textwidth}
+\begin{center}
+\includegraphics[width=\textwidth]{png/ugv.png}
+\end{center}
+\end{minipage}
+\end{exemple}
+
+\begin{defi}
+ \textit{\textsf{Systèmes régulateurs}}
+
+Ces systèmes ont la propriété d'avoir une consigne constante. Les perturbations font varier la position du système. Il doit donc de façon automatique revenir à la position pilotée.
+\end{defi}
+
+\begin{exemple}
+ \begin{itemize}
+\item régulateur de vitesse
+\item réseau pneumatique
+\end{itemize}
+\end{exemple}
+
+\subsection{Structure en blocs}
+Dans le but de modéliser les structures asservies, on utilise une représentation en schéma blocs.
+
+\subsubsection*{Les flèches}
+
+\begin{minipage}[c]{.7\linewidth}
+Les flèches symbolisent des grandeurs physiques. Suivant leurs positions dans le système, la grandeur physique peut être :
+\begin{itemize}
+\item un tension (en $V$);
+\item une position (en $m$ ou en $rad$);
+\item une vitesse (en $m\cdot s^{-1}$ ou en $rad\cdot s^{-1}$);
+\item une accélération (en $m\cdot s^{-2}$ ou en $rad\cdot s^{-2}$);
+\item un effort (en $N$);
+\item ...
+\end{itemize}
+L'orientation de la flèche à une importance dans le fonctionnement du système.
+\end{minipage}\hfill
+\begin{minipage}[c]{.2\linewidth}
+\begin{center}
+    \includegraphics[width=.7\textwidth]{png/fleche2}
+\end{center}
+\end{minipage}
+
+\subsubsection*{Les blocs}
+
+Les blocs peuvent représenter des composants d'un système (actionneur, moteur, capteur, engrenage ...) ou des opérations mathématiques (dérivation ou intégration). Les blocs sont reliés par des flèches. Ils peuvent transformer la nature des grandeurs physiques. Ainsi, un moteur transforme une tension (en $V$) en une vitesse de rotation (en $rad/s$).
+
+\begin{center}
+    \includegraphics[width=.7\textwidth]{png/bloc}
+\end{center}
+
+\subsubsection*{Les comparateurs}
+\begin{minipage}[c]{.55\linewidth}
+Ils permettent d'additionner ou de soustraire des grandeurs physiques. Il est indispensable que ce soit des grandeurs de même type à chaque borne d'un comparateur. Suivant les cas on utilise des sommateurs ou des soustracteurs.
+\end{minipage}\hfill
+\begin{minipage}[c]{.4\linewidth}
+\begin{center}
+    \includegraphics[width=\textwidth]{png/comp}
+\end{center}
+\end{minipage}
+
+\subsubsection*{Les points de prélèvement}
+
+\begin{minipage}[c]{.55\linewidth}
+Ils permettent de réutiliser des grandeurs dans plusieurs blocs.
+\end{minipage}\hfill
+\begin{minipage}[c]{.4\linewidth}
+\begin{center}
+    \includegraphics[width=\textwidth]{png/prel}
+\end{center}
+\end{minipage}
+
+\subsection{Schéma bloc}
+Le schéma bloc permet de modéliser un système complexe en tenant compte de son aspect multi physique. Communément, un système asservi prend la forme suivante : 
+
+\begin{center}
+    \includegraphics[width=\textwidth]{png/schbloc}
+\end{center}
+
+
+La caractéristique principale d'un système asservi est la présence de la chaîne de retour. C'est cette partie du système qui permet au système de respecter la consigne fixée par l'utilisateur.
+
+\begin{exemple}
+\textit{Système asservi -- schéma blocs}
+\begin{center}
+    \includegraphics[width=\textwidth]{png/chauffage}
+\end{center}
+\end{exemple}
+
+\begin{exemple}
+\textit{Asservissement d'un niveau d'eau}
+\begin{center}
+    \includegraphics[width=\textwidth]{png/Exo3_01}
+\end{center}
+
+Le système représenté ci-dessus est destiné à asservir le niveau $h$ d'un liquide contenu dans un récipient $C$ pour un angle de référence $\theta_E$ réglé par l'opérateur.
+
+Le niveau $h$ est transformé en un angle $\theta_S$ au moyen d'un flotteur agissant sur le curseur d'un potentiomètre $P_S$ $\left(\dfrac{\theta_S}{h}=K_\theta=1\;rad/m\right)$. Les deux potentiomètres $P_E$ et $P_S$, identiques, transforment les angles d'entrée et de sortie en tensions électriques dont la différence est amplifiée par un amplificateur de gain $A$. La tension de sortie de l'amplificateur $u_M$ est appliquée à l'induit d'un moteur à courant continu dont l'inducteur est alimenté par une tension constante. Ce moteur agit par l'intermédiaire d'un réducteur et d'un système vis/écrou, sur une vanne linéaire qui commande le débit $Q_E$ du liquide entrant dans le récipient $C$. Le débit de sortie $q_S$ est supposé proportionnel au niveau $h$ du liquide. 
+
+\textit{Représenter le schéma-bloc fonctionnel du système asservi.}
+
+\ifthenelse{\boolean{prof}}{%
+\begin{center}
+    \includegraphics[width=\textwidth]{png/corrige_niveau}
+\end{center}
+}{%
+\rotatebox{90}{%
+\begin{tabular}{p{7cm}}
+ \\\end{tabular}
+}}
+\end{exemple}
+
+\section{Performance des systèmes asservis}
+Dans l'analyse des systèmes asservis, nous distinguerons \textbf{l'aspect
+statique} et \textbf{l'aspect dynamique}. 
+
+\textbf{L'aspect statique} concerne l'étude des systèmes asservis en régime
+permanent (entrée fixe). On définit l'erreur statique comme la différence entre
+la sortie demandée et la sortie réalisée lorsque le régime d'équilibre est
+atteint. Au cours de la synthèse des systèmes asservis, on s'efforcera en
+général d'annuler cette erreur statique. 
+
+\textbf{L'aspect dynamique}, essentiel en automatique, s'étudie par les notions
+de précision dynamique, de rapidité et de stabilité. Il s'intéresse au
+comportement transitoire de la sortie, soit à la suite d'une variation de la
+consigne, soit de l'apparition d'une perturbation dans la chaîne d'action. 
+
+\subsection{Précision des systèmes}
+La précision qualifie l'aptitude d'un système à atteindre l'erreur visée. 
+
+Elle est caractérisée par l'écart entre la valeur visée et la valeur
+effectivement atteinte par la grandeur de sortie. L'écart éventuel s'exprime
+dans la même unité que la grandeur de sortie. 
+
+\begin{minipage}[c]{0.7\textwidth}
+\begin{defi}
+ \textit{\textsf{Précision -- Écart statique $\varepsilon_S$}}
+
+%\ifthenelse{\boolean{prof}}{%
+Le système est en mode régulation
+(entrée fixe). On définit alors l'écart statique $\varepsilon_S$ comme l'écart
+entre la consigne fixe et la réponse $s(t)$ en régime permanent.}{
+%\rotatebox{90}{
+%\begin{tabular}{p{3cm}}
+%\\
+%\end{tabular}}
+%}
+\end{defi}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.2\textwidth}
+ \begin{center}
+ \includegraphics[width=\textwidth]{png/precision_stat}
+ \end{center}
+\end{minipage}
+
+
+\begin{minipage}[c]{0.7\textwidth}
+\begin{defi}
+ \textit{\textsf{Précision -- Écart dynamique  $\varepsilon_V$}}
+
+%\ifthenelse{\boolean{prof}}{%
+Encore appelé écart de traînage ou
+écart de poursuite, il représente la différence entre la consigne variable et
+la réponse en régime permanent. 
+%}{
+%\rotatebox{90}{
+%\begin{tabular}{p{3cm}}
+%\\
+%\end{tabular}}
+%}
+\end{defi}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.2\textwidth}
+ \begin{center}
+ \includegraphics[width=\textwidth]{png/precision_dyn}
+ \end{center}
+\end{minipage}
+
+
+\subsection{Rapidité des systèmes}
+%\begin{minipage}[c]{0.7\textwidth}
+\begin{defi}
+ \textit{\textsf{Rapidité}}
+
+%\ifthenelse{\boolean{prof}}{%
+La rapidité est caractérisée par le temps que met le système à réagir à une
+variation brusque de la grandeur d'entrée (temps de réponse). Cette notion est
+fortement liée à la notion de précision dynamique.}{
+%\rotatebox{90}{
+%\begin{tabular}{p{3cm}}
+%\\
+%\end{tabular}}
+%}
+
+\end{defi}
+
+%\end{minipage}\hfill
+%\begin{minipage}[c]{0.2\textwidth}
+ \begin{center}
+ \includegraphics[width=.8\textwidth]{png/rapidite}
+ \end{center}
+%\end{minipage}
+
+La valeur finale étant souvent atteinte de manière asymptotique, on retient
+alors comme critère d'évaluation de la rapidité d'un système : \textbf{le temps
+de réponse à n\%}. En pratique, $n=5$. 
+
+Le temps de réponse à 5\% est le temps mis par le système pour atteindre sa
+valeur de régime permanent à $\pm$5\% près et y rester. 
+
+
+\begin{methode}
+ \textit{\textsf{Détermination du temps de réponse à $n\%$}}
+
+\begin{enumerate}
+ \item Tracer sur le même graphe la consigne $e(t)$ et la réponse du système
+$s(t)$.
+\item Tracer la droite correspondant à la valeur asymptotique de $s(t)$.
+\item Tracer la bande correspondant à une variation de $\pm n\%$ de la valeur
+asymptotique.
+\item Relever la dernière valeur à partir de laquelle $s(t)$ coupe la bande et
+n'en sort plus.
+\end{enumerate}
+\end{methode}
+
+%\begin{minipage}[c]{0.7\textwidth}
+\subsection{Stabilité des systèmes}
+\begin{defi}
+ \textit{\textsf{Stabilité}}
+
+La stabilité traduit la propriété de convergence temporelle asymptotique vers
+un état d'équilibre. 
+\end{defi}
+%\end{minipage}\hfill
+%\begin{minipage}[c]{0.2\textwidth}
+ \begin{center}
+ \includegraphics[width=\textwidth]{png/stabilite}
+ \end{center}
+%\end{minipage}
+Un système peut présenter une sortie divergente soit en
+raison du comportement dynamique intrinsèque du système commandé soit en raison
+du bouclage. Ce comportement est intolérable pour un système asservi. Dans la
+pratique la seule stabilité asymptotique n'est pas suffisante. On exigera, dans
+la plupart des cas, un comportement transitoire correctement amorti.
+
+
+\begin{thebibliography}{2}
+\bibitem{mathurin}{Cours et TD de Florestan Mathurin -- PCSI -- MPSI -- Lycée Bellevue -- Toulouse. \url{http://florestan.mathurin.free.fr}.}
+\end{thebibliography}
+\end{document}

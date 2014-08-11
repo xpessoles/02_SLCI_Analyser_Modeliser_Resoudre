@@ -1,0 +1,221 @@
+\documentclass[11pt,oneside]{article}
+\input{style/coursHeadings}
+\input{style/programHeadings}
+
+
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{
+CI 2 -- SLCI : Etude du comportement des Systèmes Linéaires Continus Invariants}{
+Chapitre 1 -- Le système informatique}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 2 -- Modélisation des Systèmes Linéaires Continus Invariants \\ Transformée de Laplace \\
+Décomposition en éléments simples}{
+}}
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent 2013 -- 2014 \\
+Xavier \textsc{Pessoles}}{
+Damien Iceta}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI -- Cours \\
+Ch 2 : Modélisation des SLCI -- \ifthenelse{\boolean{prof}}{P}{E}%
+}{
+TD -- CI 3 : Ingénierie numérique et simulation}}
+
+
+
+\ifthenelse{\boolean{xp}}{
+\usepackage[%
+    pdftitle={SLCI - Modélisation des SLCI},
+    pdfauthor={Xavier Pessoles},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}}{
+\usepackage[%
+    pdftitle={OS et Environnement de développement},
+    pdfauthor={Damien Iceta},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}}
+
+
+
+\usepackage{pifont}
+\sloppy
+\hyphenpenalty 10000
+
+\begin{document}
+
+
+\input{style/entete1}
+
+\begin{center}
+ \huge\textsc{\xxtitre}
+\end{center}
+
+\begin{center}
+ \LARGE\textsc{\xxsoustitre}
+\end{center}
+
+
+
+
+\vspace{.5cm}
+
+
+\section*{Préliminaire}
+
+Le but de ce document n'est pas de se substituer à un cours de mathématiques mais de fournir quelques techniques de calcul pour décomposer une fraction rationnelle en éléments simples. 
+
+\begin{rem}
+\begin{enumerate}
+\item Dans les fonctions que nous utiliserons, le degré du numérateur sera toujours inférieur ou égal au degré du numérateur : $N(p)\leq D(p)$.
+\item On appelle \textbf{pôles} d'une fonction rationnelle les racines du dénominateur. On appelle \textbf{zéros} d'une fonction rationnelle les racines du numérateur.
+\item Le numérateur sera un produit de polynômes de degrés inférieurs ou égaux à 2. 
+\end{enumerate}
+\end{rem}
+
+\section{Cas d'une fonction avec des pôles réels simples -- $deg(N(p)) < deg(D(p))$}
+
+\begin{resultat}
+Soit la fonction rationnelle suivante :
+$$
+F(p) = \dfrac{N(p)}{D(p)} =\dfrac{N(p)}{(p-p_1)\cdot (p-p_2)\cdot \cdot \cdot (p-p_n)}
+$$
+avec $deg(N(p)) < deg(D(p))$, $p_1\neq p_2\neq p_n$. On peut décomposer la fonction ainsi :
+$$
+F(p) = \dfrac{\alpha_1}{p-p_1} + \dfrac{\alpha_2}{p-p_2} 
++ \cdot \cdot \cdot + 
+\dfrac{\alpha_n}{p-p_n} 
+$$
+avec $\alpha_i\in \mathbb{R}$.
+\end{resultat}
+
+\begin{methode}
+\begin{enumerate}
+\item On multiplie les deux formes de $F(p)$ par $(p-p_i)$.
+\item On pose $p=p_i$.
+\item On détermine $\alpha_i$.
+\item On réalise l'opération $n$ fois (avec $n=deg(D(p))$.
+\end{enumerate}
+\end{methode}
+
+\begin{exemple}
+\textit{Décomposer la fonction suivante en éléments simples :}
+$$
+F(p)=\dfrac{p^3+4}{(p+1)(p+2)(p+3)(p+4)}
+$$
+\end{exemple}
+
+\section{Cas d'une fonction avec des pôles réels simples -- $deg(N(p)) = deg(D(p))$}
+
+\begin{resultat}
+Soit la fonction rationnelle suivante :
+$$
+F(p) = \dfrac{N(p)}{D(p)} =\dfrac{N(p)}{(p-p_1)\cdot (p-p_2)\cdot \cdot \cdot (p-p_n)}
+$$
+avec $deg(N(p)) = deg(D(p))$, $p_1\neq p_2\neq p_n$. On peut décomposer la fonction ainsi :
+$$
+F(p) = K + \dfrac{\alpha_1}{p-p_1} + \dfrac{\alpha_2}{p-p_2} 
++ \cdot \cdot \cdot + 
+\dfrac{\alpha_n}{p-p_n} 
+$$
+avec $\alpha_i\in \mathbb{R}$ et $K \in \mathbb{R}$
+\end{resultat}
+
+\begin{methode}
+\begin{enumerate}
+\item Calcul des $\alpha_i$ :
+\begin{enumerate}
+\item On multiplie les deux formes de $F(p)$ par $(p-p_i)$.
+\item On pose $p=p_i$.
+\item On détermine $\alpha_i$.
+\item On réalise l'opération $n$ fois (avec $n=deg(D(p))$.
+\end{enumerate}
+\item Calcul de K : 
+\begin{enumerate}
+\item Pour les deux formes de $F(p)$ on calcule $\lim\limits_{p\to\infty} F(p)$.
+\item On détermine $K$.
+\end{enumerate}
+\end{enumerate}
+\end{methode}
+
+\begin{exemple}
+\textit{Décomposer la fonction suivante en éléments simples :}
+$$
+F(p)=\dfrac{p^2+1}{(p+1)(p+4)}
+$$
+\end{exemple}
+
+
+\section{Cas d'une fonction avec des pôles réels multiples -- $deg(N(p)) < deg(D(p))$}
+
+\begin{resultat}
+Soit la fonction rationnelle suivante :
+$$
+F(p) = \dfrac{N(p)}{D(p)} =\dfrac{N(p)}{(p-p_1)^n}
+$$
+avec $deg(N(p)) < deg(D(p))$. On peut décomposer la fonction ainsi :
+$$
+F(p) = \dfrac{\alpha_1}{p-p_1} + \dfrac{\alpha_2}{\left(p-p_1\right)^2} 
++ \cdot \cdot \cdot + 
+\dfrac{\alpha_n}{\left(p-p_1\right)^n} 
+$$
+avec $\alpha_i\in \mathbb{R}$.
+\end{resultat}
+
+
+\begin{methode}
+Les méthodes précédentes restent utilisables. Elles ne permettent pas de déterminer touts les $\alpha_i$. 
+
+On peut alors mettre les deux formes de $F(p)$ au même dénominateur et identifier les monômes. 
+
+On peut aussi prendre des valeurs particulières de $p$ et résoudre un système d'équations.
+
+Le calcul de certaines limites en $\infty$ peut permettre de déterminer certains coefficients. 
+\end{methode}
+\begin{exemple}
+\textit{Décomposer la fonction suivante en éléments simples :}
+$$
+F(p)=\dfrac{p^2+1}{p^3(p+1)}
+$$
+\end{exemple}
+
+
+
+\section{Cas d'une fonction avec des pôles complexes -- $deg(N(p)) < deg(D(p))$}
+
+\begin{resultat}
+Soit la fonction rationnelle suivante :
+$$
+F(p) = \dfrac{N(p)}{D(p)} =\dfrac{N(p)}{(p-p_1)(ap^2+bp+c)}
+$$
+avec $deg(N(p)) < deg(D(p))$. On peut décomposer la fonction ainsi :
+$$
+F(p) = \dfrac{\alpha_1}{p-p_1} + \dfrac{\alpha_2 + \alpha_3 p}{ap^2+bp+c} 
+$$
+avec $\alpha_i\in \mathbb{R}$.
+\end{resultat}
+
+
+
+\begin{exemple}
+\textit{Décomposer la fonction suivante en éléments simples :}
+$$
+F(p)=\dfrac{p+3}{(p+1)(p^2+1)}
+$$
+\end{exemple}
+
+
+
+\end{document}

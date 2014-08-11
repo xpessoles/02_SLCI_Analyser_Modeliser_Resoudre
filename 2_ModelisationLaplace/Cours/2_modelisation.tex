@@ -1,0 +1,1089 @@
+\documentclass[11pt,oneside]{article}
+\input{style/coursHeadings}
+\input{style/programHeadings}
+
+
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{
+CI 2 -- SLCI : Etude du comportement des Systèmes Linéaires Continus Invariants}{
+Chapitre 1 -- Le système informatique}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 2 -- Modélisation des Systèmes Linéaires Continus Invariants -- Transformée de Laplace}{
+Partie 2 -- Cours et TD Systèmes d'exploitation et manipulation d'un environnement de développement}}
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent 2013 -- 2014 \\
+Xavier \textsc{Pessoles}}{
+Damien Iceta}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI -- Cours \\
+Ch 2 : Modélisation des SLCI -- \ifthenelse{\boolean{prof}}{P}{E}%
+}{
+TD -- CI 3 : Ingénierie numérique et simulation}}
+
+
+
+\ifthenelse{\boolean{xp}}{
+\usepackage[%
+    pdftitle={SLCI - Modélisation des SLCI},
+    pdfauthor={Xavier Pessoles},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}}{
+\usepackage[%
+    pdftitle={OS et Environnement de développement},
+    pdfauthor={Damien Iceta},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}}
+
+
+
+\usepackage{pifont}
+\sloppy
+\hyphenpenalty 10000
+
+\begin{document}
+
+
+\input{style/entete1}
+
+\begin{center}
+ \huge\textsc{\xxtitre}
+\end{center}
+
+\begin{center}
+ \LARGE\textsc{\xxsoustitre}
+\end{center}
+
+
+
+
+\vspace{.5cm}
+
+
+\begin{center}
+\begin{tabular}{ccccc}
+\includegraphics[height=4cm]{png/frein.png} &&
+\includegraphics[height=4cm]{png/tripteor.png} &&
+\includegraphics[height=4cm]{png/pompe.png} \\
+\textit{Asservissement du freinage} &&
+\textit{Asservissement en } &&
+\textit{Asservissement de } \\
+\textit{d'un A 318} &&
+\textit{vitesse et position} &&
+\textit{la position du rotor} \\
+&&
+\textit{d'un centre d'usinage} && 
+\textit{d'une pompe turbo moléculaire} 
+\end{tabular}
+\end{center}
+
+
+
+
+
+\vspace{.2cm}
+On veut prévoir le comportement de systèmes intégrant des technologies différentes. Par exemple, en mode automatique, le freinage d'un avion dépend de son accélération (technologie mécanique). L'envoi de l'ordre de freinage est piloté par une servo-valve électro-hydraulique (technologies électriques et hydrauliques).
+
+Il va donc falloir d'une part définir des outils mathématiques indépendant des différentes technologies pour décrire le fonctionnement des systèmes. D'autre part, ces modèles devront permettre de connaître les réponses du système en fonction de sollicitations diverses (échelons, rampes, sinusoïdes ...).
+
+
+Classiquement, ces systèmes sont modélisables par des équations différentielles. Or, déterminer une solution analytique pour une équation différentielle n'est pas toujours aisé.
+
+\begin{obj}
+\textsc{Problématiques :}
+\begin{itemize}
+\item Comment modéliser un système dont le fonctionnement fait appel à plusieurs champs de la physiques ?
+\item Comment déterminer le comportement d'un système lorsque celui-ci est régit par une équation différentielle complexe ?
+\end{itemize}
+\end{obj}
+
+\begin{rem}
+\textsc{Savoirs :}
+\begin{itemize}
+\item Mod-C2.1	Modélisation par équations différentielles.
+\item Mod-C2.2	Représentation par fonction de transfert (formalisme de Laplace).
+\end{itemize}
+\end{rem}
+
+
+
+\setlength{\parskip}{0ex plus 0.2ex minus 0ex}
+ \renewcommand{\contentsname}{}
+ \renewcommand{\baselinestretch}{1}
+
+% \vspace{1cm}
+\textit{Ce document est en évolution permanente. Merci de signaler toutes
+erreurs ou coquilles.}
+
+\tableofcontents
+
+ \renewcommand{\baselinestretch}{1.2}
+\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+Les notions mathématiques abordées dans ce chapitre n'ont pas pour but de se substituer à un cours de mathématiques mais de donner des propriétés et des définitions utiles pour l'étude des systèmes continus linéaires invariants.
+
+\section{Modélisation d'un système par équations différentielles}
+\subsection{Modélisation d'un filtre du premier ordre}
+
+\begin{minipage}[c]{.6\linewidth}
+On considère le circuit électrique ci-contre. On cherche à connaître le comportement du système vis à vis de différents types de signaux.
+\end{minipage}\hfill
+\begin{minipage}[c]{.35\linewidth}
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/RC}
+\end{center}
+\end{minipage}
+
+D'après la loi des mailles, on a :
+$$
+e(t)=u_R(t) + u_C(t)
+$$
+
+Connaissant la relation de comportement aux bornes d'un condensateur ($i(t)=C\dfrac{du_c}{dt}$)et d'une résistance ($u_R(t)=R\cdot i(t)$)on a donc :
+$$
+e(t)=R\cdot i(t) +  u_C(t) 
+%\Longleftrightarrow e(t)=R\cdot \dfrac{dq(t)}{dt} +  u_C(t)
+\Longleftrightarrow e(t)=R\cdot C\cdot \dfrac{du_C(t)}{dt} +  u_C(t)
+$$
+
+On cherche donc à résoudre l'équation différentielle suivante : 
+
+$$
+\dfrac{du_C(t)}{dt} +  \dfrac{1}{RC}u_C(t) = \dfrac{1}{RC}e(t)
+$$
+
+On cherche la réponse du système lorsque $e(t)$ est une fonction échelon définie ainsi :
+$$\left\{
+\begin{array}{l}
+e(t)=0 \text{ si t<0}\\
+e(t)=E_0 \text{ sinon}\\
+\end{array}
+\right.
+$$
+
+\subparagraph*{Recherche d'une solution particulière de l'équation complète}
+$s_p(t)=E_0$ est une solution particulière de l'équation complète.
+
+\subparagraph*{Recherche d'une solution générale de l'équation sans second membre}
+$s_g(t)$ est de la forme $s_g(t)=\alpha e^{ - \dfrac{1}{RC} t}$ où $\alpha \in \mathbb{R}$.
+
+
+\subparagraph*{Résolution de l'équation différentielle}
+On a donc  
+$$ u_C(t)=s_p(t) + s_g(t) =E_0 + \alpha  e^{-\dfrac{1}{RC}t}
+$$
+
+A $t=0$, le condensateur est déchargé. On a donc en $t=0$: 
+$$ 
+u_C(0)=0 \Longleftrightarrow E_0 + \alpha   = 0 \Longleftrightarrow \alpha  = -E_0    
+$$
+On a donc :
+$$ u_C(t) = E_0 -E_0 e^{-\dfrac{1}{RC}t}
+$$
+
+
+\subsection{Modélisation d'un système du second ordre}
+
+\begin{minipage}[c]{.6\linewidth}
+On considère le circuit électrique ci-contre. On cherche à connaître le comportement du système lors du déchargement du condensateur dans la bobine.
+\end{minipage}\hfill
+\begin{minipage}[c]{.35\linewidth}
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/RLC}
+\end{center}
+\end{minipage}
+
+D'après la loi des mailles, la loi de comportement de la tension aux bornes d'un condensateur, la loi d'Ohm et la loi de Faraday, on a : 
+$$
+u_C(t)-u_L(t)-u_R(t)=0 
+\Longleftrightarrow u_C(t) - L\dfrac{di(t)}{dt} -Ri(t)=0 
+\Longleftrightarrow u_C(t) + LC\dfrac{d^2u_C(t)}{dt^2} +RC \dfrac{du_C(t)}{dt}=0 
+$$
+
+
+Afin de savoir le comportement du système, il faut donc étudier l'équation différentielle suivante :  
+$$
+\dfrac{d^2u_C(t)}{dt^2} +\dfrac{R}{L} \dfrac{du_C(t)}{dt} + \dfrac{1}{LC}u_C(t)=0 
+$$
+
+\subparagraph*{Résolution de l'équation homogène et de l'équation différentielle}
+L'équation homogène associée à cette équation est de la forme : 
+$$
+\lambda^2 +\dfrac{R}{L} \lambda + \dfrac{1}{LC}=0 
+$$
+Le discriminant vaut : 
+$$
+\Delta = \dfrac{R^2}{L^2}-4\dfrac{1}{LC}
+$$
+
+Suivant le signe de $\Delta$, on peut alors déterminer la solution de l'équation différentielle...
+
+
+\begin{obj}
+Avec la complexité croissante des systèmes, il devient de plus en plus difficile de trouver directement des solutions aux équations différentielles qui traduisent le comportement des systèmes. En SII, la résolution directe des équations différentielles ne sera jamais demandée.
+\end{obj}
+
+\subsection{Équation différentielle généralisée}
+Lorsque le système se complexifie, on peut alors obtenir une équation différentielle qui régit la sortie du système $s(t)$ en fonction de l'entrée $e(t)$. La forme générale d'une équation différentielle d'ordre $n$ est donnée par :
+$$
+a_0 \cdot s(t)  + \sum\limits_{i=1}^n a_i \cdot \dfrac{d^i s(t)}{dt}
+= b_0 \cdot e(t)  + \sum\limits_{i=1}^m  b_i \cdot\dfrac{d^i s(t)}{dt}
+$$
+
+\begin{rem}
+Les systèmes étudiés impliqueront que $n\geq m$.
+\end{rem}
+
+Deux problèmes peuvent alors se poser :
+\begin{itemize}
+\item il n'existe pas toujours de solution simple et analytique pour les équations différentielles, notamment lorsque l'ordre est supérieur à 2;
+\item il est difficile de résoudre ces équations en particulier lorsqu'on va chercher à modifier le type d'entrée.
+\end{itemize}
+
+L'outil mathématique qui va nous permettre d'analyser le comportement de systèmes complexes asservis est la transformation de Laplace. Cette transformation va nous permettre de passer d'une équation différentielle à une équation polynomiale, plus aisée à manipuler :
+$$
+  S(p) \cdot  \sum\limits_{i=0}^n c_i p^i
+= E(p) \cdot  \sum\limits_{i=0}^m d_i p^i
+$$
+Dans le domaine temporel, la variable est le temps, noté $t$. Dans le domaine de Laplace, la variable est notée $p$ (ou $s$ dans les pays anglo-saxons).
+
+\begin{minipage}[c]{.45\linewidth}
+\begin{center}
+\textbf{Méthode de résolution d'une équation du second ordre dans le domaine temporel}
+\includegraphics[width=\textwidth]{png/temporel}
+\end{center}
+\end{minipage} \hfill
+\begin{minipage}[c]{.45\linewidth}
+\begin{center}
+\textbf{Méthode de résolution d'une équation dans le domaine de Laplace}
+\includegraphics[width=.7\textwidth]{png/laplace}
+\end{center}
+\end{minipage} \hfill
+
+\section{Propriétés des systèmes asservis}
+\subsection{Systèmes linéaires}
+\begin{defi}
+\textbf{Système linéaire}
+
+Soit un système d'entrée $e(t)$ et de sortie $s(t)$ caractérisé par sa fonction $F$ telle que $F(e(t))=s(t)$. Le système est dit linéaire s'il satisfait les conditions suivantes : 
+\begin{itemize}
+\item il est proportionnel : $\forall k \in \mathbb{R}$, $F(k\cdot e(t))=k\cdot s(t)$;
+\item il obéit au principe de superposition : $F(e_1(t)+e_2(t))=s_1(t)+s_2(t)$.
+\end{itemize}
+\end{defi}
+
+\begin{center}
+\includegraphics[width=.7\textwidth]{png/lineaire}
+\end{center}
+
+\subsection{Systèmes continus}
+Un système est \textbf{continu}, par opposition à un système \textbf{discret} (ou
+échantillonné, ou numérique), si les grandeurs physiques le caractérisant sont
+des fonctions continues du temps. On parle aussi de systèmes
+\textbf{analogiques}. 
+
+La plupart des systèmes physiques, du point de vue macroscopique, sont
+continus. En revanche, un système informatique a besoin d'un temps non nul pour
+réaliser un traitement de l'information. On ne peut donc pas le qualifier de
+système continu. Il ne peut que traiter des valeurs prises sur des échantillons
+de signaux constants qui lui sont soumis. On parle alors de système
+échantillonné.
+
+\subsection{Systèmes invariants}
+\begin{defi}
+\textbf{Système invariant}
+
+Un système est invariant lorsque les relations entre l'entrée et la sortie ne
+se modifient pas au cours du temps. Le système ne vieillit pas. 
+
+Ainsi, $\forall T \in \mathbb{R}$ :
+$$
+F(e(t+T))=s(t+T)
+$$
+\end{defi}
+
+\begin{center}
+\includegraphics[width=.7\textwidth]{png/invariant}
+\end{center}
+
+\subsection{Systèmes non linéaires}
+On peut vérifier la linéarité des systèmes en traçant sur un graphe l'entrée en abscisse et la sortie en ordonnée. Le système est linéaire si la courbe tracée est une droite passant par l'origine du repère.
+
+Certains comportements physiques des systèmes ne sont pas linéaires :
+\begin{itemize}
+\item les phénomènes d'hystérésis;
+\item les phénomènes de saturation;
+\item les phénomènes de seuil;
+\item ...
+\end{itemize}
+
+Les outils que nous développerons par la suite ne sont pas capable de modéliser ces phénomènes. Dans le cas où il faudrait impérativement modéliser ces comportements, il faudrait les linéariser autour des points de comportements.
+
+
+
+\section{Transformée de Laplace}
+\subsection{Définition}
+\begin{defi}
+\textbf{Transformée de Laplace}
+
+À toute fonction du temps $f(t)$, nulle pour $t\leq0$ (fonction causale), on fait correspondre une fonction $F(p)$ de la variable complexe $p$ telle que :
+
+\ifthenelse{\boolean{prof}}{%
+$$
+\mathcal{L}\left[f(t)\right] = F(p)=\int\limits_{0^{+}}^\infty f(t)e^{-pt}dt
+$$}{
+\rotatebox{90}{
+\begin{tabular}{p{2cm}}
+\\
+\end{tabular}}
+}
+
+On note $\mathcal{L}\left[f(t)\right]$ la transformée directe et $\mathcal{L}^{-1}\left[F(p)\right]$ la transformée inverse.
+\end{defi}
+
+La transformée de Laplace permet de passer du domaine temporel au domaine dit de Laplace.
+
+La variable $p$ (ou $s$) est un nombre complexe. On pose parfois $p=\sigma + j\omega$.
+
+\begin{rem}
+\textbf{Notation}
+
+De manière générale, une fonction temporelle est nommée avec une lettre minuscule et sa transformée de Laplace avec une lettre majuscule. Dans le cas où la fonction temporelle est déjà une lettre majuscule, on conserve la même lettre. On a donc, par exemple : 
+\begin{multicols}{2}
+\begin{itemize}
+\item $\mathcal{L}\left[f(t)\right] = F(p)$
+\item $\mathcal{L}\left[e(t)\right] = E(p)$
+\item $\mathcal{L}\left[s(t)\right] = S(p)$
+\item $\mathcal{L}\left[C(t)\right] = C(p)$
+\item $\mathcal{L}\left[\omega(t)\right] = \Omega(p)$
+\item $\mathcal{L}\left[\theta(t)\right] = \Theta(p)$ ...
+\end{itemize}
+\end{multicols}
+\end{rem}
+
+\begin{prop}
+\textbf{Unicité}
+
+\begin{itemize}
+\item La transformée de Laplace de $f(t)$ est unique.
+\item La transformée de Laplace inverse de $F(p)$ est unique.
+\end{itemize}
+
+\end{prop}
+
+
+\begin{exemple}
+\textbf{Calcul de $\mathcal{L}\left[f(t) \right]$ avec $f(t)=k\quad \forall t> 0$ et $k\in \mathbb{R}$.}
+
+\ifthenelse{\boolean{prof}}{%
+\begin{eqnarray*}
+\mathcal{L}\left[f(t) \right] 
+= \mathcal{L}\left[k \right] 
+= \int\limits_{0^{+}}^{+ \infty} k\cdot e^{-pt}dt
+= k\cdot  \int\limits_{0^{+}}^{+ \infty}  e^{-pt}dt
+= k \left[-\dfrac{1}{p} e^{-pt}\right]_{0^{+}}^{+\infty}
+=\dfrac{k}{p}
+\end{eqnarray*}
+
+Ainsi $\mathcal{L}\left[k \right]=\dfrac{k}{p}$.
+
+Dans la pratique la transformée de Laplace des fonctions usuelles ne se recalculera pas. Il faudra les connaître par c\oe{}ur.
+}{
+\rotatebox{90}{
+\begin{tabular}{p{7cm}}
+\\
+\end{tabular}}
+}
+
+
+
+\end{exemple}
+
+
+
+
+\subsection{Propriétés des transformées de Laplace}
+
+\begin{prop}
+\textbf{Linéarité}
+
+Soit $\mathcal{L}\left[f(t)\right] = F(p)$ et $\mathcal{L}\left[g(t)\right] =
+G(p)$.
+
+On démontre que :
+$$\mathcal{L}\left[f(t) + g(t)\right] = 
+\mathcal{L}\left[f(t)\right] +\mathcal{L}\left[g(t)\right] = F(p)+G(p)$$
+
+et que :
+$$\mathcal{L}\left[K\cdot f(t)\right] = K\cdot \mathcal{L}\left[f(t)\right]
+=K\cdot F(p)$$
+
+\end{prop}
+
+\begin{warn}
+Attention : 
+$$\mathcal{L}\left[f(t) \cdot g(t)\right] \neq \mathcal{L}\left[f(t)\right]
+\cdot \mathcal{L}\left[g(t)\right] $$
+Cette remarque sera importante lors du calcul des transformées inverses.
+\end{warn}
+
+
+\begin{prop}
+\textbf{Conditions de Heaviside}
+
+Une fonction temporelle $f(t)$ vérifie les conditions de Heaviside lorsque les dérivées successives nécessaires à la résolution de l'équation différention sont nulles pour $t={0^{+}}$ :
+$$
+f({0^{+}})=0 \quad \dfrac{df({0^{+}})}{dt} = 0 \quad \dfrac{d^2f({0^{+}})}{dt^2} = 0 ...
+$$
+
+On parle de conditions initiales nulles.
+\end{prop}
+
+\begin{prop}
+\textbf{Transformée de Laplace de la dérivation}
+
+La transformée de Laplace d'une dérivée première est donnée par : 
+$$\mathcal{L}\left[ \dfrac{df(t)}{dt}\right] =pF(p)-f(0^+)$$
+
+La transformée de Laplace d'une dérivée seconde est donnée par : 
+$$\mathcal{L}\left[ \dfrac{d^2f(t)}{dt^2}\right] =p^2F(p)-pf(0^+)-\dfrac{df(0^+)}{dt}$$
+
+Dans les conditions de Heaviside, 
+
+\ifthenelse{\boolean{prof}}{%
+$$
+\mathcal{L}\left[ \dfrac{df(t)}{dt}\right] =pF(p) 
+\quad \text{et} \quad
+\mathcal{L}\left[ \dfrac{d^2f(t)}{dt^2}\right] =p^2F(p) 
+\quad \text{et} \quad
+\mathcal{L}\left[ \dfrac{d^nf(t)}{dt^n}\right] =p^nF(p) 
+$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{3cm}}
+\\
+\end{tabular}}
+}
+\end{prop}
+
+\begin{exemple}
+Le schéma RLC présenté précédemment est régit par l'équation différentielle suivante : 
+$$
+\dfrac{d^2u_C(t)}{dt^2} +\dfrac{R}{L} \dfrac{du_C(t)}{dt} + \dfrac{1}{LC}u_C(t)=0 
+$$ 
+
+On donne les conditions initiales suivantes : $u_C(0)=\alpha$ et $\dfrac{du_C(0)}{dt} = \beta$.
+
+Dans le domaine de Laplace, cette équation est donc : 
+
+\ifthenelse{\boolean{prof}}{%
+$$
+ p^2U_c(p) -\alpha p - \beta +
+\dfrac{R}{L}\left( pU_c(p) -\alpha \right)+\dfrac{1}{LC}U_c(p) = 0
+$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{2cm}}
+\\
+\end{tabular}}
+}
+
+Dans la pratique, on aura souvent $\alpha=0$ et $\beta=0$ (conditions de Heaviside) et donc :
+
+\ifthenelse{\boolean{prof}}{%
+$$
+ p^2U_c(p) \dfrac{R}{L} pU_c(p) +\dfrac{1}{LC}U_c(p) = 0
+$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{2cm}}
+\\
+\end{tabular}}
+}
+\end{exemple}
+
+\begin{prop}
+\textbf{Intégration dans les conditions de Heaviside :}
+
+$$\mathcal{L}\left[ \int\limits_{0^{+}}^t f(t) dt \right] = \dfrac{1}{p} F(p)$$
+
+\end{prop}
+
+\subsection{Théorèmes usuels}
+%\subsubsection{Théorème de la valeur initiale et de la valeur finale}
+
+
+\begin{theo}
+\textbf{Théorème de la valeur initiale}
+
+\ifthenelse{\boolean{prof}}{%
+$$ \lim\limits_{t \to 0^+} f(t) = \lim\limits_{p \to \infty} pF(p)$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{2cm}}
+\\
+\end{tabular}}
+}
+\end{theo}
+
+
+\begin{theo}
+\textbf{Théorème de la valeur finale}
+
+\ifthenelse{\boolean{prof}}{%
+$$\lim\limits_{t \to \infty} f(t) = \lim\limits_{p \to 0} pF(p)$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{2cm}}
+\\
+\end{tabular}}
+}
+\end{theo}
+
+\begin{minipage}[c]{.6\linewidth}
+\begin{theo}
+\textbf{Théorème du retard}
+
+\ifthenelse{\boolean{prof}}{%
+$$\mathcal{L}\left[ f\left(t-t_0\right) \right] = e^{-t_0 p}F(p)$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{2cm}}
+\\
+\end{tabular}}
+}
+\end{theo}
+\end{minipage} \hfill
+\begin{minipage}[c]{.35\linewidth}
+
+\begin{center}
+ \includegraphics[width=.25\textwidth]{png/retard}
+\end{center}
+\end{minipage}
+
+Tout retard temporel $t_0$ sur une fonction se traduit par un facteur
+multiplicatif $e^{-t_0 p}$ sur sa transformée de Laplace.
+
+
+\begin{minipage}[c]{.6\linewidth}
+\begin{theo}
+\textbf{Théorème de l'amortissement}
+
+\ifthenelse{\boolean{prof}}{%
+$$\mathcal{L} \left[ e^{-a t} f\left(t\right) \right] = F(p+a)$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{2cm}}
+\\
+\end{tabular}}
+}
+\end{theo}
+\end{minipage} \hfill
+\begin{minipage}[c]{.35\linewidth}
+\end{minipage}
+
+\section{Fonctions usuelles}
+\subsection{Transformée de Laplace de signaux d'entrée}
+\subsubsection*{Réponse impulsionnelle}
+Lorsqu'un système est soumis à, son entrée à une impulsion, on parle de réponse impulsionnelle. Il s'agit de générer un signal d'amplitude infinie pendant un temps infinitésimal. 
+
+\begin{minipage}[c]{.6\linewidth}
+\begin{defi}
+On note l'impulsion de Dirac $\delta(t)$.
+$$
+\forall t \neq 0 \quad \delta(t)=0.
+$$
+
+La transformée de Laplace d'un Dirac est :
+
+\ifthenelse{\boolean{prof}}{%
+$$ F(p) =  \mathcal{L} \left[\delta(t)\right] = 1 $$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{2cm}}
+\\
+\end{tabular}}
+}
+\end{defi}
+\end{minipage} \hfill
+\begin{minipage}[c]{.35\linewidth}
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/dirac}
+\end{center}
+\end{minipage}
+
+
+Cette fonction n'a pas de sens physique. Elle permet de modéliser un choc mécanique, un flash ...
+
+
+
+\subsubsection*{Réponse indicielle}
+\begin{minipage}[c]{.6\linewidth}
+\begin{defi}
+La réponse indicielle d'un système est la réponse d'un système à une fonction échelon :
+$$ \forall t \in \mathbb{R}^+_* \quad f(t)=k \text{ avec } k\in\mathbb{R}$$
+
+La transformée de Laplace d'un échelon d'amplitude $k$ est donnée par :
+
+\ifthenelse{\boolean{prof}}{%
+$$F(p) = \mathcal{L} \left[f(t)\right] = \dfrac{k}{p}$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{2cm}}
+\\
+\end{tabular}}
+}
+\end{defi}
+\end{minipage} \hfill
+\begin{minipage}[c]{.35\linewidth}
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/echelon}
+\end{center}
+\end{minipage}
+
+
+
+
+
+\subsubsection*{Réponse à une rampe et une fonction puissance}
+\begin{minipage}[c]{.6\linewidth}
+\begin{defi}
+Une rampe est une fonction linéaire définie par : 
+$$ \forall t \in \mathbb{R}^+_* \quad f(t) = t$$
+
+La transformée de Laplace de $f$ se définit par : 
+
+\ifthenelse{\boolean{prof}}{%
+$$ F(p) = \mathcal{L} \left[f(t)\right]  =
+\dfrac{1}{p^2} $$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{2cm}}
+\\
+\end{tabular}}
+}
+\end{defi}
+\begin{defi}
+Par extensions, on peut définir les fonctions puissances telles que :
+$$ \forall t \in \mathbb{R}^+_* \quad f(t) = t^n$$
+
+La transformée de Laplace est alors :
+$$ \forall t\in \mathbb{R}^+_*  \quad
+F(p) = \mathcal{L} \left[f(t)\right]  =
+\dfrac{n!}{p^{n+1}} $$
+\end{defi}
+\end{minipage} \hfill
+\begin{minipage}[c]{.35\linewidth}
+\begin{center}
+\includegraphics[width=.9\textwidth]{png/rampe}
+\end{center}
+\end{minipage}
+
+
+\begin{demo}
+\textbf{Calcul de $\mathcal{L}\left[f(t) \right]$ avec $f(t)=t\quad \forall t> 0$.}
+
+\ifthenelse{\boolean{prof}}{%
+$$
+\mathcal{L}\left[f(t) \right] 
+= \mathcal{L}\left[t \right] 
+= F(p)
+= \int\limits_0^{+ \infty} t \cdot e^{-pt}dt
+$$
+
+D'après la formule d'intégration par partie : $\int\limits_{a}^{b} u dv  = \left[uv\right]_{a}^{b} - \int\limits_{a}^{b} v du$.
+
+On pose :
+\begin{itemize}
+\item $u=t$ et donc $\dfrac{du}{dt}=1$ et donc $du=dt$;
+\item $dv = e^{-pt}dt$ et donc $v=-\dfrac{1}{p}e^{-pt}$.
+\end{itemize}
+
+On a donc :
+\begin{eqnarray*}
+F(p)
+&=& \int\limits_0^{+ \infty} t \cdot e^{-pt}dt
+=\left[ - t \dfrac{1}{p}e^{-pt} \right]_{0}^{+\infty} - \int\limits_0^{+ \infty} -\dfrac{1}{p}e^{-pt} dt \\
+& =& 0 - \left[\dfrac{1}{p^2} e^{-pt}  \right]_{0}^{+\infty} = \dfrac{1}{p^2}
+\end{eqnarray*}
+
+Au final $\mathcal{L}\left[f(t) \right] = \dfrac{1}{p^2}$.
+
+}{
+\rotatebox{90}{
+\begin{tabular}{p{12cm}}
+\\
+\end{tabular}}
+}
+\end{demo}
+
+
+
+
+\subsection{Transformée de Laplace de fonctions usuelles}
+Le calcul de la transformation de Laplace à partir des définitions des fonctions usuelles n'est pas à savoir. En revanche, les transformées les plus courantes doivent être connues. Dans d'autres cas, le tableau des transformées vous sera donnée.
+Dans les conditions de Heavisde, on a donc les transformées de Laplace suivantes :
+
+\begin{center}
+\begin{tabular}{|c|c||c|c|}
+\hline
+Domaine temporel $f(t)$ & Domaine de Laplace $F(p)$ & 
+Domaine temporel $f(t)$ & Domaine de Laplace $F(p)$ \\
+\hline
+\hline
+ &&& \\
+Dirac $\delta(t)$ &
+$F(p)=1$ &
+Échelon $ u(t)=k $&
+$ U(p) = \dfrac{k}{p}$
+\\
+&&& \\
+\hline
+&&& \\
+Puissances
+$f(t) = t^n\cdot u(t)$ &
+$F(p)=\dfrac{n!}{p^{n+1}} $ &
+Créneau $\forall t\in ]0,t_1 [ \quad f(t)= A$ & 
+$F(p) =A \cdot \dfrac{1-e^{-pt_1}}{p} $\\
+&&& \\
+\hline
+&&& \\
+$f(t) = \sin \left( \omega_0 t\right) \cdot u(t)$ &
+$F(p) = \dfrac{\omega_0}{p^2+\omega_0^2} $ &
+$f(t) = \cos \left( \omega_0 t\right) \cdot u(t)$ & 
+$F(p) = \dfrac{p}{p^2+\omega_0^2} $ \\
+&&& \\
+\hline
+&&& \\
+$f(t)= e^{-at}\cdot u(t)$ & 
+$F(p)= \dfrac{1}{p+a}$ &
+$f(t) = e^{-at}\sin\left( \omega_0 t\right) \cdot u(t)$ &
+$F(p)=\dfrac{\omega_0}{\left( p+a\right)^2 + \omega_0^2}$  \\
+&&& \\
+\hline
+&&& \\
+$f(t)$ est $T$ périodique &
+$F(p)= \dfrac{\mathcal{L} \left[f_0 (t)\right]}{1-e^{-Tp}} \cdot u(t)$ &
+$f(t)=t^ne^{-at}u(t)$ & $F(p)=\dfrac{n!}{\left( p+a\right)^{n+1}}$
+\\
+&&& \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\begin{demo}
+\textbf{Calcul de $\mathcal{L}\left[f(t) \right]$ avec $f(t)=e^{-at}\quad \forall t> 0$.}
+
+\ifthenelse{\boolean{prof}}{
+$$
+\mathcal{L}\left[f(t) \right] 
+= \mathcal{L}\left[e^{-at} \right] 
+= F(p)
+= \int\limits_0^{+ \infty} e^{-at} \cdot e^{-pt}dt
+= \int\limits_0^{+ \infty} e^{-\left(p+a\right)t} dt
+=\left[
+-\dfrac{1}{p+a}e^{-\left(p+a\right)t}
+\right]_0^{+ \infty}
+=\dfrac{1}{p+a}
+$$
+
+Au final $\mathcal{L}\left[f(t) \right] = \dfrac{1}{p+a}$.
+
+}{
+\rotatebox{90}{
+\begin{tabular}{p{6cm}}
+\\
+\end{tabular}}
+}
+\end{demo}
+
+\begin{demo}
+\textbf{Calcul de $\mathcal{L}\left[f(t) \right]$ avec $f(t)= \sin \left(\omega t \right)\quad \forall t> 0$.}
+
+Calculons :
+$$
+F(p)= \int\limits_0^{+ \infty} \sin \left(\omega t \right) \cdot e^{-pt}dt
+$$
+
+On rappelle que $\int uv'  = [uv]-\int u'v$.
+
+On pose : 
+\begin{itemize}
+\item $u(t)=\sin \left(\omega t\right)$ et $u'(t)=\omega \cos \left(\omega t\right)$
+\item $v'(t)=e^{-pt}$ et $v(t)=-\dfrac{1}{p}e^{-pt}$
+\end{itemize}
+avec $u$ et $v$ $C^1$ sur $\mathbb{R_+}$.
+
+En conséquence, 
+\begin{eqnarray*}
+F(p)
+&=& \int\limits_0^{+ \infty} \sin \left(\omega t \right) \cdot e^{-pt}dt
+= \left[-\dfrac{1}{p}e^{-pt} \cdot \sin \left(\omega t\right) \right]_0^{+ \infty}
+- \int\limits_0^{+ \infty} -\dfrac{1}{p}e^{-pt} \omega \cos \left(\omega t\right) dt \\
+&=& \left[-\dfrac{1}{p}e^{-pt} \cdot \sin \left(\omega t\right) \right]_0^{+ \infty}
++\dfrac{\omega}{^p}\int\limits_0^{+ \infty} e^{-pt} \cos \left(\omega t\right) dt
+\end{eqnarray*}
+
+En réalisant une seconde intégration par partie, on pose $w(t)=\cos \left(\omega t\right)$ et $w'(t)=-\omega \sin \left(\omega t\right)$. On a donc $\int wv'  = [wv]-\int w'v$ :
+$$
+\int\limits_0^{+ \infty} e^{-pt} \cos \left(\omega t\right) dt
+= \left[-\dfrac{1}{p}e^{-pt} \cdot \cos \left(\omega t\right) \right]_0^{+ \infty}
+- \dfrac{\omega}{p} \underbrace{\int\limits_0^{+ \infty} e^{-pt} \cdot  \sin \left(\omega t\right) dt}_{F(p)}
+$$
+
+En conséquence :
+
+\begin{eqnarray*}
+&&F(p)=\left[-\dfrac{1}{p}e^{-pt} \cdot \sin \left(\omega t\right) \right]_0^{+ \infty}
++\dfrac{\omega}{p}\left[-\dfrac{1}{p}e^{-pt} \cdot \cos \left(\omega t\right) \right]_0^{+ \infty}
+- \dfrac{\omega}{p}\dfrac{\omega}{p} F(p) \\
+&\Longleftrightarrow &
+F(p)\left(1+\dfrac{\omega^2}{p^2}\right) =\underbrace{\left[-\dfrac{1}{p}e^{-pt} \cdot \sin \left(\omega t\right) \right]_0^{+ \infty}}_{0}
++\dfrac{\omega}{p}
+\underbrace{\left[-\dfrac{1}{p}e^{-pt} \cdot \cos \left(\omega t\right) \right]_0^{+ \infty}}_{\dfrac{1}{p}}\\
+&\Longleftrightarrow &
+F(p)=\dfrac{\omega}{p^2}\cdot\dfrac{p^2}{p^2+\omega^2} = \dfrac{\omega}{p^2+\omega^2}
+\end{eqnarray*}
+
+Au final $\mathcal{L}\left[\sin(\omega t) \right] = \dfrac{\omega}{p^2+\omega^2}$.
+
+\end{demo}
+
+\section{Transformée de Laplace inverse}
+
+Après avoir trouvé la fonction de transfert du système auquel on ajoute la
+fonction de transfert du signal, on se retrouve avec une nouvelle fonction
+polynomiale qui est le produit des deux polynômes précédents. 
+
+Pour connaître la fonction globale du système dans le domaine temporel, on doit
+effectuer la transformée inverse de Laplace de ce nouveau polynôme. 
+
+La transformation inverse consiste à décomposer la fraction rationnelle (en $p$)
+en éléments simples (somme de plusieurs fractions simples en $p$) et à
+identifier chaque élément simple à une fonction élémentaire en $t$.
+
+\subsection{Propriétés mathématiques}
+Soit $f$ une fonction rationnelle définie par $f(x)
+=\dfrac{p(x)}{q(x)}$ où $p$ et $q$ sont deux fonctions polynômes. 
+
+\begin{prop}
+Soit
+$$
+f(x)=\dfrac{p(x)}{q(x)}=
+\dfrac{p(x)}{\left(x-a_1 \right)\left(x-a_2 \right)...\left(x-a_n \right)}
+$$
+avec $\text{deg}(p)<\text{deg}(q)$ ($a_i\neq a_j,\; \forall (i,j) \in \left\{1,2,3,..n
+\right\}^2$ tel que $i\neq j$).
+
+Alors $f(x)$ peut se mettre sous la forme :
+
+$$
+f(x)=\dfrac{p(x)}{q(x)}=
+\dfrac{\alpha_1}{\left(x-a_1 \right)}
++\dfrac{\alpha_2}{\left(x-a_2 \right)}
++\cdots
++\dfrac{\alpha_n}{\left(x-a_n \right)}
+$$
+
+\end{prop}
+
+\paragraph*{Propriété 2}
+\begin{prop}
+Soit
+$$
+f(x)=\dfrac{p(x)}{q(x)}=
+\dfrac{p(x)}{\left(x-a_1 \right)^{p1}\left(x-a_2 \right)^{p2}\cdots\left(x-a_n
+\right)^{pn}}
+$$
+avec $\text{deg}(p)<\text{deg}(q)$ ($a_i\neq a_j,\; \forall (i,j) \in \left\{1,2,3,..n
+\right\}^2$ tel que $i\neq j$).
+
+Alors $f(x)$ peut se mettre sous la forme :
+$$
+\begin{array}{lll}
+f(x)=\dfrac{p(x)}{q(x)}&=&
+\dfrac{\alpha_{11}}{\left(x-a_1 \right)}
++\dfrac{\alpha_{12}}{\left(x-a_1 \right)^2}
++\cdots
++\dfrac{\alpha_{1p1}}{\left(x-a_1 \right)^{p1}}
++\dfrac{\alpha_{21}}{\left(x-a_2 \right)}
++\dfrac{\alpha_{22}}{\left(x-a_2 \right)^{2}}
++\cdots \\
+&&
++\dfrac{\alpha_{2p2}}{\left(x-a_2 \right)^{p2}}
++\dfrac{\alpha_{n1}}{\left(x-a_n \right)}
++\dfrac{\alpha_{n2}}{\left(x-a_n \right)^{2}}
++\cdots
++\dfrac{\alpha_{npn}}{\left(x-a_n \right)^{pn}}
+\end{array}
+$$
+
+soit : 
+
+$$
+f(x)=\sum\limits_{i=1}^n \sum\limits_{j=1}^{pi}
+\dfrac{\alpha_{ij}}{\left(x-a_i\right)^j}
+$$
+\end{prop}
+\paragraph*{Propriété 3}
+\begin{prop}
+Soit
+$$
+f(x)=\dfrac{p(x)}{q(x)}=
+\dfrac{p(x)}{
+\prod\limits_{i=1}^{n} \left(x-a_i \right)^{p1}
+\prod\limits_{k=1}^{m} \left(x^2+b_kx+ck \right)^{qm}
+}
+$$
+avec $\text{deg}(p)<\text{deg}(q)$ ($a_i\neq a_j,\; \forall (i,j) \in \left\{1,2,3,..n
+\right\}^2$ tel que $i\neq j$) et $b^2_k-ac_k<0 \; \forall k \in\left\{1,2,..m
+\right\}$ 
+
+Alors $f(x)$ peut se mettre sous la forme :
+$$
+f(x)=\dfrac{p(x)}{q(x)}=
+\sum\limits_{i=1}^n \sum\limits_{j=1}^{pi}
+\dfrac{\alpha_{ij}}{\left(x-a_i\right)^j}
++
+\sum\limits_{k=1}^m \sum\limits_{j=1}^{qk}
+\dfrac{\beta_{kj}x}{\left(x^2+b_kx+c_k\right)^j}
+$$
+\end{prop}
+
+
+\end{document}
+\subsection{Exemples}
+\begin{exemple}
+Chercher les transformées inverses des fonctions suivantes : 
+\begin{enumerate}%
+\item $F(p)=\dfrac{1}{p(p+a)}$
+\item $F(p)=\dfrac{3p+7}{p^2-2p-3}$
+\item $F(p)=\dfrac{2p^2-4}{\left( p+1\right)
+\left( p-2\right)\left( p-3\right)}$
+\item $F(p) = \dfrac{p^2+2p+3}{\left( p^2+2p+1\right)\left( p^2+2p+5\right)}$
+\end{enumerate}
+\end{exemple}
+
+
+\ifthenelse{\boolean{prof}}{
+
+Déterminer les transformées de Laplace inverse des fonctions suivantes :
+
+$$ F(x)=\dfrac{X+1}{\left(X-1\right)\left(X-2\right)\left(X-3\right)} $$
+$$ F(x)=\dfrac{X^2+X+1}{\left(X^2+1\right)\left(X^2-1\right)} $$
+$$ F(x)=\dfrac{1}{\left(X+1\right)\left(X^2+X+1\right)^2}$$
+$$ F(X)=\dfrac{1}{\left(X^2-1\right)^2}$$
+
+\paragraph*{Pôles simples}
+La décomposition de
+$F(x)=\dfrac{X+1}{\left(X-1\right)\left(X-2\right)\left(X-3\right)}
+$ est de la forme :
+
+$$
+F(x)=\dfrac{X+1}{\left(X-1\right)\left(X-2\right)\left(X-3\right)}
+=
+\dfrac{a}{X-1}
++\dfrac{b}{X-2}
++\dfrac{c}{X-3}
+$$
+
+où $a$, $b$ et $c$ sont des constantes puisque $\left(X-1\right)$,
+$\left(X-2\right)$ et $\left(X-3\right)$ sont des polynômes premiers entre eux
+deux à deux de degré 1.
+
+Pour déterminer $a$ on calcule $\left(X-1\right)F(x)$ en 1 et on trouve $a=1$.
+
+Pour déterminer $b$ on calcule $\left(X-2\right)F(x)$ en 2 et on trouve $b=-3$.
+
+Pour déterminer $c$ on calcule $\left(X-3\right)F(x)$ en 3 et on trouve $c=2$.
+
+La décomposition est alors : 
+$$
+F(x)=\dfrac{X+1}{\left(X-1\right)\left(X-2\right)\left(X-3\right)}
+=
+\dfrac{1}{X-1}
+-\dfrac{3}{X-2}
++\dfrac{2}{X-3}
+$$
+
+
+\paragraph*{Polynômes irréductibles de R[X] de degré 2}
+La fonction $F(x)=\dfrac{X^2+X+1}{\left(X^2+1\right)\left(X^2-1\right)}$ se
+décompose sous la forme 
+$F(x)=
+\dfrac{aX+b}{\left(X^2+1\right)}
++\dfrac{c}{\left(X-1\right)}
++\dfrac{d}{\left(X+1\right)}
+$.
+Pour déterminer $a$ et $b$, on calcule $\left(X^2+1\right)F(X)$ en $i$,  on
+obtient :$\dfrac{-i}{2}=ai+b$. La famille $(1,i)$ étant libre, on en déduit
+$a=-\dfrac{1}{2}$ et $b=0$.
+
+% \paragraph*{Utilisation des limites}
+% Soit $F(x)=\dfrac{1}{\left(X+1\right)\left(X^2+X+1\right)^2}$. Sa
+% décomposition  est de la forme : 
+% $$
+% F(x)=\dfrac{a}{X+1}
+% +\dfrac{}{}
+% $$
+
+$F(x)=\dfrac{1}{\left(X+1\right)\left(X^2+X+1\right)^2}$
+$F(X)=\dfrac{1}{\left(X^2-1\right)^2}$
+\paragraph*{Utilisation de la parité}
+Soit $F(X)=\dfrac{1}{\left(X^2-1\right)^2}$. La décomposition est de la forme : 
+$$
+F(X)=
+\dfrac{a}{\left(X-1\right)^2}
++\dfrac{b}{X-1}
++\dfrac{c}{\left(X+1\right)^2}
++\dfrac{d}{X+1}
+$$
+
+On a alors :
+$$F(-X)=
+\dfrac{a}{\left(X+1\right)^2}
++\dfrac{-b}{X+1}
++\dfrac{c}{\left(X-1\right)^2}
++\dfrac{-d}{X-1}
+$$
+
+En conséquence $a=c$ et $b=-d$.
+
+En calculant $(X-1)^2F(X)$ en 1 on obtient $a=\dfrac{1}{4}$.
+En 0 on trouve $b=\dfrac{-1}{2}$.
+
+\subsection{Exemple}
+\begin{exemple}
+Chercher les transformées inverses des fonctions suivantes : 
+\begin{enumerate}%
+\item $F(p)=\dfrac{1}{p(p+a)}$
+\item $F(p)=\dfrac{3p+7}{p^2-2p-3}$
+\item $F(p)=\dfrac{2p^2-4}{\left( p+1\right)
+\left( p-2\right)\left( p-3\right)}$
+\item $F(p) = \dfrac{p^2+2p+3}{\left( p^2+2p+1\right)\left( p^2+2p+5\right)}$
+\end{enumerate}
+\end{exemple}
+%\section*{Exercice}
+%Chercher les transformées inverses des fonctions suivantes : 
+%\begin{enumerate}%
+ %\item $F(p)=\dfrac{1}{p(p+a)}$
+ %\item $F(p)=\dfrac{3p+7}{p^2-2p-3}$
+%\item $F(p)=\dfrac{2p^2-4}{\left( p+1\right)
+%\left( p-2\right)\left( p-3\right)}$
+%\item $F(p) = \dfrac{p^2+2p+3}{\left( p^2+2p+1\right)\left( p^2+2p+5\right)}$
+%\end{enumerate}
+}{}
+\end{document}

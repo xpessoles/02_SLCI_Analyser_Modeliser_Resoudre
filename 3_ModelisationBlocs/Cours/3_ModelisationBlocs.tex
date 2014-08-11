@@ -1,0 +1,1922 @@
+\documentclass[11pt,oneside]{article}
+\input{style/coursHeadings}
+
+\usepackage{style/schemabloc}
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{
+CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{
+}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 3 -- Modélisation des Systèmes Linéaires Continus Invariants \\ Modélisation par schémas blocs}{
+}}
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent 2013 -- 2014 \\
+Xavier \textsc{Pessoles}}{
+}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI -- Cours \\
+Ch 3 : Modélisation des SLCI -- \ifthenelse{\boolean{prof}}{P}{E}%
+}{
+}}
+
+
+
+
+\usepackage[%
+    pdftitle={SLCI - Modélisation des SLCI},
+    pdfauthor={Xavier Pessoles},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+
+
+\usepackage{pifont}
+\sloppy
+\hyphenpenalty 10000
+
+\begin{document}
+
+
+\input{style/entete1}
+
+\begin{center}
+ \huge\textsc{\xxtitre}
+\end{center}
+
+\begin{center}
+ \LARGE\textsc{\xxsoustitre}
+\end{center}
+
+
+
+
+\vspace{.5cm}
+
+\begin{minipage}[c]{.3\linewidth}
+\begin{center}
+\includegraphics[width=5cm]{png/mcc.png}
+
+\textit{Moteur à courant continu}
+\end{center}
+\end{minipage} \hfill
+\begin{minipage}[c]{.3\linewidth}
+\begin{center}
+\includegraphics[width=5cm]{png/modele_mcc.png}
+
+\textit{Schématisation} 
+\end{center}
+\end{minipage} \hfill
+\begin{minipage}[c]{.3\linewidth}
+\begin{center}
+\includegraphics[width=5cm]{png/blocs_mcc.png}
+
+\textit{Schéma bloc}
+\end{center}
+\end{minipage} 
+
+\vspace{.5cm}
+
+On a vu précédemment que les équations différentielles régissant le comportement d'un système peuvent être transformées dans le domaine de Laplace dans le but d'être résolues. 
+
+La complexité des systèmes nous poussent à utiliser une représentation schématique : les schémas blocs. Il faudra alors déterminer le lien entre cette représentation et la représentation dans le domaine de Laplace.
+
+\vspace{.2cm}
+
+
+\begin{prob}
+%\textbf{Problématiques}
+\begin{itemize}
+\item Comment modéliser un système complexe multiphysique en utilisant la modélisation en schéma bloc et la modélisation dans le domaine de Laplace ?
+\item Comment déterminer la fonction de transfert d'un système dans le but de prévoir son comportement ?
+\end{itemize}
+\end{prob}
+
+\begin{savoir}
+%\textsc{Savoirs :}
+\begin{itemize}
+\item Modéliser :
+\begin{itemize}
+\item Mod-C4.1 : Représentation par schéma bloc
+\item Mod-C4.2 : Fonction de transfert en boucle ouverte et en boucle fermée
+\item Mod-C4.3 : Classe d’un système
+\item Mod-C4-S1 : Établir le schéma-bloc du système
+\item Mod-C4-S2 : Déterminer les fonctions de transfert du système en boucle ouverte et en boucle fermée.
+\end{itemize}
+\item Résoudre :
+\begin{itemize}
+\item Rés-C5-S1 : Schéma bloc ou d’une fonction de transfert les grandeurs caractérisant les performances du modèle
+\end{itemize}
+\end{itemize}
+\end{savoir}
+
+
+
+\setlength{\parskip}{0ex plus 0.2ex minus 0ex}
+ \renewcommand{\contentsname}{}
+ \renewcommand{\baselinestretch}{1}
+
+% \vspace{1cm}
+\textit{Ce document est en évolution permanente. Merci de signaler toutes
+erreurs ou coquilles.}
+
+\tableofcontents
+
+ \renewcommand{\baselinestretch}{1.2}
+\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+
+
+\section{Fonction de transfert des systèmes}
+\subsection{Le moteur à courant continu}
+
+On adopte, pour le moteur à courant continu, la représentation suivante :
+\begin{center}
+\includegraphics[width=10cm]{png/modele_mcc.png} 
+\end{center}
+
+\begin{multicols}{2}
+Loi des mailles dans le circuit électrique : 
+$$
+u(t)=e(t)+R\cdot i(t) + L\dfrac{di(t)}{dt}
+$$
+
+Couple de frottement en sortie du moteur : 
+$$
+c_r(t) = f_v \omega_m(t)
+$$
+
+
+
+Équation de la dynamique de l'arbre moteur :
+
+$$
+J\dfrac{d\omega_m(t)}{dt} = c_m(t) - c_r(t)
+$$
+
+Équation électromécanique :
+$$
+e(t)=K_E \cdot \omega_m(t)
+$$
+
+$$
+c_m(t)=K_C \cdot i(t)
+$$
+\end{multicols}
+
+Ainsi, dans le cas du moteur à courant continu, on peut écrire l'équation différentielle liant la tension d'entrée aux bornes du circuit électrique $u(t)$ et la vitesse angulaire $\omega_m(t)$ :
+
+\begin{exemple}
+Équation différentielle du MCC :
+
+%\ifthenelse{\boolean{prof}}{%
+$$
+u(t)= 
+ \left( K_e + \dfrac{R f_v}{K_C}\right) \omega_m(t)
++\left( \dfrac{RJ}{K_C} + \dfrac{Lf_v}{K_C} \right)\dfrac{d\omega_m(t)}{dt} 
++\dfrac{LJ}{K_C^2} \dfrac{d^2\omega_m(t)}{dt^2}  
+$$
+
+Dans le cas où on néglige l'impact du couple résistant, on a :
+$$
+u(t)= 
+ K_e \omega_m(t)
+ +\dfrac{RJ}{K_C} \dfrac{d\omega_m(t)}{dt} 
++\dfrac{LJ}{K_C^2} \dfrac{d^2\omega_m(t)}{dt^2}  
+$$
+%}{
+%\rotatebox{90}{
+%\begin{tabular}{p{4cm}}
+%\\
+%\end{tabular}}
+%}
+\end{exemple}
+
+\subsection{Définitions}
+Soit un système linéaire, continu, invariant et mono-variable d'entrée $e(t)$
+et de sortie $s(t)$. Le système est donc modélisable par une équation
+différentielle de la forme suivante :
+$$
+a_0 s(t) + \sum\limits_{i=1}^{n} a_i\dfrac{d^is(t)}{dt^i} = 
+b_0 e(t) + \sum\limits_{i=1}^{m} b_i\dfrac{d^ie(t)}{dt^i}
+\quad n\geq m
+$$
+
+\begin{minipage}[c]{.6\linewidth}
+Ce système est modélisable par un schéma bloc : 
+\end{minipage}\hfill
+\begin{minipage}[c]{.35\linewidth}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$\quad$Système$\quad$}{E} \sbRelier[$e(t)\quad$]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$\quad s(t)$]{sys}{S}
+\end{tikzpicture}
+\end{minipage}
+
+
+En se plaçant dans les conditions de Heaviside, l'équation différentielle de
+transforme dans le domaine de Laplace :
+
+$$
+a_0 S(p) + \sum\limits_{i=1}^{n} a_i p^i S(p) = 
+b_0 E(p) + \sum\limits_{i=1}^{m} b_i p^i E(p) 
+$$
+
+En factorisant l'expression, on obtient donc : 
+$$
+S(p) \sum\limits_{i=0}^{n} a_i p^i  = 
+E(p) \sum\limits_{i=0}^{m} b_i p^i 
+$$
+
+
+\begin{defi}
+ \textbf{Fonctions de transfert -- Transmittance}
+
+On définit la fonction de transfert d'un système la fonction $H(p)$ telle que :
+$$
+H(p)
+=\dfrac{S(p)}{E(p)} 
+= \dfrac{\sum\limits_{i=0}^{m} b_i p^i}{\sum\limits_{i=0}^{n} a_i p^i}
+=\dfrac{N(p)}{D(p)} 
+$$
+\end{defi}
+
+
+\begin{exemple}
+Équation du MCC dans le domaine de Laplace :
+
+%\ifthenelse{\boolean{prof}}{%
+$$
+U(p)= 
+ \left( K_e + \dfrac{R f_v}{K_C}\right) \Omega_m(p)
++\left( \dfrac{RJ}{K_C} + \dfrac{Lf_v}{K_C} \right) p \Omega_m(p)
++\dfrac{LJ}{K_C^2}  p^2 \Omega_m(p)
+$$
+
+$$ \Longleftrightarrow
+U(p)= \Omega_m(p) \left[ 
+ \left( K_e + \dfrac{R f_v}{K_C}\right) 
++\left( \dfrac{RJ}{K_C} + \dfrac{Lf_v}{K_C} \right) p 
++\dfrac{LJ}{K_C^2}  p^2 
+\right]
+$$
+%}{
+%\rotatebox{90}{
+%\begin{tabular}{p{6cm}}
+%\\
+%\end{tabular}}
+%}
+
+
+Fonction de Transfert du MCC :
+
+$$
+H(p)=\dfrac{\Omega_m(p)}{U(p)}
+=\dfrac{1}{ \left( K_e + \dfrac{R f_v}{K_C}\right) 
++\left( \dfrac{RJ}{K_C} + \dfrac{Lf_v}{K_C} \right) p 
++\dfrac{LJ}{K_C^2}  p^2 }
+$$
+
+Sous sa forme normalisée, la fonction de transfert devient : 
+$$
+H(p)=\dfrac{\Omega_m(p)}{U(p)}
+=\dfrac{\dfrac{K_C K_e + R f_v}{K_C}}{ 1
++\left( \dfrac{RJ + Lf_v}{K_C K_e + R f_v} \right) p 
++\dfrac{LJ}{ K_C^2 K_e + RK_C f_v}  p^2 }
+$$
+
+Note : le dénominateur a été factorisé par $K_e + \dfrac{R f_v}{K_C} = \dfrac{K_C K_e + R f_v}{K_C} $.
+
+
+
+Dans le cas où on néglige l'impact du couple résistant, on a :
+$$
+H(p)=\dfrac{\Omega_m(p)}{U(p)}
+=\dfrac{
+\dfrac{K_C K_e}{K_C}}{ 1
++ \dfrac{RJ}{K_C K_e } p 
++\dfrac{LJ}{ K_C^2 K_e }  
+p^2 }
+$$
+
+\end{exemple}
+
+\begin{defi}
+ \textbf{Schéma-bloc}
+
+Soit un système d'entrée $E(p)$, de sortie $S(p)$, caractérisé par une fonction
+de transfert $H(p)$. Ce système est alors représenté par le schéma bloc suivant
+: 
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$\quad$H(p)$\quad$}{E} \sbRelier[$E(p)\quad$]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$\quad S(p)$]{sys}{S}
+\end{tikzpicture} 
+\end{center}
+
+La relation entrée -- sortie du système se met alors sous la forme : 
+$$
+S(p) = E(p) \cdot H(p)
+$$
+\end{defi}
+
+
+\begin{rem}
+Les deux représentations suivantes sont équivalentes :
+
+\begin{minipage}[c]{.45\linewidth}
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$\quad$H(p)$\quad$}{E} \sbRelier[$E(p)\quad$]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$\quad S(p)$]{sys}{S}
+\end{tikzpicture} 
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[c]{.45\linewidth}
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$\quad\dfrac{1}{H(p)}\quad$}{E} \sbRelier[$S(p)\quad$]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$\quad E(p)$]{sys}{S}
+\end{tikzpicture} 
+\end{center}
+\end{minipage}
+
+\end{rem}
+
+\begin{exemple}
+Schéma bloc du moteur à courant continu :
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$\quad$H(p)$\quad$}{E} \sbRelier[$U(p)\quad$]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$\quad \Omega_m(p)$]{sys}{S}
+\end{tikzpicture} 
+
+On a bien :
+$$
+\Omega_m(p) = U(p) \cdot H(p)
+$$
+\end{center}
+
+\end{exemple}
+
+
+
+
+
+\begin{props}
+$H(p)$ est une fonction rationnelle en $p$. En factorisant le numérateur et le
+dénominateur, $H(p)$ peut s'écrire sous cette forme :
+$$
+H(p) = \dfrac{N(p)}{D(p)} =
+K \dfrac{\left(p-z_1 \right)\left(p-z_2 \right)...\left(p-z_m \right)}{
+p^{\alpha} \left(p-p_1 \right)\left(p-p_2 \right)...\left(p-p_n \right)}
+$$
+
+
+ \begin{itemize}
+ \item Les $z_i$ sont les \textbf{zéros} de la fonction de transfert (réels ou
+complexes).
+\item Les $p_i$ sont les \textbf{pôles} de la fonction de transfert (réels ou
+complexes).
+\item \textbf{Le degré de $D(p)$ est appelé ordre $n$ du système ($n\geq m$ pour les
+systèmes physiques).}
+\item L'équation $D(p)=0$ est appelée équation caractéristique.
+\item Le facteur constant $K$ est appelé gain du système.
+\item S'il existe une (ou des) racines nulles d'ordre $\alpha$ de $D(p)$, un
+terme $p^\alpha$ apparaît au dénominateur. \textbf{$\alpha$ est la classe (ou type) de
+la fonction de transfert}. Il correspond au nombre d'intégrations pures du
+système.
+\end{itemize}
+\end{props}
+
+
+
+\subsection{Représentation par schémas blocs}
+La représentation par schéma bloc d’un système est déduite de la représentation
+par la transformée de Laplace.
+
+Le schéma fonctionnel, ou schéma bloc, est ainsi une représentation graphique du
+système d’équations différentielles, ou des relations entre les variables que
+décrit le système d’équations différentielles.
+
+\begin{methode}
+Pour établir un schéma fonctionnel la démarche est la suivante :
+\begin{enumerate}
+\item Appliquer la transformée de Laplace à chaque équation du système différentiel : on obtient alors un système d’équations linéaires
+dans le domaine de Laplace, que va traduire le schéma.
+\item Rechercher les fonctions de transfert élémentaires et les variables qu’elles relient.
+\item Constituer, tracer les schémas en assemblant les blocs des fonctions de transfert élémentaires.
+\item Rassembler les schémas, simplifier à l’aide des règles définies un peu plus tard.
+\end{enumerate}
+
+\end{methode}
+
+La représentation par le schéma fonctionnel et la fonction de transfert
+permettent ainsi de déterminer les
+caractéristiques principales du système sans résoudre d'équations
+différentielles.
+
+\section{Schémas blocs et fonctions de transfert de systèmes élémentaires}
+Pour les équations "simples" de la physique, on peut aisément mettre les théorèmes fondamentaux sous forme de schémas blocs et de fonctions de transfert.
+\subsection{Théorèmes de la mécaniques}
+
+\footnotesize{
+\begin{center}
+\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+%\multicolumn{5}{c}{\textbf{Théorèmes de la mécanique}}\\
+\begin{center}
+Théorème de la résultante dynamique (position)
+\end{center}
+&
+\textit{Exemple : Mouvement d'un solide en translation}%\includegraphics[height=1cm]{png/poids}}
+&
+$$ F(t)=M\dfrac{d^2x(t)}{dt^2}$$
+&
+$$ F(p)=Mp^2X(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{Mp^2} \quad $}{E} \sbRelier[$ F(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad X(p)$]{sys}{S}
+\end{tikzpicture}
+\end{center} \\
+\begin{center}
+Théorème de la résultante dynamique (vitesse)
+\end{center}
+&
+%\multirow{2}{*}{%
+\begin{center}
+\includegraphics[height=1cm]{png/poids}
+\end{center}
+%}
+&
+$$  F(t)=M\dfrac{dv(t)}{dt}$$
+&
+$$F(p)=MpV(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{Mp} \quad $}{E} \sbRelier[$ F(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad V(p)$]{sys}{S}
+\end{tikzpicture}
+\end{center} \\
+\begin{center}
+Théorème du moment dynamique (position)
+\end{center}
+&
+\textit{Mouvement d'un solide en rotation}
+%\includegraphics[height=1cm]{png/inertie_2}}
+&
+$$ C(t)=J\dfrac{d^2\theta(t)}{dt^2}$$
+&
+$$ C(p)=Jp^2\Theta(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{Jp^2} \quad $}{E} \sbRelier[$ C(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad \Theta(p)$]{sys}{S}
+\end{tikzpicture}
+\end{center} \\
+\begin{center}
+Théorème du moment dynamique (vitesse)
+\end{center}
+&
+\begin{center}
+\includegraphics[height=1cm]{png/inertie_2}
+\end{center}
+&
+$$ C(t)=J\dfrac{d\omega(t)}{dt}$$
+&
+$$ C(p)=Jp\Omega(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{Jp} \quad $}{E} \sbRelier[$ C(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad \Omega(p)$]{sys}{S}
+\end{tikzpicture} 
+\end{center}
+\end{tabular}
+\end{center}
+}
+
+\begin{rem}
+On note :
+\begin{multicols}{2}
+\begin{itemize}
+\item $C(t)$ : le couple exprimé en $Nm$
+\item $J$ : l'inertie exprimée en $kg.m^2$
+\item $\theta$ : position angulaire en $rad$
+\item $\omega$ : vitesse angulaire en $rad/s$
+\end{itemize}
+\end{multicols}
+\end{rem}
+
+
+%\subsection{Théorèmes de la mécaniques}
+%
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Théorème de la résultante dynamique (position)
+%
+%\includegraphics[width=.3\textwidth]{png/poids}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ F(t)=M\dfrac{d^2x(t)}{dt^2}$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ F(p)=Mp^2X(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad \dfrac{1}{Mp^2} \quad $}{E} \sbRelier[$ F(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad X(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+
+
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Théorème de la résultante dynamique (vitesse)
+%
+%\includegraphics[width=.3\textwidth]{png/poids}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ F(t)=M\dfrac{dv(t)}{dt}$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ F(p)=MpV(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad \dfrac{1}{Mp} \quad $}{E} \sbRelier[$ F(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad V(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+
+
+
+
+%
+%
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Théorème du moment dynamique (position)
+%
+%\includegraphics[width=.75\textwidth]{png/inertie}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ C(t)=J\dfrac{d^2\theta(t)}{dt^2}$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ C(p)=Jp^2\Theta(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad \dfrac{1}{Jp^2} \quad $}{E} \sbRelier[$ C(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad \Theta(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+
+
+
+
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Théorème du moment dynamique (vitesse)
+%
+%\includegraphics[width=.75\textwidth]{png/inertie}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ C(t)=J\dfrac{d\omega(t)}{dt}$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ C(p)=Jp\Omega(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad \dfrac{1}{Jp} \quad $}{E} \sbRelier[$ C(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad \Omega(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+
+
+
+
+\subsection{Lois de frottements visqueux}
+
+
+
+\footnotesize{
+\begin{center}
+\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+%\multicolumn{5}{c}{\textbf{Théorèmes de la mécanique}}\\
+\begin{center}
+Frottements visqueux pour des solides en translation
+\end{center}
+&
+\begin{center}
+\includegraphics[width=2.5cm]{png/amortisseur}
+\end{center}
+&
+$$ f(t)=f\dfrac{dx(t)}{dt}$$
+&
+$$ F(p)=fpX(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{fp} \quad $}{E} \sbRelier[$ F(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad X(p)$]{sys}{S}
+\end{tikzpicture}
+\end{center} \\
+\begin{center}
+Frottements visqueux pour des solides en rotation
+\end{center}
+&
+\textit{Frottements dans les paliers d'un moteur à courant continu}
+%\begin{center}
+%\includegraphics[height=1cm]{png/poids}
+%\end{center}
+&
+$$ C(t)=f\dfrac{d\theta(t)}{dt}$$
+&
+$$ C(p)=fp\Theta(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{fp} \quad $}{E} \sbRelier[$ C(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad \Theta(p)$]{sys}{S}
+\end{tikzpicture}
+\end{center} \\
+\end{tabular}
+\end{center}}
+
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Frottements visqueux pour des solides en translation
+%
+%\includegraphics[width=.6\textwidth]{png/amortisseur}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ f(t)=f\dfrac{dx(t)}{dt}$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ F(p)=fpX(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad \dfrac{1}{fp} \quad $}{E} \sbRelier[$ F(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad X(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+%
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Frottements visqueux pour des solides en rotation
+%
+%%\includegraphics[width=.3\textwidth]{png/poids}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ C(t)=f\dfrac{d\theta(t)}{dt}$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ C(p)=fp\Theta(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad \dfrac{1}{fp} \quad $}{E} \sbRelier[$ C(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad \Theta(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+%
+%
+%
+%\begin{exemple}
+%\begin{itemize}
+%\item La loi de comportement dans un amortisseur est une loi de comportement visqueux.
+%\item Dans le cas du MCC, le couple résistant $c_r(t)$ est un couple dû au frottement visqueux.
+%\end{itemize}
+%\end{exemple}
+
+\subsection{Lois de comportement des ressorts}
+
+
+\footnotesize{
+\begin{center}
+\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+%\multicolumn{5}{c}{\textbf{Théorèmes de la mécanique}}\\
+\begin{center}
+Ressorts en compression de raideur $k$
+\end{center}
+&
+\begin{center}
+\includegraphics[width=1cm]{png/ressort_comp}
+\end{center}
+&
+$$ f(t)=kx(t)$$
+&
+$$ F(p)=kX(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{k} \quad $}{E} \sbRelier[$ F(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad X(p)$]{sys}{S}
+\end{tikzpicture}
+\end{center} \\
+\begin{center}
+Ressorts en traction de raideur $k$
+\end{center}
+&
+\begin{center}
+\includegraphics[width=2.5cm]{png/ressort_couple}
+\end{center}
+&
+$$ C(t)=k\theta(t)$$
+&
+$$ C(p)=k\Theta(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{k} \quad $}{E} \sbRelier[$ C(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad \Theta(p)$]{sys}{S}
+\end{tikzpicture}
+\end{center} \\
+\end{tabular}
+\end{center}}
+%
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Ressorts en compression de raideur $k$
+%
+%\rotatebox{90}{\includegraphics[width=.5\textwidth]{png/ressort_comp}}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ f(t)=kx(t)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ F(p)=kX(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad \dfrac{1}{k} \quad $}{E} \sbRelier[$ F(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad X(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+%
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Ressorts en traction de raideur $k$
+%
+%\includegraphics[width=\textwidth]{png/ressort_couple}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ C(t)=k\theta(t)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ C(p)=k\Theta(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad \dfrac{1}{k} \quad $}{E} \sbRelier[$ C(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad \Theta(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+%
+
+
+
+\subsection{Systèmes électriques}
+
+
+\footnotesize{
+\begin{center}
+\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+%\multicolumn{5}{c}{\textbf{Théorèmes de la mécanique}}\\
+\begin{center}
+Résistor
+\end{center}
+&
+\begin{center}
+\includegraphics[width=2cm]{png/resistance}
+\end{center}
+&
+$$ u(t)=Ri(t)$$
+&
+$$ U(p)=RI(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad R \quad $}{E} \sbRelier[$ I(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad U(p)$]{sys}{S}
+\end{tikzpicture}
+\end{center} \\
+\begin{center}
+Condensateur
+\end{center}
+&
+\begin{center}
+\includegraphics[width=2cm]{png/condensateur}
+\end{center}
+&
+$$ u(t)=\dfrac{1}{C}\int i(t) dt$$
+&
+$$ U(p)=\dfrac{1}{C p}I(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{C p} \quad $}{E} \sbRelier[$ I(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad U(p)$]{sys}{S}
+\end{tikzpicture}
+\end{center} \\
+\begin{center}
+Inductance
+\end{center}
+&
+\begin{center}
+\includegraphics[width=2cm]{png/inductance}
+\end{center}
+&
+$$ u(t)=L \dfrac{d i(t)}{dt}$$
+&
+$$ U(p)=LpI(p)$$
+&
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad Lp \quad $}{E} \sbRelier[$ I(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad U(p)$]{sys}{S}
+\end{tikzpicture}
+\end{center} \\
+\end{tabular}
+\end{center}}
+
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Résistance
+%
+%\includegraphics[width=.5\textwidth]{png/resistance}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ u(t)=Ri(t)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ U(p)=RI(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad R \quad $}{E} \sbRelier[$ I(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad U(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+%
+%
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Condensateur
+%
+%\includegraphics[width=.5\textwidth]{png/condensateur}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ u(t)=\dfrac{1}{C}\int i(t) dt$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ U(p)=\dfrac{1}{C p}I(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad \dfrac{1}{C p} \quad $}{E} \sbRelier[$ I(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad U(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+%
+%
+%
+%
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Inductance
+%
+%\includegraphics[width=.5\textwidth]{png/inductance}
+%\end{center}
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine temporel
+%\end{center}
+%$$ u(t)=L \dfrac{d i(t)}{dt}$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Domaine de Laplace
+%\end{center}
+%$$ U(p)=LpI(p)$$
+%\end{minipage} \hfill
+%\begin{minipage}[t]{.2\linewidth}
+%\begin{center}
+%Schéma bloc
+%
+%\vspace{.5cm} 
+%
+%\begin{tikzpicture}
+%\sbEntree{E}
+%\sbBloc{sys}{$ \quad Lp \quad $}{E} \sbRelier[$ I(p)\quad $]{E}{sys}
+%\sbSortie{S}{sys} \sbRelier[$ \quad U(p)$]{sys}{S}
+%\end{tikzpicture} 
+%\end{center}
+%\end{minipage}
+
+\subsection{Le moteur à courant continu en schéma bloc}
+\begin{exemple}
+Exprimer les équations du moteur à courant continu sous forme de schéma bloc.
+
+\begin{minipage}[c]{.3\linewidth}
+$$
+c_r(t) = f_v \omega_m(t)
+$$
+$$
+C_r(p) = f_v \Omega_m(p)
+$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.3\linewidth}
+\ifthenelse{\boolean{prof}}{%
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{f_v} \quad $}{E} \sbRelier[$ C_r(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad \Omega_m(p)$]{sys}{S}
+\end{tikzpicture} 
+\end{center}
+}{
+\rotatebox{90}{
+\begin{tabular}{p{3cm}}
+\\
+\end{tabular}}
+}
+\end{minipage} \hfill
+\begin{minipage}[c]{.3\linewidth}
+\end{minipage}
+
+\begin{minipage}[c]{.3\linewidth}
+$$
+e(t)=K_E \cdot \omega_m(t) $$
+$$
+E(p)=K_E \cdot \Omega_m(p)
+$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.3\linewidth}
+\ifthenelse{\boolean{prof}}{%
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{K_E} \quad $}{E} \sbRelier[$ E(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad\quad \Omega_m(p)$]{sys}{S}
+\end{tikzpicture} 
+\end{center}
+}{
+\rotatebox{90}{
+\begin{tabular}{p{3cm}}
+\\
+\end{tabular}}
+}
+\end{minipage} \hfill
+\begin{minipage}[c]{.3\linewidth}
+\end{minipage}
+
+\begin{minipage}[c]{.3\linewidth}
+$$
+c_m(t)=K_C \cdot i(t)
+$$
+$$
+C_m(p)=K_C \cdot I(p)
+$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.3\linewidth}
+\ifthenelse{\boolean{prof}}{%
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad \dfrac{1}{K_C} \quad $}{E} 
+\sbRelier[$ I(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} 
+\sbRelier[$ \quad C_m(p)$]{sys}{S}
+\end{tikzpicture} 
+\end{center}
+}{
+\rotatebox{90}{
+\begin{tabular}{p{3cm}}
+\\
+\end{tabular}}
+}
+\end{minipage} \hfill
+\begin{minipage}[c]{.3\linewidth}
+\end{minipage}
+
+\begin{minipage}[c]{.3\linewidth}
+$$
+u_R(t)=R\cdot i(t) 
+$$
+$$
+U_R(p)=R\cdot I(p) 
+$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.3\linewidth}
+\ifthenelse{\boolean{prof}}{%
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad R \quad $}{E} \sbRelier[$ I(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad U_r(p)$]{sys}{S}
+\end{tikzpicture} 
+\end{center}
+}{
+\rotatebox{90}{
+\begin{tabular}{p{3cm}}
+\\
+\end{tabular}}
+}
+\end{minipage} \hfill
+\begin{minipage}[c]{.3\linewidth}
+\end{minipage}
+
+\begin{minipage}[c]{.3\linewidth}
+$$
+u_L(t)=L\dfrac{di(t)}{dt}
+$$
+$$
+U_L(p)=LpI(p)
+$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.3\linewidth}
+\ifthenelse{\boolean{prof}}{%
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{sys}{$ \quad Lp \quad $}{E} \sbRelier[$ I(p)\quad $]{E}{sys}
+\sbSortie{S}{sys} \sbRelier[$ \quad U_L(p)$]{sys}{S}
+\end{tikzpicture} 
+\end{center}
+}{
+\rotatebox{90}{
+\begin{tabular}{p{3cm}}
+\\
+\end{tabular}}
+}
+\end{minipage} \hfill
+\begin{minipage}[c]{.3\linewidth}
+\end{minipage}
+
+\begin{minipage}[c]{.3\linewidth}
+$$
+u_L(t)+u_R(t)=L\dfrac{di(t)}{dt}+R\cdot i(t)
+$$
+$$
+U_L(p)+U_R(p)=LpI(p)+RI(p)
+$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.6\linewidth}
+\ifthenelse{\boolean{prof}}{%
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbDecaleNoeudx[4]{E}{nE}
+\sbDecaleNoeudy[-2]{nE}{nh1}
+\sbDecaleNoeudy[2]{nE}{nh2}
+\sbBloc{h1}{$Lp$}{nh1}
+\sbBloc{h2}{$R$}{nh2}
+\sbCompSum[12]{comp}{E}{+}{+}{}{}
+\sbSortie[6]{S}{comp} 
+\sbRelieryx{nE}{h1}
+\sbRelieryx{nE}{h2}
+\sbRelierxy{h1}{comp}
+\sbRelierxy{h2}{comp}
+\sbRelier[$I(p)$]{E}{nE}
+\sbRelier[$\quad \quad  \quad  LpI(p)+RI(p)$]{comp}{S}
+\end{tikzpicture}
+\end{center}
+}{
+\rotatebox{90}{
+\begin{tabular}{p{3cm}}
+\\
+\end{tabular}}
+}
+\end{minipage} \hfill
+%\begin{minipage}[c]{.3\linewidth}
+%\end{minipage}
+
+\begin{minipage}[c]{.3\linewidth}
+$$
+u(t)-e(t)=u_L(t) + u_R(t)
+$$
+$$
+U(p)-E(p)=U_L(p) + U_R(p) 
+$$
+$$
+U(p)-E(p)= LpI(p)+RI(p)
+$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.3\linewidth}
+\ifthenelse{\boolean{prof}}{%
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+%\sbEntree{Ur}
+\sbEntree{Ul}
+\sbCompSum{comp}{E}{}{-}{+}{}
+%\sbSortie{S}{h}
+\sbRelier[$U(p)$]{E}{comp}
+\sbDecaleNoeudy[4]{comp}{Ul}
+\sbRelier[$E(p)$]{Ul}{comp}
+\sbDecaleNoeudy[-4]{comp}{Ur}
+%\sbRelier[$U_R(p)$]{Ur}{comp}
+\sbBloc{h}{$ \dfrac{1}{R+Lp}$}{comp}
+\sbRelier{comp}{h}
+\sbSortie{S}{h}
+\sbRelier[$I(p)$]{h}{S}
+\end{tikzpicture}
+\end{center}
+}{
+\rotatebox{90}{
+\begin{tabular}{p{3cm}}
+\\
+\end{tabular}}
+}
+\end{minipage} \hfill
+\begin{minipage}[c]{.3\linewidth}
+\end{minipage}
+
+\begin{minipage}[c]{.3\linewidth}
+$$
+J\dfrac{d\omega_m(t)}{dt} = c_m(t) - c_r(t)
+$$
+$$
+Jp\Omega_m(p) = C_m(p) - C_r(p)
+$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.3\linewidth}
+\ifthenelse{\boolean{prof}}{%
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+%\sbEntree{Ur}
+\sbEntree{Ul}
+\sbCompSum{comp}{E}{}{-}{+}{}
+%\sbSortie{S}{h}
+\sbRelier[$C_m(p)$]{E}{comp}
+\sbDecaleNoeudy[4]{comp}{Ul}
+\sbRelier[$C_r(p)$]{Ul}{comp}
+\sbDecaleNoeudy[-4]{comp}{Ur}
+%\sbRelier[$U_R(p)$]{Ur}{comp}
+\sbBloc{h}{$ \dfrac{1}{Jp}$}{comp}
+\sbRelier{comp}{h}
+\sbSortie{S}{h}
+\sbRelier[$\quad\quad \Omega_m(p)$]{h}{S}
+\end{tikzpicture}
+\end{center}
+}{
+\rotatebox{90}{
+\begin{tabular}{p{3cm}}
+\\
+\end{tabular}}
+}
+\end{minipage} \hfill
+\begin{minipage}[c]{.3\linewidth}
+\end{minipage}
+
+Schéma bloc du MCC complet :
+
+\ifthenelse{\boolean{prof}}{%
+\begin{center}
+\includegraphics[width=.8\textwidth]{png/mcc_bloc}
+\end{center}
+}{
+\rotatebox{90}{
+\begin{tabular}{p{10cm}}
+\\
+\end{tabular}}
+}
+
+\end{exemple}
+
+
+
+\section{Manipulation des schémas blocs}
+
+
+
+
+\subsection{Blocs en série}
+\begin{center}
+\begin{tabular}{ccc}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{h1}{$H_1(p)$}{E}
+\sbBloc{h2}{$H_2(p)$}{h1} 
+\sbBloc{h3}{$H_3(p)$}{h2} 
+\sbSortie{S}{h3} 
+\sbRelier[$E(p)\quad$]{E}{h1}
+\sbRelier{h1}{h2}
+\sbRelier{h2}{h3}
+\sbRelier[$\quad S(p)$]{h3}{S}
+\end{tikzpicture}
+&
+$\equiv$ 
+&
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{h1}{$H(p)$}{E}
+\sbSortie{S}{h1} 
+\sbRelier[$E(p)\quad$]{E}{h1}
+\sbRelier[$\quad S(p)$]{h1}{S}
+\end{tikzpicture}
+\end{tabular}
+\end{center}
+
+$$
+H(p) = H_1(p)\cdot H_2(p) \cdot H_3(p)
+$$
+
+
+\subsection{Blocs en parallèle}
+
+\begin{minipage}[c]{.4\linewidth}
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbDecaleNoeudx[4]{E}{nE}
+\sbDecaleNoeudy[-2]{nE}{nh1}
+\sbDecaleNoeudy[2]{nE}{nh2}
+\sbBloc{h1}{$H_1(p)$}{nh1}
+\sbBloc{h2}{$H_2(p)$}{nh2}
+\sbCompSum[12]{comp}{E}{+}{+}{}{}
+\sbSortie{S}{comp} 
+\sbRelieryx{nE}{h1}
+\sbRelieryx{nE}{h2}
+\sbRelierxy{h1}{comp}
+\sbRelierxy{h2}{comp}
+\sbRelier[$E(p)$]{E}{nE}
+\sbRelier[$S(p)$]{comp}{S}
+\end{tikzpicture}
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[c]{.15\linewidth}
+$$\equiv$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.4\linewidth}
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{h1}{$H_1(p)+H_2(p)$}{E}
+\sbSortie{S}{h1} 
+\sbRelier[$E(p)\quad$]{E}{h1}
+\sbRelier[$\quad S(p)$]{h1}{S}
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+
+$$ S(p) = H_1(p) \cdot E(p) + H_2(p) \cdot E(p) $$
+$$ H(p) = H_1(p) + H_2(p)$$
+
+\subsection{Comparateurs en série}
+
+
+\begin{minipage}[c]{.4\linewidth}
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbEntree{Y}
+\sbEntree{Z}
+\sbCompSum{comp1}{E}{}{-}{+}{}
+\sbDecaleNoeudy[4]{comp1}{eY}
+\sbCompSum[8]{comp2}{comp1}{}{+}{+}{}
+\sbDecaleNoeudy[4]{comp2}{eZ}
+\sbSortie[8]{S}{comp2} 
+\sbRelier[$E(p)$]{E}{comp1}
+\sbRelier[$E(p)-Y(p)$]{comp1}{comp2}
+\sbRelier[$\quad \quad E(p)-Y(p)+Z(p)$]{comp2}{S}
+\sbRelier[$Y(p)$]{eY}{comp1}
+\sbRelier[$Z(p)$]{eZ}{comp2}
+\end{tikzpicture}
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[c]{.15\linewidth}
+$$\equiv$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.4\linewidth}
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbEntree{Y}
+\sbEntree{Z}
+\sbCompSum{comp1}{E}{}{+}{+}{}
+\sbDecaleNoeudy[4]{comp1}{eY}
+\sbCompSum[8]{comp2}{comp1}{}{-}{+}{}
+\sbDecaleNoeudy[4]{comp2}{eZ}
+\sbSortie[8]{S}{comp2} 
+\sbRelier[$E(p)$]{E}{comp1}
+\sbRelier[$E(p)+Z(p)$]{comp1}{comp2}
+\sbRelier[$\quad \quad E(p)-Y(p)+Z(p)$]{comp2}{S}
+\sbRelier[$Z(p)$]{eY}{comp1}
+\sbRelier[$Y(p)$]{eZ}{comp2}
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+
+\subsection{Déplacement des points de prélèvement}
+
+\begin{center}
+ \includegraphics[width=\textwidth]{png/prelevement1}
+\end{center}
+
+\begin{center}
+ \includegraphics[width=\textwidth]{png/prelevement2}
+\end{center}
+
+
+\subsection{Déplacement des sommateurs}
+
+
+\begin{center}
+ \includegraphics[width=\textwidth]{png/sommateur1}
+\end{center}
+
+\begin{center}
+ \includegraphics[width=\textwidth]{png/sommateur2}
+\end{center}
+
+
+
+
+\section{Fonctions de transfert des systèmes bouclés}
+Il peut être parfois intéressant de modifier un diagramme fonctionnel en vue de simplifier les calculs de fonctions de transfert. Pour cela quelques règles sont à respecter.
+
+Les manipulations suivantes n’ont pas forcément de sens physique, mais sont
+symboliques.
+
+\subsection{Systèmes en boucles fermées}
+Soit la structure ci-dessous constituée en trois blocs :
+\begin{center}
+  \includegraphics[width=.7\textwidth]{png/CDCR}
+\end{center}
+
+
+\begin{resultat}
+\textbf{Fonction de Transfert en Boucle Fermée}
+
+La fonction $H(p)=\dfrac{S(p)}{E(p)} $ est appelée fonction de transfert en boucle fermée du
+système. On la note \textbf{FTBF}. De manière générale, la FTBF s'exprime ainsi : 
+
+$$
+H(p)= \dfrac{\text{Chaîne directe}}{
+1+\text{Chaîne directe}\times\text{Chaîne de retour}}
+$$
+
+\textbf{Attention :} le signe + du dénominateur  provient du fait que la chaîne de retour arrive avec le signe - sur le comparateur.
+
+\end{resultat}
+
+\begin{demo}
+\ifthenelse{\boolean{prof}}{%
+Montrons que dans le schéma bloc précédent, la fonction de transfert en boucle fermée peut s'écrire : 
+$$
+H(p)=\dfrac{K\cdot G(p)}{1+K\cdot G(p) \cdot F(p)}
+$$
+Recherchons la relation entre $S(p)$ et $E(p)$.
+
+En analysant la chaîne directe :
+$$ S(p)= C(p) \cdot G(p) = \varepsilon(p) \cdot K \cdot G(p)$$
+
+En analysant la chaîne de retour : 
+$$ R(p)= S(p) \cdot F(p) $$
+
+Équation donnée par le comparateur : 
+$$\varepsilon(p) = E(p) - R(p)$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{10cm}}
+\\
+\end{tabular}}
+}
+
+%\begin{warn}
+%\textbf{Attention} 
+%
+%Le signe \textbf{-} correspond au signe \textbf{-} du
+%comparateur. Lorsqu'une perturbation intervient dans la chaîne, elle peut être
+%insérée avec un comparateur portant le signe \textbf{+}. La relation est
+%modifiée en conséquence. 
+%\end{warn}
+
+
+\ifthenelse{\boolean{prof}}{%
+On peut donc en déduire que :
+$$\varepsilon(p) = E(p) - S(p) \cdot F(p) $$
+
+D'où :
+$$ 
+S(p)= \left[ E(p) - S(p) \cdot F(p) \right] \cdot K \cdot G(p) 
+$$
+
+On a donc :
+$$ 
+S(p)= \dfrac{K \cdot G(p)}{1+K \cdot G(p) \cdot F(p)} E(p)
+$$
+
+Au final : 
+$$ 
+H(p)=\dfrac{S(p)}{E(p)}= \dfrac{K \cdot G(p)}{1+K \cdot G(p) \cdot F(p)}
+$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{10cm}}
+\\
+\end{tabular}}
+}
+
+On a donc :
+
+\begin{minipage}[c]{.45\linewidth}
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbComp{comp}{E}
+\sbRelier[$E(p)$]{E}{comp}
+\sbBloc{B1}{$K$}{comp}
+\sbBloc{B2}{$G(p)$}{B1}
+\sbSortie{S}{B2}
+\sbRelier{E}{comp}
+\sbRelier[$\varepsilon(p)$]{comp}{B1}
+\sbRelier{B1}{B2}
+\sbRelier[$S(p)$]{B2}{S}
+
+\sbDecaleNoeudy[4]{B2}{nd1}
+\sbBlocr{r1}{$F(p)$}{nd1}
+\sbRelieryx{B2-S}{r1}
+\sbRelierxy[$R(p)$]{r1}{comp}
+
+\end{tikzpicture}
+\end{center}
+\end{minipage}\hfill
+\begin{minipage}[c]{.05\linewidth}
+$$\equiv$$
+\end{minipage}\hfill
+\begin{minipage}[c]{.4\linewidth}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbBloc{B1}{$H(p)$}{E}
+\sbSortie{S}{B1}
+\sbRelier[$E(p) \quad$]{E}{B1}
+\sbRelier[$\quad S(p)$]{B1}{S}
+\end{tikzpicture}
+\end{minipage}
+
+
+\end{demo}
+
+\begin{exemple}
+Calcul de la FTBF du MCC :
+\begin{center}
+\includegraphics[width=.8\textwidth]{png/schema_mcc_complet}
+\end{center}
+
+\ifthenelse{\boolean{prof}}{%
+
+}{
+\rotatebox{90}{
+\begin{tabular}{p{10cm}}
+\\
+\end{tabular}}
+}
+\end{exemple}
+
+\subsection{Calcul de l'erreur (ou écart)}
+On reprend le système suivant :
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbComp{comp}{E}
+\sbRelier[$E(p)$]{E}{comp}
+\sbBloc{B1}{$K$}{comp}
+\sbBloc{B2}{$G(p)$}{B1}
+\sbSortie[8]{S}{B2}
+\sbRelier{E}{comp}
+\sbRelier[$\varepsilon(p)$]{comp}{B1}
+\sbRelier{B1}{B2}
+\sbRelier[$S(p)$]{B2}{S}
+
+\sbDecaleNoeudy[4]{B2}{nd1}
+\sbBlocr{r1}{$F(p)$}{nd1}
+\sbRelieryx{B2-S}{r1}
+\sbRelierxy[$R(p)$]{r1}{comp}
+
+\end{tikzpicture}
+\end{center}
+
+\begin{resultat}
+\textbf{Expression de l'erreur d'un système}
+
+Dans le but d'exprimer l'erreur du système, il est intéressant d'exprimer la
+fonction de transfert relative à l'erreur $\varepsilon(p)$. On montre que : 
+
+$$
+\varepsilon(p) = \dfrac{1}{1+K \cdot G(p) \cdot F(p)} E(p) = \dfrac{\text{1}}{
+1+\text{Chaîne directe}\times\text{Chaîne de retour}} E(p)
+$$
+\end{resultat}
+%
+%\begin{exemple}
+%Calcul de l'erreur du MCC  :
+%
+%\begin{center}
+%\includegraphics[width=.8\textwidth]{png/schema_MCC}
+%\end{center}
+%
+%\ifthenelse{\boolean{prof}}{%
+%\rotatebox{90}{
+%\begin{tabular}{p{10cm}}
+%\\
+%\end{tabular}}
+%}{
+%\rotatebox{90}{
+%\begin{tabular}{p{10cm}}
+%\\
+%\end{tabular}}
+%}
+%\end{exemple}
+
+\subsection{Systèmes en boucles ouvertes}
+
+Pour l'étude du comportement du système et pour déterminer certaines des ses
+performances on utilise la fonction de transfert en boucle ouverte du système
+(\textbf{FTBO}). On déduit le comportement en boucle fermée (cas réel) à
+partir du système en boucle ouverte (la FTBO est plus simple à manipuler). 
+
+\begin{center}
+  \includegraphics[width=.6\textwidth]{png/FTBO}
+\end{center}
+
+La boucle ouverte a donc la forme suivante : 
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbComp{comp}{E}
+\sbRelier[$E(p)$]{E}{comp}
+\sbBloc[4]{B1}{$K$}{comp}
+\sbBloc[4]{B2}{$G(p)$}{B1}
+\sbBloc[4]{B3}{$F(p)$}{B2}
+\sbSortie{S}{B3}
+\sbRelier{E}{comp}
+\sbRelier[$\varepsilon(p)$]{comp}{B1}
+\sbRelier{B1}{B2}
+\sbRelier[$S(p)$]{B2}{B3}
+\sbRelier[$\quad R(p)$]{B3}{S}
+\end{tikzpicture}
+\end{center}
+
+
+\begin{resultat}
+\textbf{Fonction de Transfert en Boucle Ouverte}
+
+La FTBO s'écrit donc ainsi :
+
+$$
+FTBO(p) = K \cdot G(p) \cdot F(p)
+$$
+
+\textbf{Attention} à ne pas confondre la FTBO et la chaîne directe !
+\end{resultat}
+
+\subsection{Fonction de transfert boucle fermée des systèmes multi-variables}
+Dans un système réel, plusieurs entrées peuvent venir modifier la sortie. Ces
+entrées comprennent non seulement l'entrée principale (grandeur par rapport à
+laquelle on détermine la sortie) mais aussi des entrées
+supplémentaires très souvent parasites (bruit, effort résistant...).
+
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbComp{comp1}{E}
+\sbRelier[$E_1(p)$]{E}{comp1}
+\sbBloc{B1}{$A(p)$}{comp1}
+\sbSumh{comp2}{B1}
+\sbBloc{B2}{$B(p)$}{comp2}
+\sbSortie[4]{S}{B2}
+\sbRelier{comp1}{B1}
+\sbRelier{B1}{comp2}
+\sbRelier{comp2}{B2}
+\sbRelier[$S(p)$]{B2}{S}
+
+\sbDecaleNoeudy[4]{B2}{nd1}
+\sbBlocr{r1}{$C(p)$}{nd1}
+\sbRelieryx{B2-S}{r1}
+\sbRelierxy[$R(p)$]{r1}{comp}
+
+\sbDecaleNoeudy[-4]{comp2}{nd1}
+\sbEntree{E2}
+\sbRelier[$E_2(p)$]{nd1}{comp2}
+\end{tikzpicture}
+\end{center}
+
+
+\begin{methode}
+\textbf{Principe de superposition}
+
+Soit un système avec deux entrées $E_1(p)$ et $E_2(p)$. Pour calculer $S(p)$ on procède de la manière suivante : 
+\begin{enumerate}
+\item On considère que $E_1(p)\neq 0$ et que $E_2(p)=0$.
+\item On calcule alors $H_1(p)=\dfrac{S(p)}{E_1(p)}$.
+\item On considère que $E_1(p) = 0$ et que $E_2(p) \neq 0$.
+\item On calcule alors $H_2(p)=\dfrac{S(p)}{E_2(p)}$.
+\item On conclue alors par superposition que $S(p)=E_1(p) \cdot H_1(p) + E_2(p) \cdot H_2(p)$.
+\end{enumerate}
+
+Cette méthode peut être étendue à un système à $n$ entrées. On considèrera alors à chaque étape que $n-1$ entrées sont nulles.
+\end{methode}
+
+\begin{exemple}
+
+\begin{minipage}[c]{.4\linewidth}
+
+\textbf{1. On considère que $E_1(p)\neq 0$ et que $E_2(p)=0$.}
+
+\textbf{2. On calcule alors $H_1(p)=\dfrac{S(p)}{E_1(p)}$.}
+
+
+\end{minipage} \hfill
+\begin{minipage}[c]{.55\linewidth}
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbComp{comp1}{E}
+\sbRelier[$E_1(p)$]{E}{comp1}
+\sbBloc{B1}{$A(p)$}{comp1}
+%\sbSumh{comp2}{B1}
+\sbBloc{B2}{$B(p)$}{comp2}
+\sbSortie[4]{S}{B2}
+\sbRelier{comp1}{B1}
+%\sbRelier{B1}{comp2}
+%\sbRelier{comp2}{B2}
+\sbRelier{B1}{B2}
+\sbRelier[$S(p)$]{B2}{S}
+
+\sbDecaleNoeudy[4]{B2}{nd1}
+\sbBlocr{r1}{$C(p)$}{nd1}
+\sbRelieryx{B2-S}{r1}
+\sbRelierxy[$R(p)$]{r1}{comp}
+
+\sbDecaleNoeudy[-4]{comp2}{nd1}
+\sbEntree{E2}
+%\sbRelier[$E_2(p)$]{nd1}{comp2}
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+
+\begin{minipage}[c]{.4\linewidth}
+
+\textbf{3. On considère que $E_1(p) = 0$ et que $E_2(p) \neq 0$.}
+
+\textbf{4. On calcule alors $H_2(p)=\dfrac{S(p)}{E_2(p)}$.}
+
+\end{minipage} \hfill
+\begin{minipage}[c]{.55\linewidth}
+
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+\sbComp{comp1}{E}
+\sbRelier[$E_2(p)\quad$]{E}{comp1}
+\sbBloc{B1}{$B(p)$}{comp1}
+%\sbSumh{comp2}{B1}
+%\sbBloc{B2}{$B(p)$}{comp2}
+\sbSortie[12]{S}{B1}
+\sbRelier{comp1}{B1}
+%\sbRelier{B1}{comp2}
+%\sbRelier{comp2}{B2}
+\sbRelier[$S(p)$]{B1}{S}
+
+
+\sbDecaleNoeudy[4]{S}{nd1}
+\sbBlocr{r1}{$C(p)$}{nd1}
+\sbBlocr{r2}{$A(p)$}{r1}
+\sbRelieryx{S}{r1}
+\sbRelier{r1}{r2}
+\sbRelierxy{r2}{comp}
+
+\sbDecaleNoeudy[-4]{comp2}{nd1}
+\sbEntree{E2}
+%\sbRelier[$E_2(p)$]{nd1}{comp2}
+\end{tikzpicture}
+\end{center}
+\end{minipage} 
+
+
+\textbf{5. On conclue alors par superposition que $S(p)=E_1(p) \cdot H_1(p) + E_2(p) \cdot H_2(p)$.}
+
+\ifthenelse{\boolean{prof}}{%
+$$
+S(p)=S_1(p)+S_2(p)=\dfrac{A(p)\cdot B(p)}{1+A(p)\cdot B(p)\cdot C(p)}\cdot
+E_1(p) - \dfrac{B(p)}{1+A(p)\cdot B(p)\cdot C(p)}E_2(p)
+$$
+}{
+\rotatebox{90}{
+\begin{tabular}{p{10cm}}
+\\
+\end{tabular}}
+}
+
+\end{exemple}
+%\begin{exemple}
+%%Déterminer $\Omega
+%\begin{center}
+%\includegraphics[width=.8\textwidth]{png/schema_mcc_complet}
+%\end{center}
+%\end{exemple}
+
+\end{document}
+\section{Schéma synoptique du calcul}
+
+Le comportement $y(t)$ d'un système sous l'effet d'un signal canonique d'entrée
+$x(t)$ sera décrit dans un premier temps dans le domaine de Laplace. 
+
+La fonction de transfert $H(p)$ du système étant connue, la transformée de
+Laplace $S(p)$ du signal de sortie sera conforme au produit $H(p) \cdot E(p)$
+où $E(p)$ est la transformée de Laplace de la fonction temporelle du signal
+d'entrée $x(t)$.
+
+Les signaux canoniques d'entrée $x(t)$ représentent une perturbation standard
+généralement très simple (fonction échelon, rampe, sinusoïde...).
+
+La transformée inverse donne enfin la réponse temporelle cherchée. 
+
+\begin{center}
+%  \includegraphics[width=0.9\textwidth]{eps/synoptique}
+\end{center}
+
+
+\end{document}
