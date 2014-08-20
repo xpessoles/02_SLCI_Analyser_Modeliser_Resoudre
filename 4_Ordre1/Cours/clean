@@ -1,6 +1,0 @@
-rm -f *.lof
-rm -f *.out
-rm -f *.lof *.aux *.bbl *.blg *.dvi *.log *.mtc *.mtc0 *.pdf *.ps theseHeadings.aux *.toc *.out
-rm -rf *.bak
-rm -rf *~
-rm -rf *backup
