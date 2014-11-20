@@ -1,0 +1,283 @@
+\documentclass[10pt]{article}
+\input{style/coursHeadings}
+\input{style/programHeadings}
+\input{style/macros_SII}
+\input{style/macros_Titres}
+\input{style/macros_Frames}
+
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\newif\ifprof
+%\proftrue
+\proffalse
+
+\newboolean{td}
+\setboolean{td}{true}
+
+\usepackage[%
+    pdftitle={},
+    pdfauthor={Florestan Mathurin},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+\def\discipline{Sciences Industrielles de l'Ingénieur}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 3 -- Modélisation des Systèmes Linéaires Continus Invariants \\ Modélisation par schémas blocs}{
+}}
+
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent Florestan \textsc{Mathurin}}{
+}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI \\
+Ch 3 : Modélisation des SLCI par schéma bloc -- Application 2 --\ifthenelse{\boolean{prof}}{P}{E}%
+}{
+}}
+
+\def\xxcathegorie{\ifthenelse{\boolean{xp}}{
+2013 -- 2014 \\
+Xavier \textsc{Pessoles}}{
+Informatique - Cours}}
+
+%---------------------------------------------------------------------------
+
+
+\begin{document}
+
+\ifthenelse{\boolean{xp}}{\input{style/enteteXP}}{\input{style/enteteDI}}
+
+
+
+%\renewcommand{\baselinestretch}{1.2}
+%\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+
+
+%\begin{comp}
+%\noindent \textbf{Résoudre :} à partir des modèles retenus :
+%\begin{itemize}
+%\item choisir une méthode de résolution analytique, graphique, numérique;
+%\item mettre en \oe{}uvre une méthode de résolution.
+%\end{itemize}
+
+%\noindent \textit{Rés -- C1.1 :} Loi entrée sortie géométrique et cinématique -- Fermeture géométrique.
+
+%\noindent \textit{Mod2 -- C4.1 :} Représentation par schéma bloc.
+%\end{comp}
+
+
+\setcounter{subparagraph}{0}
+
+\begin{flushright}
+\textit{D'après ressources de Florestan Mathurin : \url{http://florestan.mathurin.free.fr/}.}
+\end{flushright}
+
+\subsection*{Étude du système de régulation du niveau d'eau d'un bassin du système RAMSES}
+
+\begin{minipage}[c]{.47\linewidth}
+\subsubsection*{Présentation du système RAMSES}
+
+Après avoir été confrontée à des orages violents ayant entrainés des inondations exceptionnelles  au début des années 80, la ville de bordeaux a décidé de faire de son programme de lutte contre les inondations une priorité.  
+
+Presque trente ans plus tard et après plus d’un milliard d‘euros de travaux réalisés, le système RAMSES est  l’un des systèmes anti-inondations les plus performants au monde.  
+
+\end{minipage}\hfill
+\begin{minipage}[c]{.47\linewidth}
+\begin{center}
+\includegraphics[width=.95\textwidth]{images/img1}
+\textit{Observation en temps réel du comportement d’un bassin de stockage depuis la tour de contrôle }
+\end{center}
+\end{minipage}
+
+\begin{center}
+\begin{tabular}{|p{.45\textwidth}|p{.45\textwidth}|}
+\hline
+\multicolumn{2}{|l|}{Le système RAMSES, c’est : } \\
+\hline
+Plus de $2\,052\;km$ de canalisations de diamètre $300 \; mm$ à $4\,500\;mm$ & 49 pluviographes  \\
+\hline
+82 bassins d’étalement et de stockage offrant une capacité totale de  $2\,544\, 850\;m^3$.
+& 
+300 limnimètres (équipement permettant l'enregistrement et la transmission de la mesure de la hauteur d'eau, en un point donné, dans un cours d’eau, un barrage, un réservoir…)  \\
+ \hline
+ 61 stations de pompage  d’un débit total de  $133,4 \; m^3/s$ 
+ Un réseau d’échange d’informations et un télé-contrôle centralisé &  31 débitmètres, 6 marégraphes \\
+ \hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\includegraphics[width=.8\textwidth]{images/img2}
+\end{center}
+
+
+\begin{minipage}[c]{.35\linewidth}
+
+Grâce à un réseau de tranchées drainantes, l’eau est stockée localement dans différents bassins puis restituée progressivement à faible débit dans le réseau aval (Garonne ou usine de traitement) au moyen d’un ouvrage hydraulique de régulation.  
+
+\end{minipage}\hfill
+\begin{minipage}[c]{.62\linewidth}
+\begin{center}
+\includegraphics[width=.95\textwidth]{images/img3}
+\end{center}
+\end{minipage}
+
+
+\subsubsection*{Étude du système de régulation du niveau d’eau d’un bassin enterré}
+
+\begin{center}
+\includegraphics[width=.8\textwidth]{images/img4}
+\end{center}
+
+On s’intéresse à un système de régulation de niveau d’un bassin enterré d’une contenance de 
+$10\,000\;m^3$ dont on donne ci-dessous une description structurelle simplifiée ainsi que son modèle de connaissance. 
+
+\begin{center}
+\begin{tabular}{|p{3cm}|p{7cm}|l|}
+\hline
+Moteur & 
+Il tourne à une vitesse angulaire de $\omega_m(t)$ pour une tension de commande $u_m(t)$. &
+$\tau \dfrac{d\omega_m(t)}{dt} + \omega_m(t) = K_m u_m(t)$ \\
+\hline
+Réducteur & 
+Il réduit l'angle de l'axe de rotation du moteur $\theta_m(t)$
+en un angle d'ouverture $\theta_v(t)$ de la vanne.&
+$\theta_v(t)=r\theta_m(t)$\\
+\hline
+Vanne & 
+Elle délivre un débit $q_e(t)$ pour un angle d'ouverture $\theta_v(t)$. &
+$q_e(t)= K_v \cdot \theta_v(t) $ \\
+\hline
+Réservoir & 
+Il est de section constante $S$, et a pour débit d’entrée
+$q_e (t)$ et de sortie $q_s (t)$.&
+$q_e(t)-q_s(t)=S\cdot\dfrac{dh(t)}{dt}$\\
+\hline
+Limnimètre (capteur) & 
+Il traduit le niveau d'eau $h(t)$ atteint dans le réservoir
+en tension $u_{mes}(t)$ , image de ce niveau. &
+$u_{mes}(t) = a \cdot h(t)$ \\
+\hline
+Potentiomètre (Interface H/M) & 
+Il traduit la consigne de niveau d'eau $h_c(t)$ souhaité
+en tension $u_c(t)$, image de cette consigne. &
+\\
+\hline 
+Régulateur (comparateur + correcteur) & 
+Il compare la tension de consigne $u_c(t)$ à la tension
+de mesure $u_{mes}(t)$ pour en déduire la tension $\varepsilon(t)$ ,
+image de l’erreur, puis corrige (amplifie) cette tension
+$\varepsilon (t)$ en une tension de commande du moteur $u_m(t)$.
+&
+$\varepsilon(t) = u_c(t)-u_{mes}(t)$
+
+et
+
+$u_m(t)=A\varepsilon(t)$\\
+\hline
+\end{tabular}
+\end{center}
+
+$\tau$, $K_m$, $r$, $K_v$, $S$, $a$ et $A$ sont des coefficients constants. 
+
+On suppose que toutes les conditions initiales sont nulles.
+
+\subparagraph{}
+\textit{Appliquer, pour chacun des modèles de connaissance des constituants du système, la
+transformation de Laplace. Puis indiquer sa fonction de transfert, et enfin en déduire son
+schéma-bloc.}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+
+
+
+Le modèle de connaissance du potentiomètre (interface H/M) n'est jamais donné dans les sujets de
+concours, il faut donc être capable de le retrouver !
+
+\subparagraph{}
+\textit{Donner cette relation entre $h_c (t)$ et $u_c (t)$ qui assure que $\varepsilon (t)$ soit bien une image de l’erreur
+du niveau d’eau. En déduire le schéma-bloc correspondant au potentiomètre.}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+
+La relation entre vitesse angulaire $\omega_m(t)$ et position angulaire $\theta_m(t)$ du moteur, n'est aussi jamais donnée
+dans les sujets de concours, il faut donc la connaître.
+
+\subparagraph{}
+\textit{Donner donc en précisant les unités, cette relation temporelle générale qui lie vitesse et
+position. En déduire le schéma-bloc qui passe de $\Omega_m(p)$ à $\Theta_m(p)$.}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+
+
+\subparagraph{}
+\textit{Donner la variable d’entrée et la variable de sortie du système. Puis, représenter le schéma bloc du système entier en précisant le nom des constituants sous les blocs, ainsi que les flux
+d’énergie ou d’information entre les blocs.}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+
+\subparagraph{}
+\textit{Déterminer les fonctions de transfert $F_1(p)=\dfrac{H(p)}{H_c(p)}$ lorsque $Q_s(p)=0$ et $F_1(p)=\dfrac{H(p)}{Q_s(p)}$ lorsque $H_c(p)=0$.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+\subparagraph{}
+\textit{En déduire, à l’aide du théorème de superposition, l’expression de $H(p)$ en fonction de $H_c(p)$ et $Q_s(p)$.}
+
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+\vspace{.5cm}
+
+
+\textbf{On considère que $Q_s(p)=0$.}
+
+\subparagraph{}
+\textit{Donner la valeur initiale, la valeur finale et la pente à l'origine lorsque le système est soumis à un échelon unitaire.}
+
+
+\subparagraph{}
+\textit{Donner la réponse temporelle du système à un échelon unitaire.}
+
+
+
+
+
+\end{document}
+
