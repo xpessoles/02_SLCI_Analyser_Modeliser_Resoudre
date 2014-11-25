@@ -1,0 +1,140 @@
+\documentclass[10pt]{article}
+\input{style/coursHeadings}
+\input{style/programHeadings}
+\input{style/macros_SII}
+\input{style/macros_Titres}
+\input{style/macros_Frames}
+
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\newif\ifprof
+%\proftrue
+\proffalse
+
+\newboolean{td}
+\setboolean{td}{true}
+
+\usepackage[%
+    pdftitle={},
+    pdfauthor={Florestan Mathurin},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+\def\discipline{Sciences Industrielles de l'Ingénieur}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 3 -- Modélisation des Systèmes Linéaires Continus Invariants \\ Modélisation par schémas blocs}{
+}}
+
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent Florestan \textsc{Mathurin}}{
+}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI \\
+Ch 3 : Modélisation des SLCI par schéma bloc -- Application 2 --\ifthenelse{\boolean{prof}}{P}{E}%
+}{
+}}
+
+\def\xxcathegorie{\ifthenelse{\boolean{xp}}{
+2013 -- 2014 \\
+Xavier \textsc{Pessoles}}{
+Informatique - Cours}}
+
+%---------------------------------------------------------------------------
+
+
+\begin{document}
+
+\ifthenelse{\boolean{xp}}{\input{style/enteteXP}}{\input{style/enteteDI}}
+
+
+
+%\renewcommand{\baselinestretch}{1.2}
+%\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+
+
+%\begin{comp}
+%\noindent \textbf{Résoudre :} à partir des modèles retenus :
+%\begin{itemize}
+%\item choisir une méthode de résolution analytique, graphique, numérique;
+%\item mettre en \oe{}uvre une méthode de résolution.
+%\end{itemize}
+
+%\noindent \textit{Rés -- C1.1 :} Loi entrée sortie géométrique et cinématique -- Fermeture géométrique.
+
+%\noindent \textit{Mod2 -- C4.1 :} Représentation par schéma bloc.
+%\end{comp}
+
+
+\setcounter{subparagraph}{0}
+
+\begin{flushright}
+\textit{D'après ressources de Florestan Mathurin.}
+
+\url{http://florestan.mathurin.free.fr/}
+\end{flushright}
+
+\subsection*{Modélisation d'une enceinte chauffante}
+
+\begin{minipage}[c]{.47\linewidth}
+
+Le système représenté ci contre est chargé de maintenir la température d’une enceinte. Le chauffage est assuré par un échangeur thermique. Une vanne permet de réguler le débit dans l’échangeur. 
+
+On note $\alpha(t)$ l’angle d’ouverture de la vanne, $q(t)$ le débit dans l’échangeur, $\theta_1 (t)$ la 
+température en sortie de l’échangeur, $\theta(t)$ la température de l’enceinte.
+\end{minipage}\hfill
+\begin{minipage}[c]{.47\linewidth}
+\begin{center}
+\includegraphics[width=.95\textwidth]{images/img1}
+\end{center}
+\end{minipage}
+
+On donne les modèles de connaissance qui régissent le système : 
+\begin{itemize}
+\item $q(t)=k_0 \alpha(t)$ (loi de fonctionnement de la vanne donnant le débit en fonction de l’angle d’ouverture de la vanne);
+\item $\theta_1(t) + \tau_1 \dfrac{d\theta_1}{dt} = k_1 q(t)$ (loi de transfert de chaleur dans l’échangeur);
+\item  $\theta(t) + \tau_2 \dfrac{d\theta}{dt} = k_2 \theta_1(t)$ (loi de transfert de chaleur dans l’enceinte).  
+\end{itemize}
+
+On suppose que toutes les conditions initiales sont nulles. L’entrée du système est l’angle d’ouverture de la vanne $\alpha(t)$ et la sortie, la température de l’enceinte $\theta(t)$. 
+
+\subparagraph{}
+\textit{Traduire dans le domaine de Laplace les équations du modèle de connaissance. En déduire les différents modèles de comportement et les fonctions de transfert associées.}
+
+\subparagraph{}
+\textit{Représenter le système par un schéma-bloc faisant intervenir les 3 blocs précédemment définis.}
+
+
+Afin de réguler la température, on choisit de motoriser la vanne. On installe un capteur dans l’enceinte qui permet de mesurer la température et la de traduire en une tension $u_{mes} (t)$ (on peut modéliser le capteur par un gain pur $K_{mes} =0,02$). La tension $u_{mes} (t)$ est comparée à la tension de consigne $u_c(t)$ issue d’un transducteur de fonction de transfert $T(p)$. En fonction de cet écart amplifié par un correcteur de gain $K_c$ , la vanne s’ouvre ou se ferme. Le schéma ci-dessous précise l’architecture du système. 
+
+\begin{center}
+\includegraphics[width=.6\textwidth]{images/img2}
+\end{center}
+
+On donne la fonction de transfert du moteur qui est $M(p)=\dfrac{\alpha(p)}{U_m(p)}=\dfrac{K}{1+\tau p}$.
+
+\subparagraph{}
+\textit{Représenter par un schéma-bloc le système régulé dont l’entrée est la température $\theta_c (p)$. }
+
+
+\subparagraph{}
+\textit{Quelle doit être la fonction de transfert du transducteur de façon à annuler l’écart $\varepsilon(p)$ quand la  température de consigne et la température de l’enceinte sont égales ? }
+
+
+
+
+\end{document}
+
