@@ -1,0 +1,202 @@
+\documentclass[10pt]{article}
+\input{style/coursHeadings}
+\input{style/programHeadings}
+\input{style/macros_SII}
+\input{style/macros_Titres}
+\input{style/macros_Frames}
+
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\newif\ifprof
+%\proftrue
+\proffalse
+
+\newboolean{td}
+\setboolean{td}{true}
+
+\usepackage[%
+    pdftitle={},
+    pdfauthor={Florestan Mathurin},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+\def\discipline{Sciences Industrielles de l'Ingénieur}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{CI 2 -- SLCI}{}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 4 -- Étude des systèmes du Premier Ordre}{
+}}
+
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent Florestan \textsc{Mathurin}}{
+}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI \\
+Ch 4 : Étude des Systèmes d'Ordre 1 -- TD -- \ifthenelse{\boolean{prof}}{P}{E}%
+}{
+}}
+
+\def\xxcathegorie{\ifthenelse{\boolean{xp}}{
+2013 -- 2014 \\
+Florestan  \textsc{Mathurin}}{
+Informatique - Cours}}
+
+
+
+
+
+%---------------------------------------------------------------------------
+
+
+\begin{document}
+
+\ifthenelse{\boolean{xp}}{\input{style/enteteXP}}{\input{style/enteteDI}}
+
+
+
+%\renewcommand{\baselinestretch}{1.2}
+%\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+
+
+\begin{comp}
+\noindent %\textbf{Résoudre :} à partir des modèles retenus :
+%\begin{itemize}
+%\item choisir une méthode de résolution analytique, graphique, numérique;
+%\item mettre en \oe{}uvre une méthode de résolution.
+%\end{itemize}
+%
+%\noindent \textit{Rés -- C1.1 :} Loi entrée sortie géométrique et cinématique -- Fermeture géométrique.
+%
+%\noindent \textit{Mod2 -- C4.1 :} Représentation par schéma bloc.
+\end{comp}
+
+\section*{Étude des performances du système d'ouverture de porte automatique de TGV }
+
+\begin{flushright}
+\textit{D'après concours Centrale Supelec -- MP -- 2008.}
+
+\textit{Adapté par Florestan Mathurin.}
+\end{flushright}
+
+\ifprof
+\else
+
+\begin{minipage}[c]{.45\linewidth}
+\begin{center}
+\includegraphics[width=.6\textwidth]{images/fig_01}
+\end{center}
+ 
+ La figure de droite montre l’interface assurant, à partir des informations délivrées par l’unité centrale de commande, la fermeture hermétique et le verrouillage d’une porte de TGV. 
+ 
+\end{minipage} \hfill
+\begin{minipage}[c]{.52\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/fig_02}
+\end{center}
+\end{minipage}
+
+
+
+
+\begin{minipage}[c]{.6\linewidth}
+Afin de satisfaire les contraintes d'encombrement, l'ouverture de la porte s'effectue selon l'enchaînement temporel de trois phases distinctes décrites à partir de la position « porte fermée » pour laquelle la face extérieure de la porte est alignée avec la face extérieure de la caisse : une phase de décalage puis une phase de louvoiement et enfin une phase d'escamotage. La phase primaire (décalage) puis la phase terminale (escamotage) sont définies par les figures ci-contre. 
+
+\end{minipage} \hfill
+\begin{minipage}[c]{.35\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/fig_03}
+\end{center}
+\end{minipage}
+
+Les performances annoncées de la part du constructeur, dans la phase d'escamotage, sont les suivantes :
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Critères & Valeur \\
+\hline
+\hline
+Accès suffisant du wagon & 850 mm \\
+\hline
+Temps d'ouverture de la porte en phase d'escamotage & $t\leq 4\; s$ \\
+\hline
+Vitesse d’accostage de la porte en fin de phase d’escamotage & $V\leq 0,09 \; m/s$ \\
+\hline
+\end{tabular}
+\end{center}
+
+
+Pour ouvrir la porte, on utilise un moteur, dont la rotation est transformée en translation par l'intermédiaire d'un système pignon crémaillère. La translation de la porte est notée $y(t)$. L'angle de rotation du moteur est noté $\theta_m(t)$. Le lien entre $y(t)$ et $\theta_m (t)$ est $y(t) = R\cdot\theta_m (t)$ où $R$ est le rayon du pignon ($R=37\; mm$).
+
+On fait l'hypothèse qu'à l'instant initial, correspondant au début de la translation de la porte, la porte est immobile, avec $y(t=0)=0$ et $\theta_m (t=0)=0$ (toutes les autres conditions initiales seront également nulles, par conséquent).
+
+Grâce à une redéfinition du paramétrage et dans un souci de simplification, on considère qu'au cours de cette d phase la vitesse angulaire du moteur vérifie $\omega_m (t) = \theta_m (t) \geq 0$ et la position de la porte vérifie $y(t) \geq 0$.  
+
+
+On donne le modèle de connaissance du moteur courant continu du système :
+$$u_m(t) = e(t) + R\cdot i(t) 
+\quad e(t) = k\cdot \omega_m(t) 
+\quad J\cdot \dfrac{d\omega_m(t)}{dt} = C_m (t)
+\quad C_m (t) = k_m \cdot i(t)$$
+
+Avec : 
+\begin{itemize}
+\item $u_m (t)$ : tension du moteur; 
+\item $e(t)$ : force contre électromotrice du moteur; 
+\item $i(t)$ :intensité dans le moteur;
+\item $C_m (t)$ : couple exercé par le moteur;
+\item $\omega_m(t)$ : vitesse angulaire du moteur.
+\end{itemize}
+
+
+\subparagraph{}
+\textit{Exprimer ces équations dans le domaine de Laplace.}
+
+\subparagraph{}
+\textit{Schématiser le schéma-bloc du moteur en s’aidant des équations de la question 1.}
+
+\subparagraph{}
+\textit{Montrer que, dans le domaine de Laplace, la relation entre $\Omega_m (p)$ et $U_m (p)$ peut s'écrire sous la forme : $\dfrac{\Omega_m(p)}{U_m(p)} = \dfrac{K}{1+Tp} $ où $K$ et $T$ sont deux constantes à déterminer.}
+
+\subparagraph{}
+\textit{Déterminer $\omega_m (t)$ lorsque le moteur est soumis à un échelon de tension d'amplitude $u_0$ tel que : $u_m (t)= u_0 \cdot u(t)$. Exprimer et justifier le résultat en fonction de $K$ et $T$.}
+
+\subparagraph{}
+\textit{L'application numérique fournit $K=1,2 \; s^{-1}\cdot V^{-1}$ et $T=0,16\;s$. Déterminer le temps de réponse à 5\% du moteur.}
+
+ Le schéma bloc du système peut se mettre sous la forme suivante :
+
+ \begin{center}
+\includegraphics[width=.5\textwidth]{images/fig_04}
+\end{center} 
+
+\subparagraph{}
+\textit{Justifier la fonction de transfert entre $\Omega_m(p)$ et $\theta_m (p)$.}  
+
+\subparagraph{}
+\textit{Déterminer l'expression analytique de $\dfrac{Y(p)}{U_m(p)}$.}
+
+\subparagraph{}
+\textit{Déterminer l'expression analytique de $y(t)$ lorsque le moteur est soumis à un échelon de tension d'amplitude $u_0$.}  
+
+\subparagraph{}
+\textit{Déterminer la valeur numérique du déplacement de la porte au bout de 4s ($u_0 =5V$), et conclure quant à la capacité du système à satisfaire le critère d'accès au wagon du cahier des charges.}
+
+\subparagraph{}
+\textit{Déterminer la vitesse de la porte à la fin de la translation ($v(t=4s)= \dfrac{d}{dt}y(t=4s)$). Conclure quant à la capacité du système à satisfaire le critère de vitesse finale de translation de la porte du cahier des charges. }
+
+
+\end{document}
+
+

@@ -1,0 +1,208 @@
+\documentclass[10pt]{article}
+\input{style/coursHeadings}
+\input{style/programHeadings}
+\input{style/macros_SII}
+\input{style/macros_Titres}
+\input{style/macros_Frames}
+
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\newif\ifprof
+%\proftrue
+\proffalse
+
+\newboolean{td}
+\setboolean{td}{true}
+
+\usepackage[%
+    pdftitle={},
+    pdfauthor={Florestan Mathurin},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+\def\discipline{Sciences Industrielles de l'Ingénieur}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{CI 2 -- SLCI}{}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 4 -- Étude des systèmes du Premier Ordre}{
+}}
+
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent Florestan \textsc{Mathurin}}{
+}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+CI 2 : SLCI \\
+Ch 4 : Étude des Systèmes d'Ordre 1 -- TD -- \ifthenelse{\boolean{prof}}{P}{E}%
+}{
+}}
+
+\def\xxcathegorie{\ifthenelse{\boolean{xp}}{
+2013 -- 2014 \\
+Florestan  \textsc{Mathurin}}{
+Informatique - Cours}}
+
+
+
+
+
+%---------------------------------------------------------------------------
+
+
+\begin{document}
+
+\ifthenelse{\boolean{xp}}{\input{style/enteteXP}}{\input{style/enteteDI}}
+
+
+
+%\renewcommand{\baselinestretch}{1.2}
+%\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+
+
+\begin{comp}
+\noindent %\textbf{Résoudre :} à partir des modèles retenus :
+%\begin{itemize}
+%\item choisir une méthode de résolution analytique, graphique, numérique;
+%\item mettre en \oe{}uvre une méthode de résolution.
+%\end{itemize}
+%
+%\noindent \textit{Rés -- C1.1 :} Loi entrée sortie géométrique et cinématique -- Fermeture géométrique.
+%
+%\noindent \textit{Mod2 -- C4.1 :} Représentation par schéma bloc.
+\end{comp}
+
+\section*{Étude des performances des motoréducteurs équipant les roues d’un robot Martien  }
+
+\begin{flushright}
+\textit{D'après concours X-ENS -- PSI -- 2005.}
+
+\textit{Adapté par Florestan Mathurin.}
+\end{flushright}
+
+\ifprof
+\else
+
+\begin{minipage}[c]{.57\linewidth}
+
+La mission Mars Exploration Rover (MER) est une Antenne basses fréquences mission spatiale confiée à la NASA. Elle a pour but Système Pancam d’explorer les sols de la planète Mars pour y Antenne hautes fréquences rechercher la présence ancienne et prolongée d’eau.  Cette exploration est réalisée grâce à deux rovers Tête périscopique Panneau solaire automatiques lancées depuis Cap Canaveral. Le Bras articulé premier rover se nomme robot Spirit. Il a été lancé le 10 juin 2003 et s’est posé le 3 janvier 2004 dans le cratère Gusev. Le second rover se nomme robot Outils Corps Opportunity, il a été lancé le 8 juillet 2003 et s’est posé le 24 janvier 2004 sur Meridiani Planum. 
+ 
+\end{minipage} \hfill
+\begin{minipage}[c]{.4\linewidth}
+\begin{center}
+\includegraphics[width=.9\textwidth]{images/fig_01}
+\end{center}
+\end{minipage}
+
+\vspace{.5cm}
+
+Pour faire avancer le robot, les six roues de Spirit sont équipées de motoréducteurs (le motoréducteur est un composant constitué d'un moteur, qui génère un mouvement de rotation, et d'un réducteur, qui réduit la vitesse de rotation du moteur par des engrenages) afin de faire tourner les roues. Le codeur incrémental permet de mesurer la rotation du moteur. 
+
+\begin{center}
+\includegraphics[width=.8\textwidth]{images/fig_02}
+\end{center}
+
+
+\begin{minipage}[c]{.45\linewidth}
+
+Les performances annoncées de la part du constructeur sont les suivantes : 
+ 
+\end{minipage} \hfill
+\begin{minipage}[c]{.52\linewidth}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Critères & Valeur \\
+\hline
+\hline
+Vitesse de déplacement & 1 km en moins de 2 heures\\
+\hline
+Pente du sol & $+/- \;  30^{\text{o}}$ \\
+\hline
+Temps de réponse à 5\% & $<200\; ms$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{minipage}
+
+\vspace{.5cm}
+
+\begin{minipage}[c]{.45\linewidth}
+Le motoréducteur peut se représenter par le schéma bloc simplifié suivant : 
+\end{minipage} \hfill
+\begin{minipage}[c]{.52\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/fig_03}
+\end{center}
+\end{minipage}
+
+
+
+\subparagraph{}
+\textit{Déterminer le nom des composants qui réalisent les fonction $H(p)$ et $G(p)$.}
+
+\subparagraph{}
+\textit{ Déterminer la fonction de transfert en boucle fermée du système : $\dfrac{\Omega_r(p)}{\Omega_c(p)}$}
+
+
+On donne le modèle de connaissance du moteur courant continu du système :
+$$u_m(t) = e(t) + R\cdot i(t) 
+\quad e(t) = k_e\cdot \omega_m(t) 
+\quad J\cdot \dfrac{d\omega_m(t)}{dt} = C_m (t) -f\cdot \omega_m(t)
+\quad C_m (t) = k_m \cdot i(t)$$
+
+
+Avec : 
+\begin{itemize}
+\item $u_m (t)$ : tension du moteur; 
+\item $e(t)$ : force contre électromotrice du moteur; 
+\item $i(t)$ :intensité dans le moteur;
+\item $C_m (t)$ : couple exercé par le moteur;
+\item $\omega_m(t)$ : vitesse angulaire du moteur;
+\item $R$, $L$, $k_e$, $f$ et $k_m$ sont constantes.
+\end{itemize}
+
+\subparagraph{}
+\textit{En supposant les conditions initiales nulles (ce qui sera également supposé dans tout le reste de l'exercice), exprimer ces équations dans le domaine de Laplace. }
+
+
+\subparagraph{}
+\textit{Montrer que, dans le domaine de Laplace, la relation entre $\Omega_m (p)$ et $U_m (p)$ peut s'écrire sous la forme : $\dfrac{\Omega_m(p)}{U_m(p)} = \dfrac{K_m}{1+T_mp} $ où $K_m$ et $T_m$ sont deux constantes à déterminer.}
+
+L'application numérique des grandeurs physiques permet de trouver la fonction suivante : 
+$\dfrac{\Omega_r(p)}{\Omega_c(p)}=\dfrac{K}{1+Tp}$, avec $K=1$ et $T=0,05\;s$.
+
+
+
+\subparagraph{}
+\textit{Déterminer $\omega_r (t)$ lorsque l’ordinateur du robot demande un échelon de rotation $\omega_c (t) = \omega_{c0} \cdot u(t)$. Exprimer le résultat en fonction de $K$ et $T$.}
+
+
+
+\subparagraph{}
+\textit{Le robot, initialement immobile, bouge selon le déplacement $x_r (t)$ tel que $\dfrac{d}{dt} x_r (t) = R\cdot \omega_r (t)$ où $R$ est rayon de la roue ($R$=constante). Déterminer $X_r (p)$ en fonction de $\Omega_r (p)$.}
+
+\subparagraph{}
+\textit{Toujours dans le cas où l'ordinateur du robot demande un échelon de rotation $\omega_c (t) = \omega_{c0}\cdot u(t)$, déterminer la transformée de Laplace de $X_r (p)$ et en déduire $x_r (t)$.} 
+
+La vitesse angulaire que l'ordinateur du robot impose est $\omega_{c0}=2 rad\cdot s^{-1}$. Le rayon de la roue est $R=10\;cm$.  
+
+\subparagraph{}
+\textit{Déterminer le temps que met le robot à parcourir 1 km, en négligeant la fonction exponentielle présente dans $x_r (t)$. Justifier a posteriori que la fonction exponentielle était bien négligeable. Conclure quant à la capacité du robot à satisfaire la performance de vitesse de déplacement.}
+
+
+
+
+\end{document}
+
+
