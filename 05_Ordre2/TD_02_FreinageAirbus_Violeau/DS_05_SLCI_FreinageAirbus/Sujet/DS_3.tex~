@@ -1,0 +1,228 @@
+\documentclass[10pt,oneside]{article}
+\input{coursHeadings}
+
+\usepackage[%
+    pdftitle={SLCI - DS2},
+    pdfauthor={Xavier Pessoles},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+
+
+% \makeatletter \let\ps@plain\ps@empty \makeatother
+%% DEBUT DU DOCUMENT
+%% =================
+\sloppy
+\hyphenpenalty 10000
+
+\newcommand{\Pointilles}[1][3]{%
+\multido{}{#1}{\makebox[\linewidth]{\dotfill}\\[\parskip]
+}}
+
+\begin{document}
+
+
+\newboolean{prof}
+\setboolean{prof}{false}
+%------------- En tetes et Pieds de Pages ------------
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.2pt}
+
+\fancyhead{}
+\fancyhead[L]{PTSI -- Sciences Industrielles pour l'Ingénieur}
+\fancyhead[R]{Lycée Jules Haag -- Besançon}
+
+
+\renewcommand{\footrulewidth}{0.2pt}
+\fancyfoot[C]{\bfseries \thepage}
+\fancyfoot[L]{2010 -- 2011}
+\ifthenelse{\boolean{prof}}{%
+\fancyfoot[R]{DS 2 -- SLCI}
+}{%
+\fancyfoot[R]{DS 2 -- SLCI}
+}
+
+%\fancyfoot[RO]{Version du \today}
+% \fancyfoot[LE]{Version du \today}
+% \fancyfoot[RO]{\textcolor{gris25}{Version rapporteurs}}
+% \fancyfoot[LE]{\textcolor{gris25}{Version rapporteurs}}
+% \fancyfoot[R]{\textcolor{gris25}{Version rapporteurs}}
+% ----------------------------------------------------
+
+
+
+\vspace{1cm}
+
+\begin{center}
+ \huge\textsc{Devoir Surveille 2}
+
+\vspace{1cm}
+
+ \large\textsc{Vendredi 12 novembre 2010 -- 4 heures}
+\end{center}
+
+\vspace{1cm}
+
+
+\noindent\rule{\linewidth}{.2pt}
+\begin{center}
+ \large\textsc{CI :} \textit{}
+
+ \large\textsc{CI :} \textit{}
+
+ \large\textsc{CI :} \textit}
+
+\end{center}
+\noindent\rule{\linewidth}{.2pt}
+
+
+\vfill
+
+\textbf{Contenu du sujet :}
+\begin{itemize}
+\item \textbf{Partie 1 : Logique combinatoire}
+\item \textbf{Partie 2 : Productique}
+\item \textbf{Partie 3 : Étude des systèmes asservis}
+\end{itemize}
+
+\vfill
+
+\textbf{Consignes et recommandations :}
+\begin{itemize}
+\item \textbf{Il est recommandé delire le sujet dans son intégralité avant de
+répondre aux questions}
+\item \textbf{Les question sont numérotées et ordonnées mais beaucoup d'entre elles sont indépendantes.}
+\item \textbf{Il est recommandé de passer une heure sur les parteies 1 et 2 et une heure sur la partie 3}
+\item \textbf{Les deux parties seront notées équitablement}
+\item \textbf{Les réponses sont à donner dans les documents réponses préuvs à
+cet effet pour les parties 1 et 2}
+\item \textbf{Les réponses sont à donner sur feuille pour la partie 3. Pour cette partie il est particulièrement recommandé de :}
+\begin{itemize}
+\item \textit{rappeler, sur sa copie le numéro de la question avant de développer sa réponse;}
+\item \textit{de bien respecter l'ensemble des notations alphabétiques et numériques définies dans le sujet et de préciser ses propres notations lorsque cela s'avère nécessaire;}
+\item \textit{de justifier ses hypothèses, et de rédiger clairement ses réponses.}
+
+\end{itemize}
+\end{itemize}
+
+\vfill
+
+\begin{center}
+\textsc{\textbf{Tout Document Interdit}}
+
+ \textsc{\textbf{Calculatrices, Téléphones Portables, Lecteur MP3 ...
+Interdits}}
+\end{center}
+
+\newpage
+
+\noindent\rule{\linewidth}{.2pt}
+\begin{center}
+ \LARGE\textbf{\textsc{
+Système de freinage de l'Airbus A318
+}}
+\end{center}
+\noindent\rule{\linewidth}{.2pt}
+
+\section{Présentation du système}
+\begin{center}
+ Airbus A318
+\end{center}
+
+Le freinage est une des fonctions vitales d’un avion, au même titre que la
+propulsion ou la sustentation.
+C’est grâce à lui que l’avion peut s’immobiliser après l’atterrissage, circuler
+au sol en toute sécurité mais
+également s’arrêter en cas d’urgence lors d’une interruption de décollage alors
+que l’avion est à pleine
+charge de carburant et lancé à la vitesse de décollage (même si le risque est de
+l’ordre de 1 pour 1 million
+de décollages). Outre les freins, le pilote peut aussi actionner les inverseurs
+de poussée des moteurs et les
+aérofreins.
+On s'intéresse au système de freinage des roues de l’Airbus A318, avion
+commercial de 120 places et de
+rayon d’action de 3240 km. La vitesse de décollage est estimée à 240 km/h. Pour
+les atterrisseurs, on
+distingue (voir figure 2) :
+\begin{itemize}
+ \item  le train avant qui, en dehors de
+        l’appui, est orientable ce qui lui
+        permet d’agir sur les trajectoires
+        au sol mais qui n’est pas équipé
+        de freins;
+\item les deux trains principaux au
+        niveau des ailes, chacun portant
+        deux roues freinées
+        indépendamment. 
+\end{itemize}
+
+\subsection*{Description du système de freinage}
+
+    Il existe deux modes de commande du système de freinage :
+\begin{itemize}
+ \item le \textbf{mode normal} (Normal Braking) contrôlé par un ordinateur
+dénommé BSCU
+(Braking/Steering
+         Control Unit). Le BSCU contrôle les servovalves (une par roue) qui
+alimentent les pistons
+         presseurs. Ces pistons exercent alors une action sur les roues qui
+diminue alors la vitesse de
+         l'avion. La pression hydraulique est fournie par le groupe hydraulique
+principal;
+\item le \textbf{mode alternatif} (Alternate braking) contrôlé par un ordinateur
+dénommé
+ABCU (Alternate
+         Braking Control Unit). Ce mode prend automatiquement la relève du mode
+normal s’il y a
+         dysfonctionnement de ce dernier ou si le contrôle anti-dérapage
+(Anti-Skid) de l’avion est
+         supprimé. En mode alternatif, la pression hydraulique est fournie par
+un groupe hydraulique
+         secondaire.
+\end{itemize}
+
+
+   
+En mode normal, il est possible de commander le freinage de deux façons
+différentes :
+\begin{itemize}
+ \item soit \textbf{manuellement} par appui sur les pédales de frein (voir
+figure 3) : pour chaque pilote, les
+         pédales gauche et droite sont indépendantes. L’appui sur la pédale
+gauche agit sur le freinage des
+         roues du train principal gauche, l’appui sur celle de droite agit sur
+le freinage des roues du train
+         principal droit. Les unités de transmission (Brake Pedal Transmitter
+Unit) situées sous les pédales
+         émettent des signaux électriques vers le BSCU ou vers l’ABCU
+proportionnels à la course des
+         pédales de frein;
+\item soit \textbf{automatiquement} suivant trois modes de décélération : LO,
+MED, MAX. La sélection se fait
+         à partir de trois boutons situés sur le tableau de bord (voir figure
+4). Le mode manuel est rétabli si
+         le pilote, en appuyant sur les pédales de frein, génère une consigne de
+décélération $a_p$ supérieure à
+         la consigne de décélération $a_c$ du mode automatique sélectionné.
+\end{itemize}                                                    
+            
+Les modes LO et MED sont utilisés lors de l’atterrissage. Ils correspondent
+respectivement à une
+décélération de l’avion de $-1,7 ms^{-2}$ et de $-3 ms^{-2}$. Le mode MAX est
+exclusivement sélectionné lors du
+décollage, en cas d’interruption de ce dernier. Il correspond à une décélération
+théorique de -10 ms-2
+supérieure à la décélération maximale de l’avion.
+
+En mode normal (manuel ou automatique), le BSCU contrôle l’anti-dérapage (Anti
+Skid) de chaque roue
+tant que la vitesse de l’avion est supérieure à $5\;m/s$.
+En mode alternatif, seule la commande manuelle est disponible avec ou sans
+anti-dérapage.
+ 
+
+
+\end{document}
+

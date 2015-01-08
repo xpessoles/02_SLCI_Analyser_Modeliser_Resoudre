@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="SADT.svg"
+   inkscape:export-filename="/home/xabi/Enseignement/JulesHaag/PTSI/PTSI_2010_2011/DM_DS_Interros/DS/DS_3_Asservissements_FreinageA318/Corrige/png/SADT.png"
+   inkscape:export-xdpi="300.01605"
+   inkscape:export-ydpi="300.01605">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3681"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="155.29671"
+     inkscape:cy="560.24569"
+     inkscape:document-units="px"
+     inkscape:current-layer="g4169"
+     showgrid="true"
+     inkscape:window-width="961"
+     inkscape:window-height="981"
+     inkscape:window-x="0"
+     inkscape:window-y="42"
+     inkscape:window-maximized="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2822" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       x="40"
+       y="72.362183"
+       id="text2816"><tspan
+         sodipodi:role="line"
+         id="tspan2818"
+         x="40"
+         y="72.362183"
+         style="text-align:start;text-anchor:start">Action manuelle</tspan><tspan
+         sodipodi:role="line"
+         x="40"
+         y="89.862183"
+         id="tspan2820"
+         style="text-align:start;text-anchor:start">pieds</tspan></text>
+    <g
+       id="g2868"
+       transform="translate(270,0)">
+      <g
+         id="g2878"
+         transform="translate(10,-69.999997)">
+        <rect
+           style="fill:none;stroke:#000000;stroke-width:0.99999976;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect2870"
+           width="140"
+           height="60"
+           x="70"
+           y="222.36218" />
+        <text
+           xml:space="preserve"
+           style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+           x="139.64891"
+           y="248.78519"
+           id="text2872"><tspan
+             sodipodi:role="line"
+             x="141.59032"
+             y="248.78519"
+             id="tspan2874">Commander </tspan><tspan
+             id="tspan2876"
+             sodipodi:role="line"
+             x="139.64891"
+             y="266.28519">automatiquement</tspan></text>
+      </g>
+      <g
+         id="g2884"
+         transform="translate(74.25148,163.577)">
+        <g
+           id="g2896"
+           transform="translate(15.74852,16.423)">
+          <rect
+             style="fill:none;stroke:#000000;stroke-width:0.99999976;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+             id="rect2886"
+             width="140"
+             height="60"
+             x="70"
+             y="222.36218" />
+          <text
+             xml:space="preserve"
+             style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+             x="139.90463"
+             y="257.44418"
+             id="text2888"><tspan
+               id="tspan2892"
+               sodipodi:role="line"
+               x="139.90463"
+               y="257.44418">Freiner l'avion</tspan></text>
+        </g>
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+           d="m 10,442.36218 420,0"
+           id="path2901"
+           transform="translate(-344.25148,-163.577)"
+           sodipodi:nodetypes="cc" />
+        <path
+           sodipodi:nodetypes="cc"
+           id="path4123"
+           d="m 225.74854,278.78518 99.99999,0"
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)" />
+        <text
+           xml:space="preserve"
+           style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+           x="105.74852"
+           y="328.78519"
+           id="text4125"><tspan
+             sodipodi:role="line"
+             id="tspan4127"
+             x="105.74852"
+             y="328.78519">Servovalves + pistons</tspan><tspan
+             sodipodi:role="line"
+             x="105.74852"
+             y="346.28519"
+             id="tspan4129">Plongeurs + roues</tspan></text>
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 440,462.36218 0,60 160,0"
+           id="path4131"
+           transform="translate(-344.25148,-163.577)" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 440,472.36218 160,0"
+           id="path4133"
+           transform="translate(-344.25148,-163.577)"
+           sodipodi:nodetypes="cc" />
+        <text
+           id="text4135"
+           y="78.785187"
+           x="25.74852"
+           style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+           xml:space="preserve"><tspan
+             id="tspan4139"
+             y="78.785187"
+             x="25.74852"
+             sodipodi:role="line">BSCU + ABCU</tspan></text>
+        <path
+           id="path4141"
+           d="m 15.74852,48.785183 0,40 110,0"
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           sodipodi:nodetypes="ccc" />
+        <path
+           sodipodi:nodetypes="cc"
+           id="path4143"
+           d="m 15.74852,58.785183 110,0"
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <g
+           id="g4186"
+           transform="translate(-10,-69.999997)">
+          <g
+             transform="translate(-344.25148,-163.577)"
+             id="g2862">
+            <rect
+               y="222.36218"
+               x="70"
+               height="60"
+               width="140"
+               id="rect2838"
+               style="fill:none;stroke:#000000;stroke-width:0.99999976;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+            <text
+               id="text2840"
+               y="248.78519"
+               x="139.64891"
+               style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+               xml:space="preserve"><tspan
+                 id="tspan2846"
+                 y="248.78519"
+                 x="141.59032"
+                 sodipodi:role="line">Commander </tspan><tspan
+                 y="266.28519"
+                 x="139.64891"
+                 sodipodi:role="line"
+                 id="tspan2860">manuellement</tspan></text>
+          </g>
+          <text
+             id="text4147"
+             y="148.78519"
+             x="-254.25148"
+             style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+             xml:space="preserve"><tspan
+               id="tspan4149"
+               y="148.78519"
+               x="-254.25148"
+               sodipodi:role="line">Pédales</tspan></text>
+          <path
+             id="path4151"
+             d="m -264.25148,118.78518 0,40 110,0"
+             style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             sodipodi:nodetypes="ccc" />
+          <path
+             sodipodi:nodetypes="cc"
+             id="path4153"
+             d="m -264.25148,128.78518 110,0"
+             style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        </g>
+        <g
+           id="g4169"
+           transform="translate(1.0253905e-7,-50.000004)">
+          <g
+             transform="translate(-314.25148,-53.577)"
+             id="g2848">
+            <rect
+               style="fill:none;stroke:#000000;stroke-width:0.99999982;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+               id="rect2824"
+               width="160"
+               height="80"
+               x="89.999992"
+               y="222.36218" />
+            <text
+               xml:space="preserve"
+               style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+               x="169.52727"
+               y="250.15419"
+               id="text2826"><tspan
+                 sodipodi:role="line"
+                 x="169.52727"
+                 y="250.15419"
+                 id="tspan2830">Émettre des signaux</tspan><tspan
+                 sodipodi:role="line"
+                 x="169.52727"
+                 y="267.65417"
+                 id="tspan2834">proportionnels à la</tspan><tspan
+                 sodipodi:role="line"
+                 x="169.52727"
+                 y="285.15417"
+                 id="tspan2836">course des pédales</tspan></text>
+          </g>
+          <text
+             id="text4155"
+             y="278.78519"
+             x="-204.25148"
+             style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+             xml:space="preserve"><tspan
+               id="tspan4157"
+               y="278.78519"
+               x="-204.25148"
+               sodipodi:role="line">Unité de transmission</tspan></text>
+          <path
+             id="path4159"
+             d="m -214.25149,248.78518 0,40 150.000006,0"
+             style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             sodipodi:nodetypes="ccc" />
+          <path
+             sodipodi:nodetypes="cc"
+             id="path4161"
+             d="m -214.25149,258.78518 150.000006,0"
+             style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <text
+             xml:space="preserve"
+             style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+             x="-269.25146"
+             y="458.78519"
+             id="text4329"><tspan
+               sodipodi:role="line"
+               x="-269.25146"
+               y="458.78519"
+               id="tspan4331">Système de freinage</tspan></text>
+          <path
+             sodipodi:nodetypes="ccc"
+             style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -279.25149,428.78518 0,40 150.00001,0"
+             id="path4333" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m -279.25149,438.78518 150.00001,0"
+             id="path4335"
+             sodipodi:nodetypes="cc" />
+        </g>
+        <rect
+           style="fill:none;stroke:#000000;stroke-width:0.99999982;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect4197"
+           width="610"
+           height="419.99997"
+           x="-324.25146"
+           y="-41.214817" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+           d="m -264.25147,158.78518 40,0"
+           id="path4199"
+           sodipodi:nodetypes="cc" />
+        <path
+           sodipodi:nodetypes="cc"
+           id="path4201"
+           d="m -34.25148,8.7851826 40,0"
+           style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+           d="m -14.25148,28.785183 20,0"
+           id="path4203"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+           d="m -304.25148,18.785183 20,0"
+           id="path4205"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m -304.25148,18.785177 0,-79.999998"
+           id="path4207"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 80,322.36218 0,-50"
+           id="path4217"
+           transform="translate(-344.25148,-163.577)"
+           sodipodi:nodetypes="cc" />
+        <path
+           sodipodi:nodetypes="cc"
+           id="path4219"
+           d="m -264.25149,108.78518 140.00001,0"
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m -124.25148,108.78518 0,-89.999997"
+           id="path4221"
+           sodipodi:nodetypes="cc" />
+        <path
+           sodipodi:nodetypes="cc"
+           id="path4223"
+           d="m -144.25148,18.785183 20,0"
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           sodipodi:nodetypes="cc"
+           id="path4225"
+           d="m -34.25148,158.78518 0,-149.9999967"
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m -14.25148,138.78519 0,-110.000007"
+           id="path4227"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m -64.25148,158.78518 30,0"
+           id="path4229"
+           sodipodi:nodetypes="cc" />
+        <path
+           sodipodi:nodetypes="cc"
+           id="path4231"
+           d="m 225.74852,258.78518 30,0"
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 255.74852,258.78518 0,-120"
+           id="path4233"
+           sodipodi:nodetypes="cc" />
+        <path
+           sodipodi:nodetypes="cc"
+           id="path4235"
+           d="m 255.74852,138.78518 -270,0"
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+           d="m 165.74852,18.78517 0,220"
+           id="path4237"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 145.74852,18.785183 20,0"
+           id="path4239"
+           sodipodi:nodetypes="cc" />
+        <path
+           sodipodi:nodetypes="cc"
+           id="path4243"
+           d="m 195.74852,-61.214819 0,299.999999"
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+           d="m -94.25148,-61.214817 0,179.999987"
+           id="path4245"
+           sodipodi:nodetypes="cc" />
+        <path
+           sodipodi:nodetypes="cc"
+           id="path4247"
+           d="m 55.74852,-31.214818 0,19.999989"
+           style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 55.74852,-31.214817 -150.000001,0"
+           id="path4249"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+           d="m 95.74852,-61.214816 0,49.999999"
+           id="path4251"
+           sodipodi:nodetypes="cc" />
+      </g>
+    </g>
+    <text
+       id="text4253"
+       y="72.362183"
+       x="250"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       xml:space="preserve"><tspan
+         style="text-align:start;text-anchor:start"
+         id="tspan4257"
+         y="72.362183"
+         x="250"
+         sodipodi:role="line">Énergie </tspan><tspan
+         style="text-align:start;text-anchor:start"
+         y="89.862183"
+         x="250"
+         sodipodi:role="line"
+         id="tspan4261">électrique</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       x="440"
+       y="72.362183"
+       id="text4263"><tspan
+         id="tspan4267"
+         sodipodi:role="line"
+         x="440"
+         y="72.362183"
+         style="text-align:start;text-anchor:start">Choix du </tspan><tspan
+         sodipodi:role="line"
+         x="440"
+         y="89.862183"
+         style="text-align:start;text-anchor:start"
+         id="tspan4271">mode auto</tspan></text>
+    <text
+       id="text4277"
+       y="72.362183"
+       x="540"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       xml:space="preserve"><tspan
+         id="tspan4281"
+         style="text-align:start;text-anchor:start"
+         y="72.362183"
+         x="540"
+         sodipodi:role="line">Pression</tspan><tspan
+         style="text-align:start;text-anchor:start"
+         y="89.862183"
+         x="540"
+         sodipodi:role="line"
+         id="tspan4285">hydraulique</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       x="680"
+       y="432.36218"
+       id="text4287"><tspan
+         id="tspan4291"
+         sodipodi:role="line"
+         x="680"
+         y="432.36218"
+         style="text-align:start;text-anchor:start">Avion à une</tspan><tspan
+         sodipodi:role="line"
+         x="680"
+         y="449.86218"
+         style="text-align:start;text-anchor:start"
+         id="tspan4295">vitesse inférieure</tspan></text>
+    <text
+       id="text4297"
+       y="432.36218"
+       x="-110"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       xml:space="preserve"><tspan
+         style="text-align:start;text-anchor:start"
+         y="432.36218"
+         x="-110"
+         sodipodi:role="line"
+         id="tspan4299">Avion à une</tspan><tspan
+         id="tspan4301"
+         style="text-align:start;text-anchor:start"
+         y="449.86218"
+         x="-110"
+         sodipodi:role="line">vitesse donnée</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       x="39.064453"
+       y="532.36218"
+       id="text4303"><tspan
+         sodipodi:role="line"
+         id="tspan4305"
+         x="39.064453"
+         y="532.36218">A0</tspan></text>
+    <text
+       id="text4307"
+       y="357.36218"
+       x="269.06445"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       xml:space="preserve"><tspan
+         y="357.36218"
+         x="269.06445"
+         id="tspan4309"
+         sodipodi:role="line">A2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       x="189.06445"
+       y="207.36218"
+       id="text4311"><tspan
+         sodipodi:role="line"
+         id="tspan4313"
+         x="189.06445"
+         y="207.36218">A1</tspan></text>
+    <text
+       id="text4315"
+       y="212.36218"
+       x="479.06445"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       xml:space="preserve"><tspan
+         y="212.36218"
+         x="479.06445"
+         id="tspan4317"
+         sodipodi:role="line">A3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyreAdventor;-inkscape-font-specification:TeXGyreAdventor"
+       x="559.06445"
+       y="457.36218"
+       id="text4319"><tspan
+         sodipodi:role="line"
+         id="tspan4321"
+         x="559.06445"
+         y="457.36218">A4</tspan></text>
+  </g>
+</svg>

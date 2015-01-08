@@ -1,0 +1,10 @@
+latex DS_3.tex
+latex DS_3.tex
+latex DS_3.tex
+dvips DS_3.dvi
+echo 'Conversion en PDF'
+ps2pdf DS_3.ps
+rm -f *.mtc*
+rm -f *.toc
+rm -f *.aux
+rm -f *.out

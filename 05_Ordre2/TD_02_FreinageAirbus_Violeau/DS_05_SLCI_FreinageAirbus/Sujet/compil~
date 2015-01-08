@@ -1,0 +1,10 @@
+latex DM_3_gamme.tex
+latex DM_3_gamme.tex
+latex DM_3_gamme.tex
+dvips DM_3_gamme.dvi
+echo 'Conversion en PDF'
+ps2pdf DM_3_gamme.ps
+rm -f *.mtc*
+rm -f *.toc
+rm -f *.aux
+rm -f *.out
