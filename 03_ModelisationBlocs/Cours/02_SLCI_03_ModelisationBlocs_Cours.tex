@@ -286,12 +286,15 @@ H(p)=\dfrac{\Omega_m(p)}{U(p)}
 =\dfrac{1}{ \left( K_e + \dfrac{R f_v}{K_C}\right) 
 +\left( \dfrac{RJ}{K_C} + \dfrac{Lf_v}{K_C} \right) p 
 +\dfrac{LJ}{K_C^2}  p^2 }
+=\dfrac{1}{ \left(  \dfrac{K_e K_C +R f_v}{K_C}\right) 
++\left( \dfrac{RJ+Lf_v}{K_C} \right) p 
++\dfrac{LJ}{K_C^2}  p^2 }
 $$
 
 Sous sa forme normalisée, la fonction de transfert devient : 
 $$
 H(p)=\dfrac{\Omega_m(p)}{U(p)}
-=\dfrac{\dfrac{K_C K_e + R f_v}{K_C}}{ 1
+=\dfrac{\dfrac{K_C}{K_C K_e + R f_v}}{ 1
 +\left( \dfrac{RJ + Lf_v}{K_C K_e + R f_v} \right) p 
 +\dfrac{LJ}{ K_C^2 K_e + RK_C f_v}  p^2 }
 $$
@@ -304,7 +307,7 @@ Dans le cas où on néglige l'impact du couple résistant, on a :
 $$
 H(p)=\dfrac{\Omega_m(p)}{U(p)}
 =\dfrac{
-\dfrac{K_C K_e}{K_C}}{ 1
+\dfrac{1}{K_e}}{ 1
 + \dfrac{RJ}{K_C K_e } p 
 +\dfrac{LJ}{ K_C^2 K_e }  
 p^2 }
