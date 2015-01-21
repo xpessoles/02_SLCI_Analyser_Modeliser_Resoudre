@@ -1,0 +1,481 @@
+\documentclass[10pt]{article}
+\input{style/coursHeadings}
+\input{style/programHeadings}
+\input{style/macros_SII}
+\input{style/macros_Titres}
+\input{style/macros_Frames}
+
+%Si le boolen xp est vrai : compilation pour xabi
+%Sinon compilation Damien
+\newboolean{xp}
+\setboolean{xp}{true}
+
+\newboolean{prof}
+\setboolean{prof}{true}
+
+\newif\ifprof
+%\proftrue
+\proffalse
+
+\newboolean{td}
+\setboolean{td}{true}
+
+\usepackage[%
+    pdftitle={},
+    pdfauthor={Xavier Pessoles},
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=magenta]{hyperref}
+
+\def\discipline{Sciences Industrielles de l'Ingénieur}
+
+\def\xxtitre{\ifthenelse{\boolean{xp}}{2 -- SLCI :Systèmes Linéaires Continus et invariants - Analyser, Modéliser, Résoudre}{}}
+
+\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+Chapitre 5 -- Étude des systèmes fondamentaux du second ordre}{
+}}
+
+
+\def\xxauteur{\ifthenelse{\boolean{xp}}{
+\noindent Xavier \textsc{Pessoles}}{
+}}
+
+
+\def\xxpied{\ifthenelse{\boolean{xp}}{
+2 : SLCI \\
+Ch 5 : Systèmes du second ordre -- TD -- \ifthenelse{\boolean{prof}}{P}{E}%
+}{
+}}
+
+\def\xxcathegorie{\ifthenelse{\boolean{xp}}{
+2013 -- 2014 \\
+Xavier \textsc{Pessoles}}{
+Informatique - Cours}}
+
+
+
+
+
+%---------------------------------------------------------------------------
+
+
+\begin{document}
+
+\ifthenelse{\boolean{xp}}{\input{style/enteteXP}}{\input{style/enteteDI}}
+
+
+
+%\renewcommand{\baselinestretch}{1.2}
+%\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+
+
+\begin{comp}
+\noindent \textbf{Résoudre :} à partir des modèles retenus :
+\begin{itemize}
+\item choisir une méthode de résolution analytique, graphique, numérique;
+\item mettre en \oe{}uvre une méthode de résolution.
+\end{itemize}
+
+\noindent \textit{Rés -- C1.1 :} Loi entrée sortie géométrique et cinématique -- Fermeture géométrique.
+
+\noindent \textit{Mod2 -- C4.1 :} Représentation par schéma bloc.
+\end{comp}
+
+\section*{Projet Romeo : un robot d'assistance à la personne}
+
+\begin{flushright}
+\textit{D'après concours E3A -- MP -- 2014.}
+\end{flushright}
+
+\ifprof
+\else
+
+
+\subsection*{Mise en situation}
+\begin{minipage}[c]{.72\linewidth}
+\begin{obj}
+On veut étudier la rigidité du robot face au couple résistant dû à l'appui du patient sur son épaule : 
+Lorsque le patient sollicite le robot pour se relever, le robot ne doit pas s'affaisser. 
+\end{obj}
+
+\end{minipage} \hfill
+\begin{minipage}[c]{.25\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/Fig00}
+\end{center}
+\end{minipage} 
+
+Les exigences précédentes se présentes ainsi dans le cahier des charges : 
+
+\begin{center}
+\begin{tabular}{|p{12cm}|c|c|}
+\hline
+Maintien de la position sous charge (Variation de hauteur du point d'appui) & $<5\; mm$ & Flexibilité : 2 \\
+\hline
+Dépassement de position face à un échelon de sollicitation. & $<5\%$ & Flexibilité : 2 \\
+\hline
+\end{tabular}
+\end{center}
+
+
+
+\begin{minipage}[c]{.6\linewidth}
+On supposera que la variation de hauteur du point d'appui est sensiblement la variation de hauteur d'un point de la hanche (point C).
+
+Pour que le robot puisse prendre une posture conforme à celle demandée par le cahier des charges, il faut un positionnement suffisamment précis des diverses articulations, et en particulier, celle du genou. Cette position doit pouvoir être maintenue sous l'action de charges extérieures, comme l'appui du patient sur l'épaule de Roméo dans le cas du scénario proposé à l'étude.
+Il faut donc que la commande du moteur du genou soit suffisamment précise et robuste, ce qui impose un asservissement de position angulaire.
+
+Lors de la phase de relevée du patient, le mouvement ascensionnel découle des mouvements articulaires Hanche, Genou et Cheville. Les mouvements doivent donc être synchronisés en position mais aussi en vitesse pour limiter les erreurs de trainage, ce qui impose un asservissement en vitesse.
+
+
+Enfin, l'équilibre dynamique demande à ce que, les accélérations des diverses articulations, les efforts et les intensités électriques dans les moteurs soient bien maitrisées ce qui impose un asservissement en intensité.
+
+\end{minipage} \hfill
+\begin{minipage}[c]{.35\linewidth}
+\begin{center}
+\includegraphics[width=.95\textwidth]{images/Fig01}
+\end{center}
+\end{minipage} 
+
+\vspace{1cm}
+
+Le schéma bloc représente un modèle simplifié de la commande de mouvement du genou.
+
+\begin{center}
+\includegraphics[width=\textwidth]{images/Fig02}
+\end{center}
+
+
+
+\begin{itemize}
+\item Entrée : consigne de  variation de position angulaire du genou : $\theta_{32c}$ (variation par rapport à une position de référence $\theta_{32-0}$.
+\item Sortie : variation de position angulaire du genou : $\theta_{32}$, relativement à $\theta_{32-0}$.
+\item Perturbation : couple résistant $C_r$ (dû aux actions de la pesanteur, aux actions du patient sur le robot, …)
+\item Inertie équivalente, supposée constante, ramenée à l'arbre moteur : J
+\item Résistance de l'induit du moteur : $R$
+\item Constante de couple du moteur : $K_m$
+\item Rapport de réduction de la chaine cinématique :  $r_{32}=\dfrac{\dot{\theta}_{\text{moteur}}}{\theta_{32}}$.
+\end{itemize}
+
+Comme tous les axes commandés du robot, le moteur du genou est contrôlé en position, en vitesse et en intensité par trois capteurs : position, vitesse et courant, associés à trois correcteurs proportionnels dont les gains sont notés respectivement $K_1$, $K_2$ et $K_3$.
+
+\subparagraph{}
+\textit{Que représentent les variables $d(t)$ ($D(p)$ dans le domaine de Laplace), $e(t)$ ($E(p)$ dans le domaine de Laplace), $f(t)$ ($F(p)$ dans le domaine de Laplace), et $g(t)$ ($G(p)$ dans le domaine de Laplace) qui apparaissent dans le schéma bloc ? Quelles en sont leurs unités (système international) ?}
+
+
+\subparagraph{}
+\textit{A partir du schéma bloc, exprimer :
+\begin{itemize}
+\item$\theta_{32} (p)$, la variation angulaire de sortie, en fonction du couple résistant $C_r (p)$ et de la variable intermédiaire $F(p)$ (équation notée (1));
+\item $F(p)$ en fonction de $D(p)$ et de $\theta_{32} (p)$ (équation notée (2));
+\item $D(p)$ en fonction de $B(p)$ et de $F(p)$ (équation notée (3));
+\item $B(p)$ en fonction de $A(p)$ et de $\theta_{32} (p)$ (équation notée (4));
+\item $A(p)$ en fonction de $\theta_{32c} (p)$ et de $\theta_{32} (p)$ (équation notée (5)).
+\end{itemize}}
+
+
+On suppose que le Robot est en génuflexion, face au patient (position angulaire de référence du genou : $\theta_{32-0} (p)$), prêt à recevoir l'action du patient.
+
+Le couple résistant total sur l'arbre moteur est alors dû : 
+\begin{itemize}
+\item à l'action du patient sur l'épaule du Robot : $C_{rp} (p)$ et dans le domaine temporel $c_{rp} (t)$;
+\item au poids propre du Robot : $C_{rg} (p)$ et dans le domaine temporel $c_{rg} (t)$.
+\end{itemize}
+
+Le couple résistant total est donc $c_r (t)=c_{rp} (t)+c_{rg} (t)$ et dans le domaine de Laplace :
+$C_r (p)=C_{rp} (p)+C_{rg} (p)$.
+
+
+On modélise l'action du patient sur l'épaule du Robot par un échelon de couple  $c_{rp} (t)=c_{rp}\cdot u(t)$
+ où la fonction $u(t)$ est la fonction Heaviside.
+
+Puisque l'on veut extraire de l'étude la seule influence de l'action du patient sur le robot, le théorème de superposition réduit l'étude au modèle suivant : figure 17
+
+\begin{center}
+\includegraphics[width=\textwidth]{images/Fig03}
+\end{center}
+
+\subparagraph{}
+\textit{Que représente la grandeur  $\theta_{32p} (t)$ ($\theta_{32p} (p)$  dans le domaine de Laplace)? Réécrire l'équation (5) dans le cas de l'étude proposée : seule l'influence de l'action du patient sur le robot est recherchée.}
+
+
+\subparagraph{}
+\textit{A partir des équations (4) et (5), déterminer l'expression de $B(p)$ en fonction de $\theta_{32p} (p)$ (équation notée (6)).}
+
+
+\subparagraph{}
+\textit{A partir des équations (6) et (3), déterminer l'expression de D(p) en fonction de F(p) et de $\theta_{32p} (p)$ (équation notée (7)).}
+
+
+\subparagraph{}
+\textit{A partir des équations (7) et (2) déterminer l'expression de F(p) en fonction de $\theta_{32p} (p)$ (équation notée (8)).}
+
+
+\subparagraph{}
+\textit{Finalement, montrer que l'expression de $\theta_{32p} (p)$ en fonction de $C_{rp} (p)$ peut s'écrire sous la forme 
+$$\theta_{32p} (p)=\dfrac{\alpha}{1+\beta p+\gamma p^2} C_{rp} (p)$$
+Préciser les expressions de $\alpha$, $\beta$, et $\gamma$, en fonction des diverses constantes.
+}
+
+On choisit les gains  $K_1$, $K_2$ et $K_3$ égaux à 100 (unité SI).
+
+On pose l'inertie équivalente ramenée à l'arbre moteur :  $J=1,4 \cdot 10^{-5} \; \text{kg}\cdot\text{m}^2$. Les valeurs numériques de la résistance aux bornes du moteur (terminal resistance, en anglais dans la documentation) et de la constante de couple (torque constant, en anglais dans la documentation) sont indiquées en annexe 4 dans la documentation moteur.
+On rappelle que le rapport de réduction est : $r_{32}=95,91$. 
+
+
+
+\subparagraph{}
+\textit{Calculer la valeur numérique du gain $\alpha$ de la fonction de transfert   $\dfrac{\theta_{32p} (p)}{C_{rp} (p)}$, en précisant les unités.}
+
+Pour la suite de l'étude, on prendra : Valeurs données en unité du système international.
+
+$$
+\theta_{32p} (p) = \dfrac{-1.7\cdot 10^{-3}}{1+0,960\cdot p + 2,25 \cdot 10^{-6} p^2} C_{rp} (p)
+$$
+
+
+
+\subparagraph{}
+\textit{Calculer la valeur numérique du coefficient d'amortissement de cette fonction de transfert. Commenter ce résultat en s'appuyant sur les exigences du cahier des charges.}
+
+Application numérique : 
+\begin{itemize}
+\item la personne pose sa main et exerce un effort de 100 N ce qui induit un couple $C_{rp}$ estimé à $C_{rp}=1 N\cdot m$ (valeur surestimée, proche de celle déterminée lors de la vérification du couple de calage);
+\item cette sollicitation induit alors une rotation de l'articulation du genou : $\delta \theta _{32}$. C'est la variation angulaire de l'articulation du genou due seulement à l'appui du patient sur le robot.
+\end{itemize}
+
+
+
+\subparagraph{}
+\textit{Calculer la variation angulaire au niveau du genou $\delta \theta _{32}$ induite par cette perturbation. On donnera le résultat en degré.}
+
+On suppose que la position initiale avant appui du patient est celle décrite par la figure 14 et par les données géométrique suivantes : 
+\begin{itemize}
+\item $l_2=320 \;mm$;
+\item $\theta_{21}=-73^\text{o}$, $\theta_{10}=10^\text{o}$ : soit une inclinaison de la cuisse par rapport à la verticale de $63^\text{o}$.
+\end{itemize}
+
+
+Le cahier des charges précise que le maintien de la position sous charge (variation de hauteur du point d'appui qui est sensiblement la variation de hauteur de la hanche) doit être inférieur à 5 mm.
+
+
+\subparagraph{}
+\textit{Est-ce que l'influence de cette perturbation est compatible avec les exigences du cahier des charges ? Quelles sont les éventuelles solutions pour limiter l'influence de cette perturbation ?}
+
+
+
+
+
+\end{document}
+\begin{minipage}[c]{.8\linewidth}
+Les ingénieurs du MIT ont mis au point une prothèse active permettant aux personnes amputées en dessous du genou d'avoir une marche s'approchant d'une marche d'une personne valide. 
+\begin{obj} 
+Dans le but de dimensionner le vérin à utiliser sur la prothèse, on cherche à dimensionner sa course utile. Par ailleurs, la connaissance du modèle mécanique de transmission est nécessaire afin de renseigner un modèle multiphysique. 
+\end{obj}
+
+ On donne un extrait du cahier des charges.
+ 
+\end{minipage} \hfill
+\begin{minipage}[c]{.15\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/prot_01}
+\end{center}
+\end{minipage}
+
+\begin{minipage}[c]{.33\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/uc}
+
+\textit{Diagramme de cas des utilisations}
+\end{center}
+\end{minipage} \hfill
+\begin{minipage}[c]{.63\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/exigences}
+
+\textit{Diagramme d'exigences}
+\end{center}
+\end{minipage}
+
+\vspace{.25cm}
+
+La structure interne du système est donnée par les figures ci-contre. Le paramétrage géométrique est donné ci-dessous.
+
+\vspace{.25cm}
+
+
+\begin{minipage}[c]{.3\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/prot_02}
+
+\textit{Représentation volumique}
+\end{center}
+\end{minipage}
+ \hfill
+\begin{minipage}[c]{.65\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/Systeme}
+
+\textit{Diagramme de blocs internes}
+\end{center}
+\end{minipage}
+
+
+\begin{minipage}[c]{.54\linewidth}
+
+Le repère $\rep{0} (O, \vx{},\vy{0} ,\vz{0})$ est lié au tibia noté 0 fixe dans toutes nos études. Ce repère est supposé galiléen (hypothèse justifiée dans le sujet).
+
+Le repère $\rep{1} (O, \vx{},\vy{1} ,\vz{1} )$ est lié au pied artificiel noté 1, supposé indéformable. On note $\theta (t)=(\vy{0} ,\vy{1})=(\vz{0},\vz{1})$ l'angle de rotation du pied par rapport au tibia. D'autre part, le vecteur unitaire $\vect{n_1}$ définit la direction des ressorts avec $\delta=(\vy{1} ,\vect{n_1})$ considéré comme constant tout au long
+du cycle de marche.
+
+Le repère $\rep{2} (O, \vx{} ,\vy{2} ,\vz{2} )$ est lié au basculeur noté 2. On note $\alpha(t) =(\vy{0} ,\vy{2})=(\vz{0} ,\vz{2})$ l'angle de rotation du basculeur par rapport au tibia.
+
+Le repère $\rep{3} ( A, \vx{},\vy{3} ,\vz{3})$ est lié au vérin électrique 3. On note $\beta(t )=(\vy{0} ,\vy{3})=(\vz{0} ,\vz{3})$ l'angle de rotation du vérin électrique par rapport au tibia. Le vérin électrique comporte une tige notée $3_1$ et un
+corps noté $3_2$.
+
+On pose : $\vect{OA}=a\vect{z_0}$, $\vect{BA}=\lambda(t)\vy{3}$, $\vect{BO}=b\vy{2}$ et 
+$\vect{SO}=b\vz{2}$ avec $b=0,039 \; m$ et $a=0,117\;m$.
+
+En l'absence d'action sur la prothèse, une position repos est identifiée par les paramètres $\theta_R$, $\alpha_R$, et $\delta_R$. Cette position est notamment obtenue lorsque le tibia est vertical et que le pied est en appui horizontalement
+sur le sol. Les valeurs numériques sont alors : $\theta_R=0\textdegree$ , $\alpha_R=9\textdegree$ et $\delta_R=\delta=-17\textdegree$.
+\end{minipage} \hfill
+\begin{minipage}[c]{.43\linewidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/prot_03}
+
+\textit{Modélisation cinématique pour $\theta=0\textdegree$}
+\end{center}
+\end{minipage}
+
+\fi
+
+\subparagraph{}
+\textit{Expliciter le type d'énergie en sortie du sous système <<Vis écrou à billes>>. Après avoir identifié les différents paramètres variables du système, préciser quelle est l'entrée et quelle est la sortie.}% Quelle relation lie les paramètres $\alpha$ et $\theta$ ?} 
+
+\ifprof
+\begin{corrige}
+Les paramètres variables sont :
+\begin{itemize}
+\item l'angle $\alpha(t)$;
+\item l'angle $\beta(t)$;
+\item l'angle $\theta(t)$ (non représenté);
+\item la distance $\lambda(t)$ représentative de l'élongation du vérin. 
+\end{itemize}
+
+L'actionneur étant ici le vérin 3, $\lambda(t)$ est l'entrée du système.  Dans le cas du système,  	$\theta(t)$ peut être considéré comme la sortie. 
+\end{corrige}
+
+\else
+\fi
+
+\subparagraph{}
+\textit{Paramétrer le système et réaliser les figures planes correspondant aux différents changements de repères.} 
+
+\ifprof
+\begin{corrige}
+\begin{center}
+\includegraphics[width=.8\textwidth]{images/FiguresPlanes}
+\end{center}
+\end{corrige}
+\else
+\fi
+
+
+\subparagraph{}
+\textit{Déterminer la loi entrée-sortie entre $\alpha(t)$ et $\lambda(t)$.} 
+
+
+\ifprof
+\begin{corrige}
+En considérant le triangle $OAB$ la fermeture géométrique s'écrit $\vect{OA}+\vect{AB}+\vect{BO}=\vect{0}$.
+
+En remplaçant les termes et en projetant sur $\vect{y_0}$ et $\vect{z_0}$, on a :
+$$
+a\vz{0} - \lambda(t)\vect{y_3}+b\vect{y_2} = \vect{0} \Longleftrightarrow
+\left\{
+\begin{array}{l}
+-\lambda(t)\cos \beta(t) +b\cos \alpha(t) = 0  \\
+a -\lambda(t)\sin \beta(t) +b\sin \alpha(t) = 0
+\end{array}
+\right.
+$$
+
+On cherche à éliminer $\beta(t)$, en conséquence :
+$$
+\left\{
+\begin{array}{l}
+\lambda(t)\cos \beta(t)  = b\cos \alpha(t)  \\
+\lambda(t)\sin \beta(t)  = a+ b\sin \alpha(t) 
+\end{array}
+\right.
+\Longrightarrow
+\lambda^2(t) = b^2 + a^2 + 2 a b \sin \alpha (t)
+$$
+
+Par ailleurs, les exigences 4 et 5 du cahier des charges indiquent les variations du mouvement de la cheville, il est donc possible de tracer la courbes.
+\begin{py}
+\begin{python}
+a=0.117
+b=0.039
+x=linspace(-25,15,200)
+plt.plot(x,1000.*sqrt(b*b+a*a+2*a*b*sin(x*math.pi/180)))
+plt.ylabel("Course du vérin $\\lambda$ (en mm)")
+plt.xlabel("Angle $\\alpha$ (en degrés)")
+plt.grid()
+\end{python}
+\end{py}
+\end{corrige}
+
+\else
+\fi
+
+
+\begin{minipage}[c]{.47\linewidth}
+La loi entrée sortie correspondant au mouvement de la cheville est donnée par la courbe ci-contre.
+
+\subparagraph{}
+\textit{Commenter l'allure de la courbe et donner son équation. Comment les bornes de variation ont-elles été choisies ? En linéarisant le comportement du système, déterminer l'équation de le droite.}
+
+
+\subparagraph{}
+\textit{Donner le schéma bloc du système depuis la sortie du moteur jusqu'à la rotation $\alpha$ de la prothèse. L'exigence 3 est-elle vérifiée ?}
+
+\end{minipage}\hfill
+\begin{minipage}[c]{.47\linewidth}
+\begin{center}
+\includegraphics[width=.95\textwidth]{images/figure_1.pdf}
+\end{center}
+\end{minipage}
+
+
+\ifprof
+\begin{corrige}
+D'après les notes de l'ibd, le domaine de variation de l'angle de la cheville doit être compris entre -25 et 15 degrés. Sur cette plage, on observe qu'il est possible de linéariser le comportement de la cheville. 
+
+ Ainsi, pour 2 couples de points $( -20,110)$ et $(10,130)$, le coefficient directeur est donné par :  $m=\dfrac{130-110}{10-(-20)} = \dfrac{20}{30}\simeq 0,66 \; mm/\text{\textdegree}\simeq 240 \; mm/tour$.
+ 
+ L'ordonnée à l'origine est donnée par : 
+ $y=m x+p \Leftarrow p = 110-\dfrac{2}{3} (-20) \simeq 123 \; mm$.  
+\end{corrige}
+
+\begin{corrige}
+\begin{center}
+\includegraphics[width=.8\textwidth]{images/SchemaBloc}
+\end{center}
+
+Le moteur ayant une fréquence de rotation nominale de 7 600 tr/min, la fréquence de rotation de la cheville sera de :
+$$
+\alpha_v = \omega_m \cdot \dfrac{1}{k}\cdot p_v \cdot \dfrac{1}{m} \cdot 
+7\,600 \cdot \dfrac{1}{2,1}\cdot 3 \cdot \dfrac{1}{240} \simeq 45,24 tr/min \simeq 
+4,73\; rad /s.
+$$
+
+La vitesse maximale demandée par le cahier des charges n'est donc pas dépassée. L'exigence est donc satisfaite. 
+
+\end{corrige}
+\else
+\fi
+\end{document}
+
+
