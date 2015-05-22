@@ -8,9 +8,9 @@ from math import pi
 xi=0.01
 xf=1000
 ai = -60
-af = 10
-phii = -2*pi
-phif=pi
+af = 40
+phii = -360
+phif=90
 omega=np.linspace(xi,xf,1000)
 
 
@@ -27,7 +27,7 @@ plt.subplot(2,1,2)
 #plt.plot(omega,
 #         -np.arctan(tau*omega),
 #         label="$\\varphi(\\omega)$",linewidth=3)
-plt.ylabel("Phase $rad$")
+plt.ylabel("Phase $deg$")
 plt.grid(True, which="both", linestyle="dotted")
 plt.legend(loc='lower right', fancybox=True, shadow=True, prop=dict(size=10))
 plt.semilogx()
