@@ -1,71 +1,107 @@
-\documentclass[10pt,oneside]{article}
+\documentclass[10pt]{article}
 \input{style/coursHeadings}
+\input{style/programHeadings}
+\input{style/macros_SII}
+\input{style/macros_Titres}
+\input{style/macros_Frames}
 
-\usepackage{style/schemabloc}
 %Si le boolen xp est vrai : compilation pour xabi
 %Sinon compilation Damien
-\newboolean{xp}
-\setboolean{xp}{true}
 
-\newboolean{prof}
-\setboolean{prof}{true}
+\newif\ifprof
+\proftrue
+%\proffalse
 
-\def\xxtitre{\ifthenelse{\boolean{xp}}{
-CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{
-}}
+\newif\ifxp
+\xptrue
+%\xpfalse
 
-\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
-Chapitre 7 -- Réponses harmoniques -- Diagrammes de Bode}{
-}}
+\newif\iftd
+\tdtrue
+%\tdfalse
 
-
-\def\xxauteur{\ifthenelse{\boolean{xp}}{
-\noindent 2013 -- 2014 \\
-Xavier \textsc{Pessoles}}{
-}}
-
-
-\def\xxpied{\ifthenelse{\boolean{xp}}{
-CI 2 : SLCI -- Cours \\
-Ch 7 : Réponses harmoniques -- \ifthenelse{\boolean{prof}}{P}{E}%
-}{
-}}
 
 \usepackage[%
-    pdftitle={SLCI - Réponses harmoniques},
+    pdftitle={},
     pdfauthor={Xavier Pessoles},
     colorlinks=true,
     linkcolor=blue,
     citecolor=magenta]{hyperref}
 
 
+\def\discipline{Sciences Industrielles de l'Ingénieur}
+\def\xxtitre{%
+\ifxp
+Partie 2 : SLCI -- Analyser le comportement des Systèmes Linéaires Continus Invariants
+\else
+\fi
+}
 
-\usepackage{pifont}
-\sloppy
-\hyphenpenalty 10000
+\def\xxsoustitre{%
+\ifxp
+Chapitre 7 -- Réponses harmoniques -- Diagrammes de Bode
+\else
+\fi}
+
+\def\xxauteur{%
+\ifxp
+Xavier \textsc{Pessoles}
+\else
+\fi}
+
+\def\xxpied{%
+\ifxp
+Partie 2 : SLCI\\
+Ch. 7 : Réponses harmoniques -- Applications 01
+\else
+\fi}
+
+
+
+%---------------------------------------------------------------------------
 
 
 \begin{document}
+\ifxp
+\input{style/enteteXP}
+\else
+\input{style/enteteDI}
+\fi
 
 
-\input{style/entete1}
+
+
+ \renewcommand{\baselinestretch}{1.2}
+\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+
+
+
+\subsection*{Exercice 1 : Identification du comportement des systèmes}
+
+On donne le diagramme de Bode d'une fonction de transfert :
 
 \begin{center}
- \Large\textsc{\xxtitre}
+\includegraphics[width=.7\linewidth]{images/identification_1.png}
 \end{center}
 
-\begin{center}
- \large\textsc{\xxsoustitre}
-\end{center}
+\subparagraph{}\textit{Expérimentalement, avec quel type de signal doit-on solliciter un système pour tracer un diagramme de Bode ?}
+\subparagraph{} \textit{Pour des pulsations de 1 rad/s, 15 rad/s et 100 rad/s, tracer l'allure du signal d'entrée et le signal de sortie. Calculer (si nécessaire) la pulsation, l'amplitude et le déphasage du signal de sortie. }
 
-\begin{center}
- \large\textsc{Exercices d'application}
-\end{center}
-\vspace{.5cm}
+\subparagraph{}\textit{Tracer le diagramme asymptotique. De quel type de système s'agit-il ? Donner sa forme canonique. Justifier.}
+\subparagraph{} \textit{Identifier les différentes constantes de ce système.}
+
+\ifprof
+\begin{corrige}
+On a : $K=12$, $\xi=0,15$ et $\omega_0 = 15 \; \text{s}^{-1}$.
+\end{corrige}
+\else
+\fi
 
 
-\subsection*{Exercice 1 : Tracé de diagramme de Bode}
-\textit{Tracer le diagramme de Bode des fonctions suivantes :}
+
+
+\subsection*{Exercice 2 : Tracé de diagramme de Bode}
+\subparagraph*{}\textit{Tracer le diagramme de Bode des fonctions suivantes :}
 $$
 H(p)=\dfrac{10}{1+0,1p} \quad \quad 
 H(p)=\dfrac{100}{p(1+p)} \quad \quad 
@@ -74,42 +110,28 @@ H(p)=\dfrac{1}{p(1+p)(1+0,1p)(1+0,01p)}
 $$
 
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/bode_vierge.pdf}
+\includegraphics[width=.9\textwidth]{images/bode_vierge.pdf}
 \end{center}
 
 
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/bode_vierge.pdf}
+\includegraphics[width=.9\textwidth]{images/bode_vierge.pdf}
 \end{center}
 
 
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/bode_vierge.pdf}
+\includegraphics[width=.9\textwidth]{images/bode_vierge.pdf}
 \end{center}
 
 
 
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/bode_vierge.pdf}
-\end{center}
-
-\newpage
-
-\subsection*{Exercice 2 : Identification du comportement des systèmes}
-
-On donne le diagramme de Bode d'une fonction de transfert :
-
-\begin{center}
-\includegraphics[width=.85\linewidth]{png/identification_1.pdf}
+\includegraphics[width=.9\textwidth]{images/bode_vierge.pdf}
 \end{center}
 
 
-\begin{enumerate}
-\item \textit{Expérimentalement, avec quel type de signal doit-on solliciter un système pour tracer un diagramme de Bode ?}
-\item \textit{Tracer le diagramme asymptotique. De quel type de système s'agit-il ? Donner sa forme canonique. Justifier.}
-\item %\subparagraph{}
-\textit{Identifier les différentes constantes de ce système.}
-\end{enumerate}
+
 
 \end{document}
- 
+
+
