@@ -1,35 +1,25 @@
-\documentclass[11pt,oneside]{article}
+\documentclass[10pt]{article}
 \input{style/coursHeadings}
-
+\input{style/programHeadings}
+\input{style/macros_SII}
+\input{style/macros_Titres}
+\input{style/macros_Frames}
 \usepackage{style/schemabloc}
 %Si le boolen xp est vrai : compilation pour xabi
 %Sinon compilation Damien
-\newboolean{xp}
-\setboolean{xp}{true}
 
-\newboolean{prof}
-\setboolean{prof}{true}
+\newif\ifprof
+\proftrue
+%\proffalse
 
-\def\xxtitre{\ifthenelse{\boolean{xp}}{
-CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{
-}}
+\newif\ifxp
+\xptrue
+%\xpfalse
 
-\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
-Chapitre 5 -- Étude des systèmes fondamentaux du second ordre}{
-}}
+\newif\iftd
+%\tdtrue
+\tdfalse
 
-
-\def\xxauteur{\ifthenelse{\boolean{xp}}{
-\noindent 2013 -- 2014 \\
-Xavier \textsc{Pessoles}}{
-}}
-
-
-\def\xxpied{\ifthenelse{\boolean{xp}}{
-CI 2 : SLCI -- Cours \\
-Ch 5 : Étude des systèmes d'ordre 2 -- \ifthenelse{\boolean{prof}}{P}{E}%
-}{
-}}
 
 \usepackage[%
     pdftitle={SLCI - Systèmes du second ordre},
@@ -39,26 +29,45 @@ Ch 5 : Étude des systèmes d'ordre 2 -- \ifthenelse{\boolean{prof}}{P}{E}%
     citecolor=magenta]{hyperref}
 
 
+\def\discipline{Sciences Industrielles de l'Ingénieur}
+\def\xxtitre{%
+\ifxp
+CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants
+\else
+\fi
+}
 
-\usepackage{pifont}
-\sloppy
-\hyphenpenalty 10000
+\def\xxsoustitre{%
+\ifxp
+Chapitre 5 -- Étude des systèmes fondamentaux du second ordre
+\else
+\fi}
+
+\def\xxauteur{%
+\ifxp
+Xavier \textsc{Pessoles}
+\else
+\fi}
+
+\def\xxpied{%
+\ifxp
+CI 2 : Étude du comportement des Systèmes Linéaires Continus Invariants\\
+Ch. 5 : Étude des systèmes fondamentaux du second ordre -- Cours
+\else
+\fi}
+
+
+
+%---------------------------------------------------------------------------
 
 
 \begin{document}
 
+\input{style/enteteXP}
 
-\input{style/entete1}
 
-\begin{center}
- \huge\textsc{\xxtitre}
-\end{center}
 
-\begin{center}
- \LARGE\textsc{\xxsoustitre}
-\end{center}
 
-\vspace{.5cm}
 
 
 
@@ -165,12 +174,13 @@ Schéma-bloc d'un système du second ordre :
 \begin{exemple}
 
 \textit{Amortisseur -- ressort}
-\ifthenelse{\boolean{prof}}{%
+
+\ifprof
 On considère que la force $f(t)$ est l'entrée du système et que $y(t)$ est la
 valeur de sortie. $y(t)$ est la position mesurée par rapport à la position
 d'équilibre. 
 
-En isolant la masse $M$ et en appliquant le théorème fondamental de la
+En isolant la masse $M$ et en appliquant le théorème de la résultante
 dynamique, on obtient : 
 $$
 f(t)-ky(t)-\mu\dot{y}(t) = M\ddot{y}(t) 
@@ -197,12 +207,13 @@ $$K=\dfrac{1}{k} \quad \quad
 =\dfrac{\mu}{2\sqrt{kM}}
 $$
 
-}{
+\else
 \rotatebox{90}{
 \begin{tabular}{p{8cm}}
 \\
 \end{tabular}}
-}
+\fi
+
 \end{exemple}
 
 
