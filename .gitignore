@@ -5,3 +5,8 @@
 *.toc
 *.out
 *.log
+*.bcf
+*.idx
+*.ptc
+*.run
+*.gz
