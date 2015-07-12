@@ -1,77 +1,69 @@
-\documentclass[11pt,oneside]{article}
-\input{style/coursHeadings}
-\input{style/programHeadings}
-
-
-%Si le boolen xp est vrai : compilation pour xabi
-%Sinon compilation Damien
-\newboolean{xp}
-\setboolean{xp}{true}
-
-\newboolean{prof}
-\setboolean{prof}{true}
-
-\def\xxtitre{\ifthenelse{\boolean{xp}}{
-CI 2 -- SLCI : Etude du comportement des Systèmes Linéaires Continus Invariants}{
-Chapitre 1 -- Le système informatique}}
-
-\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
-Chapitre 2 -- Modélisation des Systèmes Linéaires Continus Invariants \\ Transformée de Laplace \\
-Décomposition en éléments simples}{
-}}
-
-\def\xxauteur{\ifthenelse{\boolean{xp}}{
-\noindent 2013 -- 2014 \\
-Xavier \textsc{Pessoles}}{
-Damien Iceta}}
-
-
-\def\xxpied{\ifthenelse{\boolean{xp}}{
-CI 2 : SLCI -- Cours \\
-Ch 2 : Modélisation des SLCI -- \ifthenelse{\boolean{prof}}{P}{E}%
-}{
-TD -- CI 3 : Ingénierie numérique et simulation}}
-
-
-
-\ifthenelse{\boolean{xp}}{
+\documentclass[10pt,fleqn]{article} % Default font size and left-justified equations
 \usepackage[%
-    pdftitle={SLCI - Modélisation des SLCI},
-    pdfauthor={Xavier Pessoles},
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=magenta]{hyperref}}{
-\usepackage[%
-    pdftitle={OS et Environnement de développement},
-    pdfauthor={Damien Iceta},
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=magenta]{hyperref}}
+    pdftitle={SLCI : Cinématique du solide},
+    pdfauthor={Xavier Pessoles}]{hyperref}
 
+\input{style/new_style}
+\input{style/macros_SII}
 
+%\fichetrue
+%\fichefalse
 
-\usepackage{pifont}
-\sloppy
-\hyphenpenalty 10000
+\proftrue
+%\proffalse
+
+%\tdtrue
+\tdfalse
+
+\courstrue
+%\coursfalse
+
+% -------------------------------------
+% Déclaration des titres
+% -------------------------------------
+
+\def\discipline{Sciences \\Industrielles de \\ l'Ingénieur}
+\def\xxtete{Sciences Industrielles de l'Ingénieur}
+
+\def\classe{PTSI}
+\def\xxnumpartie{Partie 2}
+\def\xxpartie{Découverte des Systèmes Linéaires Continus et Invariants\\
+Analyse, Modélisation, Résolution}
+
+\def\xxnumchapitre{Chapitre 2}
+\def\xxchapitre{\hspace{.12cm} Comléments : Transformée de Laplace, Décomposition en éléments simples}
+
+\def\xxposongletx{2}
+\def\xxposonglettext{1.45}
+\def\xxposonglety{23}
+\def\xxonglet{Part. 2 -- Ch. 2}
+
+\def\xxactivite{Cours}
+\def\xxauteur{\textsl{Xavier Pessoles}}
+
+\def\xxcompetences{%
+%\textsl{%
+%\textbf{Savoirs et compétences :}
+%\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+%\item A-C11.1 : Définition et structure d'un système asservi : chaîne directe (ou chaîne d'action), chaîne de retour (ou chaîne d'acquisition), comparateur et écart.
+%\item A-C11.2 : Consigne, perturbation.
+%\item A-C11.3 : Régulation, poursuite.
+%\item A-C11.4 : Définition des performances : rapidité, précision et stabilité. 
+%\end{itemize}
+%%
+%}
+}
+
+\def\xxfigures{
+}%figues de la page de garde
+\def\xxpied{%
+Partie 2 -- Découverte des SLCI\\
+Ch. 2 : Compléments : Décomposition en éléments simples -- \xxactivite%
+}
 
 \begin{document}
-
-
-\input{style/entete1}
-
-\begin{center}
- \huge\textsc{\xxtitre}
-\end{center}
-
-\begin{center}
- \LARGE\textsc{\xxsoustitre}
-\end{center}
-
-
-
-
-\vspace{.5cm}
-
+\chapterimage{png/Fond_SLCI}
+\input{style/new_pagegarde}
 
 \section*{Préliminaire}
 
@@ -101,14 +93,14 @@ $$
 avec $\alpha_i\in \mathbb{R}$.
 \end{resultat}
 
-\begin{methode}
+\begin{resultat}
 \begin{enumerate}
 \item On multiplie les deux formes de $F(p)$ par $(p-p_i)$.
 \item On pose $p=p_i$.
 \item On détermine $\alpha_i$.
 \item On réalise l'opération $n$ fois (avec $n=deg(D(p))$.
 \end{enumerate}
-\end{methode}
+\end{resultat}
 
 \begin{exemple}
 \textit{Décomposer la fonction suivante en éléments simples :}
@@ -133,7 +125,7 @@ $$
 avec $\alpha_i\in \mathbb{R}$ et $K \in \mathbb{R}$
 \end{resultat}
 
-\begin{methode}
+\begin{resultat}
 \begin{enumerate}
 \item Calcul des $\alpha_i$ :
 \begin{enumerate}
@@ -148,7 +140,7 @@ avec $\alpha_i\in \mathbb{R}$ et $K \in \mathbb{R}$
 \item On détermine $K$.
 \end{enumerate}
 \end{enumerate}
-\end{methode}
+\end{resultat}
 
 \begin{exemple}
 \textit{Décomposer la fonction suivante en éléments simples :}
@@ -175,7 +167,7 @@ avec $\alpha_i\in \mathbb{R}$.
 \end{resultat}
 
 
-\begin{methode}
+\begin{resultat}
 Les méthodes précédentes restent utilisables. Elles ne permettent pas de déterminer touts les $\alpha_i$. 
 
 On peut alors mettre les deux formes de $F(p)$ au même dénominateur et identifier les monômes. 
@@ -183,7 +175,7 @@ On peut alors mettre les deux formes de $F(p)$ au même dénominateur et identif
 On peut aussi prendre des valeurs particulières de $p$ et résoudre un système d'équations.
 
 Le calcul de certaines limites en $\infty$ peut permettre de déterminer certains coefficients. 
-\end{methode}
+\end{resultat}
 \begin{exemple}
 \textit{Décomposer la fonction suivante en éléments simples :}
 $$
