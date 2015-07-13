@@ -1,111 +1,51 @@
-\documentclass[11pt,oneside]{article}
-\input{style/coursHeadings}
+\documentclass[10pt,fleqn]{article} % Default font size and left-justified equations
+\usepackage[%
+    pdftitle={SLCI : Modélisation par schémas blocs},
+    pdfauthor={Xavier Pessoles}]{hyperref}
+
+\input{style/new_style}
+\input{style/macros_SII}
 
 \usepackage{style/schemabloc}
-%Si le boolen xp est vrai : compilation pour xabi
-%Sinon compilation Damien
-\newboolean{xp}
-\setboolean{xp}{true}
+%\fichetrue
+\fichefalse
 
-\newboolean{prof}
-\setboolean{prof}{true}
+\proftrue
+%\proffalse
 
-\def\xxtitre{\ifthenelse{\boolean{xp}}{
-CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{
-}}
+%\tdtrue
+\tdfalse
 
-\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
-Chapitre 3 -- Modélisation des Systèmes Linéaires Continus Invariants \\ Modélisation par schémas blocs}{
-}}
+\courstrue
+%\coursfalse
 
-\def\xxauteur{\ifthenelse{\boolean{xp}}{
-\noindent 2013 -- 2014 \\
-Xavier \textsc{Pessoles}}{
-}}
+% -------------------------------------
+% Déclaration des titres
+% -------------------------------------
 
+\def\discipline{Sciences \\Industrielles de \\ l'Ingénieur}
+\def\xxtete{Sciences Industrielles de l'Ingénieur}
 
-\def\xxpied{\ifthenelse{\boolean{xp}}{
-CI 2 : SLCI -- Cours \\
-Ch 3 : Modélisation des SLCI -- \ifthenelse{\boolean{prof}}{P}{E}%
-}{
-}}
+\def\classe{PTSI}
+\def\xxnumpartie{Partie 2}
+\def\xxpartie{Découverte des Systèmes Linéaires Continus et Invariants\\
+Analyse, Modélisation, Résolution}
 
+\def\xxnumchapitre{Chapitre 3}
+\def\xxchapitre{\hspace{.12cm} Modélisation des SLCI par schémas blocs}
 
+\def\xxposongletx{2}
+\def\xxposonglettext{1.45}
+\def\xxposonglety{23}
+\def\xxonglet{Part. 2 -- Ch. 3}
 
+\def\xxactivite{Cours}
+\def\xxauteur{\textsl{Xavier Pessoles}}
 
-\usepackage[%
-    pdftitle={SLCI - Modélisation des SLCI},
-    pdfauthor={Xavier Pessoles},
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=magenta]{hyperref}
-
-
-
-\usepackage{pifont}
-\sloppy
-\hyphenpenalty 10000
-
-\begin{document}
-
-
-\input{style/entete1}
-
-\begin{center}
- \huge\textsc{\xxtitre}
-\end{center}
-
-\begin{center}
- \LARGE\textsc{\xxsoustitre}
-\end{center}
-
-
-
-
-\vspace{.5cm}
-
-\begin{minipage}[c]{.3\linewidth}
-\begin{center}
-\includegraphics[width=5cm]{png/mcc.png}
-
-\textit{Moteur à courant continu}
-\end{center}
-\end{minipage} \hfill
-\begin{minipage}[c]{.3\linewidth}
-\begin{center}
-\includegraphics[width=5cm]{png/modele_mcc.png}
-
-\textit{Schématisation} 
-\end{center}
-\end{minipage} \hfill
-\begin{minipage}[c]{.3\linewidth}
-\begin{center}
-\includegraphics[width=5cm]{png/blocs_mcc.png}
-
-\textit{Schéma bloc}
-\end{center}
-\end{minipage} 
-
-\vspace{.5cm}
-
-On a vu précédemment que les équations différentielles régissant le comportement d'un système peuvent être transformées dans le domaine de Laplace dans le but d'être résolues. 
-
-La complexité des systèmes nous poussent à utiliser une représentation schématique : les schémas blocs. Il faudra alors déterminer le lien entre cette représentation et la représentation dans le domaine de Laplace.
-
-\vspace{.2cm}
-
-
-\begin{prob}
-%\textbf{Problématiques}
-\begin{itemize}
-\item Comment modéliser un système complexe multiphysique en utilisant la modélisation en schéma bloc et la modélisation dans le domaine de Laplace ?
-\item Comment déterminer la fonction de transfert d'un système dans le but de prévoir son comportement ?
-\end{itemize}
-\end{prob}
-
-\begin{savoir}
-%\textsc{Savoirs :}
-\begin{itemize}
+\def\xxcompetences{%
+\textsl{%
+\textbf{Savoirs et compétences :}
+\begin{itemize}[label=\ding{112},font=\color{ocre}] 
 \item Modéliser :
 \begin{itemize}
 \item Mod-C4.1 : Représentation par schéma bloc
@@ -119,31 +59,57 @@ La complexité des systèmes nous poussent à utiliser une représentation sché
 \item Rés-C5-S1 : Schéma bloc ou d’une fonction de transfert les grandeurs caractérisant les performances du modèle
 \end{itemize}
 \end{itemize}
-\end{savoir}
+%
+}}
+
+\def\xxfigures{
+\begin{center}
+\includegraphics[width=4cm]{images/mcc.png}
+
+\textit{Moteur à courant continu}
+
+\includegraphics[width=5cm]{images/modele_mcc.png}
+\textit{Schématisation} 
+
+\includegraphics[width=5cm]{images/blocs_mcc.png}
+\textit{Schéma bloc}
+
+\end{center}
+}%figues de la page de garde
+\def\xxpied{%
+Partie 2 -- Découverte des SLCI\\
+Ch. 3 : Modélisation par schémas blocs -- \xxactivite%
+}
+
+%---------------------------------------------------------------------------
+
+
+\begin{document}
+\chapterimage{png/Fond_SLCI}
+\input{style/new_pagegarde}
 
 
 
-\setlength{\parskip}{0ex plus 0.2ex minus 0ex}
- \renewcommand{\contentsname}{}
- \renewcommand{\baselinestretch}{1}
+On a vu précédemment que les équations différentielles régissant le comportement d'un système peuvent être transformées dans le domaine de Laplace dans le but d'être résolues. 
 
-% \vspace{1cm}
-\textit{Ce document est en évolution permanente. Merci de signaler toutes
-erreurs ou coquilles.}
-
-\tableofcontents
-
- \renewcommand{\baselinestretch}{1.2}
-\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+La complexité des systèmes nous poussent à utiliser une représentation schématique : les schémas blocs. Il faudra alors déterminer le lien entre cette représentation et la représentation dans le domaine de Laplace.
 
 
+
+%\begin{prob}
+%\textbf{Problématiques}
+\begin{itemize}
+\item Comment modéliser un système complexe multiphysique en utilisant la modélisation en schéma bloc et la modélisation dans le domaine de Laplace ?
+\item Comment déterminer la fonction de transfert d'un système dans le but de prévoir son comportement ?
+\end{itemize}
+%\end{prob}
 
 \section{Fonction de transfert des systèmes}
 \subsection{Le moteur à courant continu}
 
 On adopte, pour le moteur à courant continu, la représentation suivante :
 \begin{center}
-\includegraphics[width=10cm]{png/modele_mcc.png} 
+\includegraphics[width=10cm]{images/modele_mcc.png} 
 \end{center}
 
 \begin{multicols}{2}
@@ -381,7 +347,7 @@ $$
 
 
 
-\begin{props}
+%\begin{props}
 $H(p)$ est une fonction rationnelle en $p$. En factorisant le numérateur et le
 dénominateur, $H(p)$ peut s'écrire sous cette forme :
 $$
@@ -405,7 +371,7 @@ terme $p^\alpha$ apparaît au dénominateur. \textbf{$\alpha$ est la classe (ou 
 la fonction de transfert}. Il correspond au nombre d'intégrations pures du
 système.
 \end{itemize}
-\end{props}
+%\end{props}
 
 
 
@@ -417,7 +383,8 @@ Le schéma fonctionnel, ou schéma bloc, est ainsi une représentation graphique
 système d’équations différentielles, ou des relations entre les variables que
 décrit le système d’équations différentielles.
 
-\begin{methode}
+%\begin{methode}
+\begin{resultat}
 Pour établir un schéma fonctionnel la démarche est la suivante :
 \begin{enumerate}
 \item Appliquer la transformée de Laplace à chaque équation du système différentiel : on obtient alors un système d’équations linéaires
@@ -427,7 +394,8 @@ dans le domaine de Laplace, que va traduire le schéma.
 \item Rassembler les schémas, simplifier à l’aide des règles définies un peu plus tard.
 \end{enumerate}
 
-\end{methode}
+%\end{methode}
+\end{resultat}
 
 La représentation par le schéma fonctionnel et la fonction de transfert
 permettent ainsi de déterminer les
@@ -440,13 +408,14 @@ Pour les équations "simples" de la physique, on peut aisément mettre les théo
 
 \footnotesize{
 \begin{center}
-\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+%\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+\begin{tabular}{p{3cm}p{3cm}p{3cm}p{3cm}p{3cm}}
 %\multicolumn{5}{c}{\textbf{Théorèmes de la mécanique}}\\
 \begin{center}
 Théorème de la résultante dynamique (position)
 \end{center}
 &
-\textit{Exemple : Mouvement d'un solide en translation}%\includegraphics[height=1cm]{png/poids}}
+\textit{Exemple : Mouvement d'un solide en translation}%\includegraphics[height=1cm]{images/poids}}
 &
 $$ F(t)=M\dfrac{d^2x(t)}{dt^2}$$
 &
@@ -465,7 +434,7 @@ Théorème de la résultante dynamique (vitesse)
 &
 %\multirow{2}{*}{%
 \begin{center}
-\includegraphics[height=1cm]{png/poids}
+\includegraphics[height=1cm]{images/poids}
 \end{center}
 %}
 &
@@ -485,7 +454,7 @@ Théorème du moment dynamique (position)
 \end{center}
 &
 \textit{Mouvement d'un solide en rotation}
-%\includegraphics[height=1cm]{png/inertie_2}}
+%\includegraphics[height=1cm]{images/inertie_2}}
 &
 $$ C(t)=J\dfrac{d^2\theta(t)}{dt^2}$$
 &
@@ -503,7 +472,7 @@ Théorème du moment dynamique (vitesse)
 \end{center}
 &
 \begin{center}
-\includegraphics[height=1cm]{png/inertie_2}
+\includegraphics[height=1cm]{images/inertie_2}
 \end{center}
 &
 $$ C(t)=J\dfrac{d\omega(t)}{dt}$$
@@ -540,7 +509,7 @@ On note :
 %\begin{center}
 %Théorème de la résultante dynamique (position)
 %
-%\includegraphics[width=.3\textwidth]{png/poids}
+%\includegraphics[width=.3\textwidth]{images/poids}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -574,7 +543,7 @@ On note :
 %\begin{center}
 %Théorème de la résultante dynamique (vitesse)
 %
-%\includegraphics[width=.3\textwidth]{png/poids}
+%\includegraphics[width=.3\textwidth]{images/poids}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -612,7 +581,7 @@ On note :
 %\begin{center}
 %Théorème du moment dynamique (position)
 %
-%\includegraphics[width=.75\textwidth]{png/inertie}
+%\includegraphics[width=.75\textwidth]{images/inertie}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -648,7 +617,7 @@ On note :
 %\begin{center}
 %Théorème du moment dynamique (vitesse)
 %
-%\includegraphics[width=.75\textwidth]{png/inertie}
+%\includegraphics[width=.75\textwidth]{images/inertie}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -686,14 +655,15 @@ On note :
 
 \footnotesize{
 \begin{center}
-\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+%\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+\begin{tabular}{p{3cm}p{3cm}p{3cm}p{3cm}p{3cm}}
 %\multicolumn{5}{c}{\textbf{Théorèmes de la mécanique}}\\
 \begin{center}
 Frottements visqueux pour des solides en translation
 \end{center}
 &
 \begin{center}
-\includegraphics[width=2.5cm]{png/amortisseur}
+\includegraphics[width=2.5cm]{images/amortisseur}
 \end{center}
 &
 $$ f(t)=f\dfrac{dx(t)}{dt}$$
@@ -713,7 +683,7 @@ Frottements visqueux pour des solides en rotation
 &
 \textit{Frottements dans les paliers d'un moteur à courant continu}
 %\begin{center}
-%\includegraphics[height=1cm]{png/poids}
+%\includegraphics[height=1cm]{images/poids}
 %\end{center}
 &
 $$ C(t)=f\dfrac{d\theta(t)}{dt}$$
@@ -734,7 +704,7 @@ $$ C(p)=fp\Theta(p)$$
 %\begin{center}
 %Frottements visqueux pour des solides en translation
 %
-%\includegraphics[width=.6\textwidth]{png/amortisseur}
+%\includegraphics[width=.6\textwidth]{images/amortisseur}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -767,7 +737,7 @@ $$ C(p)=fp\Theta(p)$$
 %\begin{center}
 %Frottements visqueux pour des solides en rotation
 %
-%%\includegraphics[width=.3\textwidth]{png/poids}
+%%\includegraphics[width=.3\textwidth]{images/poids}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -810,14 +780,15 @@ $$ C(p)=fp\Theta(p)$$
 
 \footnotesize{
 \begin{center}
-\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+%\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+\begin{tabular}{p{3cm}p{3cm}p{3cm}p{3cm}p{3cm}}
 %\multicolumn{5}{c}{\textbf{Théorèmes de la mécanique}}\\
 \begin{center}
 Ressorts en compression de raideur $k$
 \end{center}
 &
 \begin{center}
-\includegraphics[width=1cm]{png/ressort_comp}
+\includegraphics[width=1cm]{images/ressort_comp}
 \end{center}
 &
 $$ f(t)=kx(t)$$
@@ -836,7 +807,7 @@ Ressorts en traction de raideur $k$
 \end{center}
 &
 \begin{center}
-\includegraphics[width=2.5cm]{png/ressort_couple}
+\includegraphics[width=2.5cm]{images/ressort_couple}
 \end{center}
 &
 $$ C(t)=k\theta(t)$$
@@ -857,7 +828,7 @@ $$ C(p)=k\Theta(p)$$
 %\begin{center}
 %Ressorts en compression de raideur $k$
 %
-%\rotatebox{90}{\includegraphics[width=.5\textwidth]{png/ressort_comp}}
+%\rotatebox{90}{\includegraphics[width=.5\textwidth]{images/ressort_comp}}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -890,7 +861,7 @@ $$ C(p)=k\Theta(p)$$
 %\begin{center}
 %Ressorts en traction de raideur $k$
 %
-%\includegraphics[width=\textwidth]{png/ressort_couple}
+%\includegraphics[width=\textwidth]{images/ressort_couple}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -927,14 +898,15 @@ $$ C(p)=k\Theta(p)$$
 
 \footnotesize{
 \begin{center}
-\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+%\begin{tabular}{m{3cm}m{3cm}m{3cm}m{3cm}m{3cm}}
+\begin{tabular}{p{3cm}p{3cm}p{3cm}p{3cm}p{3cm}}
 %\multicolumn{5}{c}{\textbf{Théorèmes de la mécanique}}\\
 \begin{center}
 Résistor
 \end{center}
 &
 \begin{center}
-\includegraphics[width=2cm]{png/resistance}
+\includegraphics[width=2cm]{images/resistance}
 \end{center}
 &
 $$ u(t)=Ri(t)$$
@@ -953,7 +925,7 @@ Condensateur
 \end{center}
 &
 \begin{center}
-\includegraphics[width=2cm]{png/condensateur}
+\includegraphics[width=2cm]{images/condensateur}
 \end{center}
 &
 $$ u(t)=\dfrac{1}{C}\int i(t) dt$$
@@ -972,7 +944,7 @@ Inductance
 \end{center}
 &
 \begin{center}
-\includegraphics[width=2cm]{png/inductance}
+\includegraphics[width=2cm]{images/inductance}
 \end{center}
 &
 $$ u(t)=L \dfrac{d i(t)}{dt}$$
@@ -993,7 +965,7 @@ $$ U(p)=LpI(p)$$
 %\begin{center}
 %Résistance
 %
-%\includegraphics[width=.5\textwidth]{png/resistance}
+%\includegraphics[width=.5\textwidth]{images/resistance}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -1027,7 +999,7 @@ $$ U(p)=LpI(p)$$
 %\begin{center}
 %Condensateur
 %
-%\includegraphics[width=.5\textwidth]{png/condensateur}
+%\includegraphics[width=.5\textwidth]{images/condensateur}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -1063,7 +1035,7 @@ $$ U(p)=LpI(p)$$
 %\begin{center}
 %Inductance
 %
-%\includegraphics[width=.5\textwidth]{png/inductance}
+%\includegraphics[width=.5\textwidth]{images/inductance}
 %\end{center}
 %\end{minipage} \hfill
 %\begin{minipage}[t]{.2\linewidth}
@@ -1353,7 +1325,7 @@ Schéma bloc du MCC complet :
 
 \ifthenelse{\boolean{prof}}{%
 \begin{center}
-\includegraphics[width=.8\textwidth]{png/mcc_bloc}
+\includegraphics[width=.8\textwidth]{images/mcc_bloc}
 \end{center}
 }{
 \rotatebox{90}{
@@ -1493,11 +1465,11 @@ $$\equiv$$
 \subsection{Déplacement des points de prélèvement}
 
 \begin{center}
- \includegraphics[width=\textwidth]{png/prelevement1}
+ \includegraphics[width=\textwidth]{images/prelevement1}
 \end{center}
 
 \begin{center}
- \includegraphics[width=\textwidth]{png/prelevement2}
+ \includegraphics[width=\textwidth]{images/prelevement2}
 \end{center}
 
 
@@ -1505,11 +1477,11 @@ $$\equiv$$
 
 
 \begin{center}
- \includegraphics[width=\textwidth]{png/sommateur1}
+ \includegraphics[width=\textwidth]{images/sommateur1}
 \end{center}
 
 \begin{center}
- \includegraphics[width=\textwidth]{png/sommateur2}
+ \includegraphics[width=\textwidth]{images/sommateur2}
 \end{center}
 
 
@@ -1524,7 +1496,7 @@ symboliques.
 \subsection{Systèmes en boucles fermées}
 Soit la structure ci-dessous constituée en trois blocs :
 \begin{center}
-  \includegraphics[width=.7\textwidth]{png/CDCR}
+  \includegraphics[width=.7\textwidth]{images/CDCR}
 \end{center}
 
 
@@ -1543,8 +1515,10 @@ $$
 
 \end{resultat}
 
-\begin{demo}
-\ifthenelse{\boolean{prof}}{%
+%\begin{demo}
+%\ifthenelse{\boolean{prof}}{%
+\ifprof
+
 Montrons que dans le schéma bloc précédent, la fonction de transfert en boucle fermée peut s'écrire : 
 $$
 H(p)=\dfrac{K\cdot G(p)}{1+K\cdot G(p) \cdot F(p)}
@@ -1559,12 +1533,12 @@ $$ R(p)= S(p) \cdot F(p) $$
 
 Équation donnée par le comparateur : 
 $$\varepsilon(p) = E(p) - R(p)$$
-}{
+\else
 \rotatebox{90}{
 \begin{tabular}{p{10cm}}
 \\
 \end{tabular}}
-}
+\fi
 
 %\begin{warn}
 %\textbf{Attention} 
@@ -1576,7 +1550,8 @@ $$\varepsilon(p) = E(p) - R(p)$$
 %\end{warn}
 
 
-\ifthenelse{\boolean{prof}}{%
+%\ifthenelse{\boolean{prof}}{%
+\ifprof
 On peut donc en déduire que :
 $$\varepsilon(p) = E(p) - S(p) \cdot F(p) $$
 
@@ -1594,12 +1569,12 @@ Au final :
 $$ 
 H(p)=\dfrac{S(p)}{E(p)}= \dfrac{K \cdot G(p)}{1+K \cdot G(p) \cdot F(p)}
 $$
-}{
+\else
 \rotatebox{90}{
 \begin{tabular}{p{10cm}}
 \\
 \end{tabular}}
-}
+\fi
 
 On a donc :
 
@@ -1639,12 +1614,12 @@ $$\equiv$$
 \end{minipage}
 
 
-\end{demo}
+%\end{demo}
 
 \begin{exemple}
 Calcul de la FTBF du MCC :
 \begin{center}
-\includegraphics[width=.8\textwidth]{png/schema_mcc_complet}
+\includegraphics[width=.8\textwidth]{images/schema_mcc_complet}
 \end{center}
 
 \ifthenelse{\boolean{prof}}{%
@@ -1696,7 +1671,7 @@ $$
 %Calcul de l'erreur du MCC  :
 %
 %\begin{center}
-%\includegraphics[width=.8\textwidth]{png/schema_MCC}
+%\includegraphics[width=.8\textwidth]{images/schema_MCC}
 %\end{center}
 %
 %\ifthenelse{\boolean{prof}}{%
@@ -1720,7 +1695,7 @@ performances on utilise la fonction de transfert en boucle ouverte du système
 partir du système en boucle ouverte (la FTBO est plus simple à manipuler). 
 
 \begin{center}
-  \includegraphics[width=.6\textwidth]{png/FTBO}
+  \includegraphics[width=.6\textwidth]{images/FTBO}
 \end{center}
 
 La boucle ouverte a donc la forme suivante : 
@@ -1786,7 +1761,8 @@ supplémentaires très souvent parasites (bruit, effort résistant...).
 \end{center}
 
 
-\begin{methode}
+%\begin{methode}
+\begin{resultat}
 \textbf{Principe de superposition}
 
 Soit un système avec deux entrées $E_1(p)$ et $E_2(p)$. Pour calculer $S(p)$ on procède de la manière suivante : 
@@ -1799,7 +1775,8 @@ Soit un système avec deux entrées $E_1(p)$ et $E_2(p)$. Pour calculer $S(p)$ o
 \end{enumerate}
 
 Cette méthode peut être étendue à un système à $n$ entrées. On considèrera alors à chaque étape que $n-1$ entrées sont nulles.
-\end{methode}
+%\end{methode}
+\end{resultat}
 
 \begin{exemple}
 
@@ -1897,7 +1874,7 @@ $$
 %\begin{exemple}
 %%Déterminer $\Omega
 %\begin{center}
-%\includegraphics[width=.8\textwidth]{png/schema_mcc_complet}
+%\includegraphics[width=.8\textwidth]{images/schema_mcc_complet}
 %\end{center}
 %\end{exemple}
 
