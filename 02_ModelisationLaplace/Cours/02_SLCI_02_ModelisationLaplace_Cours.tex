@@ -1,134 +1,207 @@
-\documentclass[11pt,oneside]{article}
-\input{style/coursHeadings}
-\input{style/programHeadings}
-
-
-%Si le boolen xp est vrai : compilation pour xabi
-%Sinon compilation Damien
-\newboolean{xp}
-\setboolean{xp}{true}
-
-\newboolean{prof}
-\setboolean{prof}{true}
-
-\def\xxtitre{\ifthenelse{\boolean{xp}}{
-CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{}}
-
-\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
-Chapitre 2 -- Modélisation des Systèmes Linéaires Continus Invariants -- Transformée de Laplace}{}}
-
-\def\xxauteur{\ifthenelse{\boolean{xp}}{
-\noindent 2013 -- 2014 \\
-Xavier \textsc{Pessoles}}{
-Damien Iceta}}
-
-
-\def\xxpied{\ifthenelse{\boolean{xp}}{
-CI 2 : SLCI -- Cours \\
-Ch 2 : Modélisation des SLCI -- \ifthenelse{\boolean{prof}}{P}{E}%
-}{
-TD -- CI 3 : Ingénierie numérique et simulation}}
-
-
-
-\ifthenelse{\boolean{xp}}{
+\documentclass[10pt,fleqn]{article} % Default font size and left-justified equations
 \usepackage[%
-    pdftitle={SLCI - Modélisation des SLCI},
-    pdfauthor={Xavier Pessoles},
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=magenta]{hyperref}}{
-\usepackage[%
-    pdftitle={OS et Environnement de développement},
-    pdfauthor={Damien Iceta},
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=magenta]{hyperref}}
+    pdftitle={SLCI : Cinématique du solide},
+    pdfauthor={Xavier Pessoles}]{hyperref}
 
+\input{style/new_style}
+\input{style/macros_SII}
 
+%\fichetrue
+\fichefalse
 
-\usepackage{pifont}
-\sloppy
-\hyphenpenalty 10000
+%\proftrue
+\proffalse
 
-\begin{document}
+%\tdtrue
+\tdfalse
 
+\courstrue
+%\coursfalse
 
-\input{style/entete1}
+% -------------------------------------
+% Déclaration des titres
+% -------------------------------------
 
-\begin{center}
- \huge\textsc{\xxtitre}
-\end{center}
+\def\discipline{Sciences \\Industrielles de \\ l'Ingénieur}
+\def\xxtete{Sciences Industrielles de l'Ingénieur}
 
-\begin{center}
- \LARGE\textsc{\xxsoustitre}
-\end{center}
+\def\classe{PTSI}
+\def\xxnumpartie{Partie 2}
+\def\xxpartie{Découverte des Systèmes Linéaires Continus et Invariants\\
+Analyse, Modélisation, Résolution}
 
+\def\xxnumchapitre{Chapitre 2}
+\def\xxchapitre{\hspace{.12cm} Modélisation des Systèmes Linéaires Continus Invariants -- Transformée de Laplace}
 
+\def\xxposongletx{2}
+\def\xxposonglettext{1.45}
+\def\xxposonglety{23}
+\def\xxonglet{Part. 2 -- Ch. 2}
 
+\def\xxactivite{Cours}
+\def\xxauteur{\textsl{Xavier Pessoles}}
 
-\vspace{.5cm}
-
-
-\begin{center}
-\begin{tabular}{ccccc}
-\includegraphics[height=4cm]{png/frein.png} &&
-\includegraphics[height=4cm]{png/tripteor.png} &&
-\includegraphics[height=4cm]{png/pompe.png} \\
-\textit{Asservissement du freinage} &&
-\textit{Asservissement en } &&
-\textit{Asservissement de } \\
-\textit{d'un A 318} &&
-\textit{vitesse et position} &&
-\textit{la position du rotor} \\
-&&
-\textit{d'un centre d'usinage} && 
-\textit{d'une pompe turbo moléculaire} 
-\end{tabular}
-\end{center}
-
-
-
-
-
-\vspace{.2cm}
-On veut prévoir le comportement de systèmes intégrant des technologies différentes. Par exemple, en mode automatique, le freinage d'un avion dépend de son accélération (technologie mécanique). L'envoi de l'ordre de freinage est piloté par une servo-valve électro-hydraulique (technologies électriques et hydrauliques).
-
-Il va donc falloir d'une part définir des outils mathématiques indépendant des différentes technologies pour décrire le fonctionnement des systèmes. D'autre part, ces modèles devront permettre de connaître les réponses du système en fonction de sollicitations diverses (échelons, rampes, sinusoïdes ...).
-
-
-Classiquement, ces systèmes sont modélisables par des équations différentielles. Or, déterminer une solution analytique pour une équation différentielle n'est pas toujours aisé.
-
-\begin{obj}
-\textsc{Problématiques :}
-\begin{itemize}
-\item Comment modéliser un système dont le fonctionnement fait appel à plusieurs champs de la physiques ?
-\item Comment déterminer le comportement d'un système lorsque celui-ci est régit par une équation différentielle complexe ?
-\end{itemize}
-\end{obj}
-
-\begin{rem}
-\textsc{Savoirs :}
-\begin{itemize}
+\def\xxcompetences{%
+\textsl{%
+\textbf{Savoirs et compétences :}
+\begin{itemize}[label=\ding{112},font=\color{ocre}] 
 \item Mod-C2.1	Modélisation par équations différentielles.
 \item Mod-C2.2	Représentation par fonction de transfert (formalisme de Laplace).
 \end{itemize}
-\end{rem}
+%
+}}
+
+\def\xxfigures{
+\begin{center}
+\includegraphics[height=4cm]{images/frein.png} \\
+\includegraphics[height=4cm]{images/tripteor.png} \\ 
+\includegraphics[height=4cm]{images/pompe.png} \\
+\end{center}
+}%figues de la page de garde
+\def\xxpied{%
+Partie 2 -- Découverte des SLCI\\
+Ch. 2 : Transformées de Lapalce -- \xxactivite%
+}
+
+%---------------------------------------------------------------------------
 
 
+\begin{document}
+\chapterimage{png/Fond_SLCI}
+\input{style/new_pagegarde}
 
-\setlength{\parskip}{0ex plus 0.2ex minus 0ex}
- \renewcommand{\contentsname}{}
- \renewcommand{\baselinestretch}{1}
 
-% \vspace{1cm}
-\textit{Ce document est en évolution permanente. Merci de signaler toutes
-erreurs ou coquilles.}
-
-\tableofcontents
-
- \renewcommand{\baselinestretch}{1.2}
-\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
+%\documentclass[11pt,oneside]{article}
+%\input{style/coursHeadings}
+%\input{style/programHeadings}
+%
+%
+%%Si le boolen xp est vrai : compilation pour xabi
+%%Sinon compilation Damien
+%\newboolean{xp}
+%\setboolean{xp}{true}
+%
+%\newboolean{prof}
+%\setboolean{prof}{true}
+%
+%\def\xxtitre{\ifthenelse{\boolean{xp}}{
+%CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{}}
+%
+%\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
+%Chapitre 2 -- Modélisation des Systèmes Linéaires Continus Invariants -- Transformée de Laplace}{}}
+%
+%\def\xxauteur{\ifthenelse{\boolean{xp}}{
+%\noindent 2013 -- 2014 \\
+%Xavier \textsc{Pessoles}}{
+%Damien Iceta}}
+%
+%
+%\def\xxpied{\ifthenelse{\boolean{xp}}{
+%CI 2 : SLCI -- Cours \\
+%Ch 2 : Modélisation des SLCI -- \ifthenelse{\boolean{prof}}{P}{E}%
+%}{
+%TD -- CI 3 : Ingénierie numérique et simulation}}
+%
+%
+%
+%\ifthenelse{\boolean{xp}}{
+%\usepackage[%
+%    pdftitle={SLCI - Modélisation des SLCI},
+%    pdfauthor={Xavier Pessoles},
+%    colorlinks=true,
+%    linkcolor=blue,
+%    citecolor=magenta]{hyperref}}{
+%\usepackage[%
+%    pdftitle={OS et Environnement de développement},
+%    pdfauthor={Damien Iceta},
+%    colorlinks=true,
+%    linkcolor=blue,
+%    citecolor=magenta]{hyperref}}
+%
+%
+%
+%\usepackage{pifont}
+%\sloppy
+%\hyphenpenalty 10000
+%
+%\begin{document}
+%
+%
+%\input{style/entete1}
+%
+%\begin{center}
+% \huge\textsc{\xxtitre}
+%\end{center}
+%
+%\begin{center}
+% \LARGE\textsc{\xxsoustitre}
+%\end{center}
+%
+%
+%
+%
+%\vspace{.5cm}
+%
+%
+%\begin{center}
+%\begin{tabular}{ccccc}
+%\includegraphics[height=4cm]{images/frein.png} &&
+%\includegraphics[height=4cm]{images/tripteor.png} &&
+%\includegraphics[height=4cm]{images/pompe.png} \\
+%\textit{Asservissement du freinage} &&
+%\textit{Asservissement en } &&
+%\textit{Asservissement de } \\
+%\textit{d'un A 318} &&
+%\textit{vitesse et position} &&
+%\textit{la position du rotor} \\
+%&&
+%\textit{d'un centre d'usinage} && 
+%\textit{d'une pompe turbo moléculaire} 
+%\end{tabular}
+%\end{center}
+%
+%
+%
+%
+%
+%\vspace{.2cm}
+%Il est possible prévoir le comportement de systèmes intégrant des technologies différentes. Par exemple, en mode automatique, le freinage d'un avion dépend de son accélération (technologie mécanique). L'envoi de l'ordre de freinage est piloté par une servo-valve électro-hydraulique (technologies électriques et hydrauliques).
+%
+%Il va donc falloir d'une part définir des outils mathématiques indépendant des différentes technologies pour décrire le fonctionnement des systèmes. D'autre part, ces modèles devront permettre de connaître les réponses du système en fonction de sollicitations diverses (échelons, rampes, sinusoïdes ...).
+%
+%
+%Classiquement, ces systèmes sont modélisables par des équations différentielles. Or, déterminer une solution analytique pour une équation différentielle n'est pas toujours aisé.
+%
+%\begin{obj}
+%\textsc{Problématiques :}
+%\begin{itemize}
+%\item Comment modéliser un système dont le fonctionnement fait appel à plusieurs champs de la physiques ?
+%\item Comment déterminer le comportement d'un système lorsque celui-ci est régit par une équation différentielle complexe ?
+%\end{itemize}
+%\end{obj}
+%
+%\begin{rem}
+%\textsc{Savoirs :}
+%\begin{itemize}
+%\item Mod-C2.1	Modélisation par équations différentielles.
+%\item Mod-C2.2	Représentation par fonction de transfert (formalisme de Laplace).
+%\end{itemize}
+%\end{rem}
+%
+%
+%
+%\setlength{\parskip}{0ex plus 0.2ex minus 0ex}
+% \renewcommand{\contentsname}{}
+% \renewcommand{\baselinestretch}{1}
+%
+%% \vspace{1cm}
+%\textit{Ce document est en évolution permanente. Merci de signaler toutes
+%erreurs ou coquilles.}
+%
+%\tableofcontents
+%
+% \renewcommand{\baselinestretch}{1.2}
+%\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
 
 Les notions mathématiques abordées dans ce chapitre n'ont pas pour but de se substituer à un cours de mathématiques mais de donner des propriétés et des définitions utiles pour l'étude des systèmes continus linéaires invariants.
 
@@ -140,7 +213,7 @@ On considère le circuit électrique ci-contre. On cherche à connaître le comp
 \end{minipage}\hfill
 \begin{minipage}[c]{.35\linewidth}
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/RC}
+\includegraphics[width=.9\textwidth]{images/RC}
 \end{center}
 \end{minipage}
 
@@ -199,7 +272,7 @@ On considère le circuit électrique ci-contre. On cherche à connaître le comp
 \end{minipage}\hfill
 \begin{minipage}[c]{.35\linewidth}
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/RLC}
+\includegraphics[width=.9\textwidth]{images/RLC}
 \end{center}
 \end{minipage}
 
@@ -260,13 +333,13 @@ Dans le domaine temporel, la variable est le temps, noté $t$. Dans le domaine d
 \begin{minipage}[c]{.45\linewidth}
 \begin{center}
 \textbf{Méthode de résolution d'une équation du second ordre dans le domaine temporel}
-\includegraphics[width=\textwidth]{png/temporel}
+\includegraphics[width=\textwidth]{images/temporel}
 \end{center}
 \end{minipage} \hfill
 \begin{minipage}[c]{.45\linewidth}
 \begin{center}
 \textbf{Méthode de résolution d'une équation dans le domaine de Laplace}
-\includegraphics[width=.7\textwidth]{png/laplace}
+\includegraphics[width=.7\textwidth]{images/laplace}
 \end{center}
 \end{minipage} \hfill
 
@@ -283,7 +356,7 @@ Soit un système d'entrée $e(t)$ et de sortie $s(t)$ caractérisé par sa fonct
 \end{defi}
 
 \begin{center}
-\includegraphics[width=.7\textwidth]{png/lineaire}
+\includegraphics[width=.7\textwidth]{images/lineaire}
 \end{center}
 
 \subsection{Systèmes continus}
@@ -313,7 +386,7 @@ $$
 \end{defi}
 
 \begin{center}
-\includegraphics[width=.7\textwidth]{png/invariant}
+\includegraphics[width=.7\textwidth]{images/invariant}
 \end{center}
 
 \subsection{Systèmes non linéaires}
@@ -371,7 +444,7 @@ De manière générale, une fonction temporelle est nommée avec une lettre minu
 \end{multicols}
 \end{rem}
 
-\begin{prop}
+%\begin{prop}
 \textbf{Unicité}
 
 \begin{itemize}
@@ -379,7 +452,7 @@ De manière générale, une fonction temporelle est nommée avec une lettre minu
 \item La transformée de Laplace inverse de $F(p)$ est unique.
 \end{itemize}
 
-\end{prop}
+%\end{prop}
 
 
 \begin{exemple}
@@ -414,7 +487,7 @@ Dans la pratique la transformée de Laplace des fonctions usuelles ne se recalcu
 
 \subsection{Propriétés des transformées de Laplace}
 
-\begin{prop}
+%\begin{prop}
 \textbf{Linéarité}
 
 Soit $\mathcal{L}\left[f(t)\right] = F(p)$ et $\mathcal{L}\left[g(t)\right] =
@@ -428,7 +501,7 @@ et que :
 $$\mathcal{L}\left[K\cdot f(t)\right] = K\cdot \mathcal{L}\left[f(t)\right]
 =K\cdot F(p)$$
 
-\end{prop}
+%\end{prop}
 
 \begin{warn}
 Attention : 
@@ -438,7 +511,7 @@ Cette remarque sera importante lors du calcul des transformées inverses.
 \end{warn}
 
 
-\begin{prop}
+%\begin{prop}
 \textbf{Conditions de Heaviside}
 
 Une fonction temporelle $f(t)$ vérifie les conditions de Heaviside lorsque les dérivées successives nécessaires à la résolution de l'équation différention sont nulles pour $t={0^{+}}$ :
@@ -447,9 +520,9 @@ f({0^{+}})=0 \quad \dfrac{df({0^{+}})}{dt} = 0 \quad \dfrac{d^2f({0^{+}})}{dt^2}
 $$
 
 On parle de conditions initiales nulles.
-\end{prop}
+%\end{prop}
 
-\begin{prop}
+%\begin{prop}
 \textbf{Transformée de Laplace de la dérivation}
 
 La transformée de Laplace d'une dérivée première est donnée par : 
@@ -474,7 +547,7 @@ $$
 \\
 \end{tabular}}
 }
-\end{prop}
+%\end{prop}
 
 \begin{exemple}
 Le schéma RLC présenté précédemment est régit par l'équation différentielle suivante : 
@@ -512,18 +585,18 @@ $$
 }
 \end{exemple}
 
-\begin{prop}
+%\begin{prop}
 \textbf{Intégration dans les conditions de Heaviside :}
 
 $$\mathcal{L}\left[ \int\limits_{0^{+}}^t f(t) dt \right] = \dfrac{1}{p} F(p)$$
 
-\end{prop}
+%\end{prop}
 
 \subsection{Théorèmes usuels}
 %\subsubsection{Théorème de la valeur initiale et de la valeur finale}
 
 
-\begin{theo}
+\begin{theorem}
 \textbf{Théorème de la valeur initiale}
 
 \ifthenelse{\boolean{prof}}{%
@@ -534,10 +607,10 @@ $$ \lim\limits_{t \to 0^+} f(t) = \lim\limits_{p \to \infty} pF(p)$$
 \\
 \end{tabular}}
 }
-\end{theo}
+\end{theorem}
 
 
-\begin{theo}
+\begin{theorem}
 \textbf{Théorème de la valeur finale}
 
 \ifthenelse{\boolean{prof}}{%
@@ -548,10 +621,10 @@ $$\lim\limits_{t \to \infty} f(t) = \lim\limits_{p \to 0} pF(p)$$
 \\
 \end{tabular}}
 }
-\end{theo}
+\end{theorem}
 
 \begin{minipage}[c]{.6\linewidth}
-\begin{theo}
+\begin{theorem}
 \textbf{Théorème du retard}
 
 \ifthenelse{\boolean{prof}}{%
@@ -562,12 +635,12 @@ $$\mathcal{L}\left[ f\left(t-t_0\right) \right] = e^{-t_0 p}F(p)$$
 \\
 \end{tabular}}
 }
-\end{theo}
+\end{theorem}
 \end{minipage} \hfill
 \begin{minipage}[c]{.35\linewidth}
 
 \begin{center}
- \includegraphics[width=.25\textwidth]{png/retard}
+ \includegraphics[width=.25\textwidth]{images/retard}
 \end{center}
 \end{minipage}
 
@@ -576,7 +649,7 @@ multiplicatif $e^{-t_0 p}$ sur sa transformée de Laplace.
 
 
 \begin{minipage}[c]{.6\linewidth}
-\begin{theo}
+\begin{theorem}
 \textbf{Théorème de l'amortissement}
 
 \ifthenelse{\boolean{prof}}{%
@@ -587,7 +660,7 @@ $$\mathcal{L} \left[ e^{-a t} f\left(t\right) \right] = F(p+a)$$
 \\
 \end{tabular}}
 }
-\end{theo}
+\end{theorem}
 \end{minipage} \hfill
 \begin{minipage}[c]{.35\linewidth}
 \end{minipage}
@@ -618,7 +691,7 @@ $$ F(p) =  \mathcal{L} \left[\delta(t)\right] = 1 $$
 \end{minipage} \hfill
 \begin{minipage}[c]{.35\linewidth}
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/dirac}
+\includegraphics[width=.9\textwidth]{images/dirac}
 \end{center}
 \end{minipage}
 
@@ -647,7 +720,7 @@ $$F(p) = \mathcal{L} \left[f(t)\right] = \dfrac{k}{p}$$
 \end{minipage} \hfill
 \begin{minipage}[c]{.35\linewidth}
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/echelon}
+\includegraphics[width=.9\textwidth]{images/echelon}
 \end{center}
 \end{minipage}
 
@@ -685,12 +758,12 @@ F(p) = \mathcal{L} \left[f(t)\right]  =
 \end{minipage} \hfill
 \begin{minipage}[c]{.35\linewidth}
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/rampe}
+\includegraphics[width=.9\textwidth]{images/rampe}
 \end{center}
 \end{minipage}
 
 
-\begin{demo}
+%\begin{demo}
 \textbf{Calcul de $\mathcal{L}\left[f(t) \right]$ avec $f(t)=t\quad \forall t> 0$.}
 
 \ifthenelse{\boolean{prof}}{%
@@ -725,7 +798,7 @@ Au final $\mathcal{L}\left[f(t) \right] = \dfrac{1}{p^2}$.
 \\
 \end{tabular}}
 }
-\end{demo}
+%\end{demo}
 
 
 
@@ -782,7 +855,7 @@ $f(t)=t^ne^{-at}u(t)$ & $F(p)=\dfrac{n!}{\left( p+a\right)^{n+1}}$
 \end{center}
 
 
-\begin{demo}
+%\begin{demo}
 \textbf{Calcul de $\mathcal{L}\left[f(t) \right]$ avec $f(t)=e^{-at}\quad \forall t> 0$.}
 
 \ifthenelse{\boolean{prof}}{
@@ -806,9 +879,9 @@ Au final $\mathcal{L}\left[f(t) \right] = \dfrac{1}{p+a}$.
 \\
 \end{tabular}}
 }
-\end{demo}
+%\end{demo}
 
-\begin{demo}
+%\begin{demo}
 \textbf{Calcul de $\mathcal{L}\left[f(t) \right]$ avec $f(t)= \sin \left(\omega t \right)\quad \forall t> 0$.}
 
 Calculons :
@@ -858,7 +931,7 @@ F(p)=\dfrac{\omega}{p^2}\cdot\dfrac{p^2}{p^2+\omega^2} = \dfrac{\omega}{p^2+\ome
 
 Au final $\mathcal{L}\left[\sin(\omega t) \right] = \dfrac{\omega}{p^2+\omega^2}$.
 
-\end{demo}
+%\end{demo}
 
 \section{Transformée de Laplace inverse}
 
@@ -877,7 +950,7 @@ identifier chaque élément simple à une fonction élémentaire en $t$.
 Soit $f$ une fonction rationnelle définie par $f(x)
 =\dfrac{p(x)}{q(x)}$ où $p$ et $q$ sont deux fonctions polynômes. 
 
-\begin{prop}
+%\begin{prop}
 Soit
 $$
 f(x)=\dfrac{p(x)}{q(x)}=
@@ -896,10 +969,10 @@ f(x)=\dfrac{p(x)}{q(x)}=
 +\dfrac{\alpha_n}{\left(x-a_n \right)}
 $$
 
-\end{prop}
+%\end{prop}
 
 \paragraph*{Propriété 2}
-\begin{prop}
+%\begin{prop}
 Soit
 $$
 f(x)=\dfrac{p(x)}{q(x)}=
@@ -935,9 +1008,9 @@ $$
 f(x)=\sum\limits_{i=1}^n \sum\limits_{j=1}^{pi}
 \dfrac{\alpha_{ij}}{\left(x-a_i\right)^j}
 $$
-\end{prop}
+%\end{prop}
 \paragraph*{Propriété 3}
-\begin{prop}
+%\begin{prop}
 Soit
 $$
 f(x)=\dfrac{p(x)}{q(x)}=
@@ -959,7 +1032,7 @@ f(x)=\dfrac{p(x)}{q(x)}=
 \sum\limits_{k=1}^m \sum\limits_{j=1}^{qk}
 \dfrac{\beta_{kj}x}{\left(x^2+b_kx+c_k\right)^j}
 $$
-\end{prop}
+%\end{prop}
 
 
 \end{document}
