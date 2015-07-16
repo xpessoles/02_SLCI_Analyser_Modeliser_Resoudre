@@ -1,127 +1,96 @@
-\documentclass[10pt]{article}
-\input{style/coursHeadings}
-\input{style/programHeadings}
+\documentclass[10pt,fleqn]{article} % Default font size and left-justified equations
+\usepackage[%
+    pdftitle={SLCI : Cinématique du solide},
+    pdfauthor={Xavier Pessoles}]{hyperref}
+
+\input{style/new_style}
 \input{style/macros_SII}
-\input{style/macros_Titres}
-\input{style/macros_Frames}
 \usepackage{style/schemabloc}
-%Si le boolen xp est vrai : compilation pour xabi
-%Sinon compilation Damien
 
-\newif\ifprof
-\proftrue
-%\proffalse
+%\fichetrue
+\fichefalse
 
-\newif\ifxp
-\xptrue
-%\xpfalse
+%\proftrue
+\proffalse
 
-\newif\iftd
 %\tdtrue
 \tdfalse
 
+\courstrue
+%\coursfalse
 
-\usepackage[%
-    pdftitle={SLCI - Systèmes du second ordre},
-    pdfauthor={Xavier Pessoles},
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=magenta]{hyperref}
+% -------------------------------------
+% Déclaration des titres
+% -------------------------------------
 
+\def\discipline{Sciences \\Industrielles de \\ l'Ingénieur}
+\def\xxtete{Sciences Industrielles de l'Ingénieur}
 
-\def\discipline{Sciences Industrielles de l'Ingénieur}
-\def\xxtitre{%
-\ifxp
-CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants
-\else
-\fi
-}
+\def\classe{PTSI}
+\def\xxnumpartie{Partie 2}
+\def\xxpartie{Découverte des Systèmes Linéaires Continus et Invariants\\
+Analyse, Modélisation, Résolution}
 
-\def\xxsoustitre{%
-\ifxp
-Chapitre 5 -- Étude des systèmes fondamentaux du second ordre
-\else
-\fi}
+\def\xxnumchapitre{Chapitre 5}
+\def\xxchapitre{\hspace{.12cm} Étude des systèmes fondamentaux du second ordre}
 
-\def\xxauteur{%
-\ifxp
-Xavier \textsc{Pessoles}
-\else
-\fi}
+\def\xxposongletx{2}
+\def\xxposonglettext{1.45}
+\def\xxposonglety{23}
+\def\xxonglet{Part. 2 -- Ch. 5}
 
+\def\xxactivite{Cours}
+\def\xxauteur{\textsl{Xavier Pessoles}}
+
+\def\xxcompetences{%
+\textsl{%
+\textbf{Savoirs et compétences :}
+\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+\item Mod-C2.3 : Modèles canoniques du second ordre
+\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+\item Mod-C2-S1 : Identifier le comportement d’un système pour l’assimiler à un modèle canonique, à partir d’une réponse temporelle 
+\item Mod-C2-S2 : Établir un modèle de comportement à partir de relevés expérimentaux
+\end{itemize}
+\end{itemize}
+}}
+
+\def\xxfigures{
+\begin{center}
+\includegraphics[width=2cm]{images/amort1} 
+
+\textit{Amortisseur d'un véhicule automobile}
+
+\includegraphics[width=3cm]{images/schema}
+
+\textit{Schématisation du mécanisme} 
+
+\includegraphics[width=3cm]{images/bloc}
+
+\textit{Modélisation par schéma bloc}
+\end{center}
+}%figues de la page de garde
 \def\xxpied{%
-\ifxp
-CI 2 : Étude du comportement des Systèmes Linéaires Continus Invariants\\
-Ch. 5 : Étude des systèmes fondamentaux du second ordre -- Cours
-\else
-\fi}
-
-
+Partie 2 -- Découverte des SLCI\\
+Ch. 5 : Étude des systèmes fondamentaux du second ordre -- \xxactivite%
+}
 
 %---------------------------------------------------------------------------
 
 
 \begin{document}
+\chapterimage{png/Fond_SLCI}
+\input{style/new_pagegarde}
 
-\input{style/enteteXP}
-
-
-
-
-
-
-
-
-\begin{center}
-\begin{tabular}{ccccc}
-\includegraphics[height=2.5cm]{png/amort1} &&
-\includegraphics[height=3.5cm]{png/schema} && 
-\includegraphics[height=1.5cm]{png/bloc}\\
-\textit{Amortisseur d'un véhicule automobile} &&
-\textit{Schématisation du mécanisme} &&
-\textit{Modélisation par schéma bloc}\\
-%\textit{Schéma bloc } \\
-\end{tabular}
-\end{center}
-
-
-\vspace{.2cm}
-
-
-\begin{obj}
-\textbf{Problématique :}
-\begin{itemize}
-\item Le comportement réel de certains systèmes asservis peut se modéliser par des systèmes dits du second ordre. Comment modéliser de tels systèmes ?
-%\item Comment modéliser un système complexe multiphysique en utilisant la modélisation en schéma bloc et la modélisation dans le domaine de Laplace ?
-%\item Comment déterminer la fonction de transfert d'un système dans le but de prévoir son comportement ?
-\end{itemize}
-\end{obj}
-
-\begin{savoir}
-\textbf{Savoirs :}
-\begin{itemize}
-\item Mod-C2.3 : Modèles canoniques du second ordre
-\begin{itemize}
-\item Mod-C2-S1 : Identifier le comportement d’un système pour l’assimiler à un modèle canonique, à partir d’une réponse temporelle 
-\item Mod-C2-S2 : Établir un modèle de comportement à partir de relevés expérimentaux
-%\item Mod-C2-S3 : On pourra étudier les systèmes du premier ordre présentant un retard pur
-\end{itemize}
-\end{itemize}
-\end{savoir}
-
-\setlength{\parskip}{0ex plus 0.2ex minus 0ex}
- \renewcommand{\contentsname}{}
- \renewcommand{\baselinestretch}{1}
-
-% \vspace{1cm}
-\textit{Ce document est en évolution permanente. Merci de signaler toutes
-erreurs ou coquilles.}
-
-\tableofcontents
-
- \renewcommand{\baselinestretch}{1.2}
-\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
-
+%\begin{obj}
+%\textbf{Problématique :}
+%\begin{itemize}
+%\item Le comportement réel de certains systèmes asservis peut se modéliser par des systèmes dits du second ordre. Comment modéliser de tels systèmes ?
+%%\item Comment modéliser un système complexe multiphysique en utilisant la modélisation en schéma bloc et la modélisation dans le domaine de Laplace ?
+%%\item Comment déterminer la fonction de transfert d'un système dans le but de prévoir son comportement ?
+%\end{itemize}
+%\end{obj}
+%
+%
 
 
 \section{Définition}
@@ -255,7 +224,7 @@ Lorsque $\xi>1$ on parle de système amorti (régime apériodique).
 \end{minipage} \hfill
 \begin{minipage}[c]{.46\linewidth}
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/ordre2_dirac_1}
+\includegraphics[width=.9\textwidth]{images/ordre2_dirac_1}
 
 \textit{Réponse impulsionnelle d'un système \\ du second ordre -- Cas où $\xi > 1$}
 \end{center}
@@ -282,7 +251,7 @@ pulsation $\omega_0$.
 \end{minipage} \hfill
 \begin{minipage}[c]{.46\linewidth}
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/ordre2_dirac_c2_1}
+\includegraphics[width=.9\textwidth]{images/ordre2_dirac_c2_1}
 
 \textit{Réponse impulsionnelle d'un système \\ du second ordre -- Cas où $\xi<1$}
 \end{center}
@@ -361,7 +330,7 @@ $$
 \begin{minipage}[c]{.46\linewidth}
 
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/ordre2_echelon_c1-1}
+\includegraphics[width=.9\textwidth]{images/ordre2_echelon_c1-1}
 
 \textit{Réponse indicielle d'un système \\ du second ordre -- Cas où $\xi>1$}
 \end{center}
@@ -416,7 +385,7 @@ $$
 \begin{minipage}[c]{.46\linewidth}
 
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/ordre2_echelon_c2}
+\includegraphics[width=.9\textwidth]{images/ordre2_echelon_c2}
 \end{center}
 \end{minipage}
 
@@ -473,7 +442,7 @@ $$
 \end{minipage}\hfill
 \begin{minipage}[c]{.55\linewidth}
 \begin{center}
-\includegraphics[width=.9\textwidth]{png/depassement2}
+\includegraphics[width=.9\textwidth]{images/depassement2}
 \end{center}
 \end{minipage}
 
@@ -524,7 +493,7 @@ L'abaque ci-dessous permet de connaître la valeur du k\ieme  dépassement \text
 Lorsque l'amortissement tend vers 1, on peut ainsi mettre en évidence que la valeur des dépassements est de plus en plus faible.
 
 \begin{center}
-\includegraphics[width=.7\textwidth]{png/depassement}
+\includegraphics[width=.7\textwidth]{images/depassement}
 \end{center}
 
 
@@ -544,7 +513,7 @@ $$
 \end{minipage}\hfill
 \begin{minipage}[c]{.55\linewidth}
 \begin{center}
-\includegraphics[width=.95\textwidth]{png/tr}
+\includegraphics[width=.95\textwidth]{images/tr}
 \end{center}
 \end{minipage}
 
@@ -553,7 +522,7 @@ $$
 
 
 \begin{center}
-\includegraphics[width=.7\textwidth]{png/ordre2_echelon_z}
+\includegraphics[width=.7\textwidth]{images/ordre2_echelon_z}
 \end{center}
 
 
@@ -766,7 +735,7 @@ dit alors juste amorti. On a donc $tr_{5\%}\simeq3\omega_0$.
 
 %\subsubsection{Représentation graphique}
 \begin{center}
-\includegraphics[width=.7\textwidth]{png/ordre2_echelon_z}
+\includegraphics[width=.7\textwidth]{images/ordre2_echelon_z}
 
 Évolution de la réponse avec les coefficient d'amortissement
 \end{center}
@@ -813,7 +782,7 @@ enregistrée.
 
 On obtient la courbe ci-dessous.
 \begin{center}
-% \includegraphics[width=0.7\textwidth]{png/im1}
+% \includegraphics[width=0.7\textwidth]{images/im1}
 \end{center}
 Nous constatons une réponse pseudo périodique avec une pente à l’origine nulle
 et des dépassements de la réponse.
@@ -830,7 +799,7 @@ $$
 \begin{multicols}{2}
 
 \begin{center}
-% \includegraphics[width=0.4\textwidth]{png/im2}
+% \includegraphics[width=0.4\textwidth]{images/im2}
 \end{center}
 
 \begin{center}
