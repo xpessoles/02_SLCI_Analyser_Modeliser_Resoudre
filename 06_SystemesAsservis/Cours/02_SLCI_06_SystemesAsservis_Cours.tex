@@ -1,131 +1,103 @@
-\documentclass[10pt,oneside]{article}
-\input{style/coursHeadings}
-
-\usepackage{style/schemabloc}
-%Si le boolen xp est vrai : compilation pour xabi
-%Sinon compilation Damien
-\newboolean{xp}
-\setboolean{xp}{true}
-
-\newboolean{prof}
-\setboolean{prof}{true}
-
-\def\xxtitre{\ifthenelse{\boolean{xp}}{
-CI 2 -- SLCI : Étude du comportement des Systèmes Linéaires Continus Invariants}{
-}}
-
-\def\xxsoustitre{\ifthenelse{\boolean{xp}}{
-Chapitre 6 -- Étude des performances des systèmes complexes -- Précision -- Stabilité}{
-}}
-
-
-\def\xxauteur{\ifthenelse{\boolean{xp}}{
-\noindent 2013 -- 2014 \\
-Xavier \textsc{Pessoles}}{
-}}
-
-
-\def\xxpied{\ifthenelse{\boolean{xp}}{
-CI 2 : SLCI -- Cours \\
-Ch 6 : Performance des systèmes -- \ifthenelse{\boolean{prof}}{P}{E}%
-}{
-}}
-
+\documentclass[10pt,fleqn]{article} % Default font size and left-justified equations
 \usepackage[%
-    pdftitle={SLCI - Performance des systèmes},
-    pdfauthor={Xavier Pessoles},
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=magenta]{hyperref}
+    pdftitle={SLCI : Performance des systèmes},
+    pdfauthor={Xavier Pessoles}]{hyperref}
 
+\input{style/new_style}
+\input{style/macros_SII}
+\usepackage{style/schemabloc}
 
+%\fichetrue
+\fichefalse
 
-\usepackage{pifont}
-\sloppy
-\hyphenpenalty 10000
+%\proftrue
+\proffalse
+
+%\tdtrue
+\tdfalse
+
+\courstrue
+%\coursfalse
+
+% -------------------------------------
+% Déclaration des titres
+% -------------------------------------
+
+\def\discipline{Sciences \\Industrielles de \\ l'Ingénieur}
+\def\xxtete{Sciences Industrielles de l'Ingénieur}
+
+\def\classe{PTSI}
+\def\xxnumpartie{Partie 2}
+\def\xxpartie{Découverte des Systèmes Linéaires Continus et Invariants\\
+Analyse, Modélisation, Résolution}
+
+\def\xxnumchapitre{Chapitre 6}
+\def\xxchapitre{\hspace{.12cm} Étude des performances des systèmes complexes 
+
+Précision -- Stabilité}
+
+\def\xxposongletx{2}
+\def\xxposonglettext{1.45}
+\def\xxposonglety{23}
+\def\xxonglet{Part. 2 -- Ch. 6}
+
+\def\xxactivite{Cours}
+\def\xxauteur{\textsl{Xavier Pessoles}}
+
+\def\xxcompetences{%
+\textsl{%
+\textbf{Savoirs et compétences :}
+%\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+%\item Toto
+%\end{itemize}
+}}
+
+\def\xxfigures{
+\begin{center}
+\includegraphics[width=4cm]{images/dmg} 
+
+\textit{DMU 60 eVo Linear -- Centre d'usinage 5 axes continus [1]}%\cite{cite1}}  
+ 
+\includegraphics[width=5cm]{images/schemabloc}
+
+\textit{Schéma bloc d'un axe numérique asservi [2]}%\cite{cite2}}
+
+\end{center}
+}%figues de la page de garde
+\def\xxpied{%
+Partie 2 -- Découverte des SLCI\\
+Ch. 6 : Étude des performances des systèmes complexes -- Précision -- Stabilité -- \xxactivite%
+}
+
+%---------------------------------------------------------------------------
 
 
 \begin{document}
-
-
-\input{style/entete1}
-
-\begin{center}
- \huge\textsc{\xxtitre}
-\end{center}
-
-\begin{center}
- \LARGE\textsc{\xxsoustitre}
-\end{center}
-
-\vspace{.5cm}
+\chapterimage{png/Fond_SLCI}
+\input{style/new_pagegarde}
 
 
 
-\vspace{.5cm}
 
-\begin{center}
-\begin{tabular}{ccc}
-\includegraphics[width=4cm]{png/dmg} &&
-%\includegraphics[height=3.5cm]{png/schema} && 
-\includegraphics[width=10cm]{png/schemabloc}\\
-\textit{DMU 60 eVo Linear} &&
-%\textit{Schématisation du mécanisme} &&
-\textit{Modélisation par schéma bloc}\\
-\textit{Centre d'usinage 5 axes continus\cite{cite1}} && 
-\textit{d'un axe numérique asservi \cite{cite2}}\\
-\end{tabular}
-\end{center}
-
-\vspace{.2cm}
-
-\begin{obj}
-\textsc{Problématique :}
-\begin{itemize}
-\item La modélisation de systèmes multiphysiques donne lieu à des schémas bloc de plus en plus complexes. Comment améliorer la performance de ces systèmes en vue d'améliorer la rapidité, la stabilité ou la précision ?
-%\item Comment modéliser un système complexe multiphysique en utilisant la modélisation en schéma bloc et la modélisation dans le domaine de Laplace ?
-%\item Comment déterminer la fonction de transfert d'un système dans le but de prévoir son comportement ?
-\end{itemize}
-\end{obj}
-
-%\begin{savoir}
-%\textbf{Savoirs :}
 %\begin{itemize}
-%\item Mod%-C2.3 : Modèles canoniques du second ordre
-%\begin{itemize}
-%\item Mod%-C2-S1 : Identifier le comportement d’un système pour l’assimiler à un modèle canonique, à partir d’une réponse temporelle 
-%\item Mod%-C2-S2 : Établir un modèle de comportement à partir de relevés expérimentaux
-%\item Mod-C2-S3 : On pourra étudier les systèmes du premier ordre présentant un retard pur
+%\item La modélisation de systèmes multiphysiques donne lieu à des schémas bloc de plus en plus complexes. Comment améliorer la performance de ces systèmes en vue d'améliorer la rapidité, la stabilité ou la précision ?
 %\end{itemize}
-%\end{itemize}
-%\end{savoir}
+%\end{obj}
 
-\setlength{\parskip}{0ex plus 0.2ex minus 0ex}
- \renewcommand{\contentsname}{}
- \renewcommand{\baselinestretch}{1}
 
-% \vspace{1cm}
-\textit{Ce document est en évolution permanente. Merci de signaler toutes
-erreurs ou coquilles.}
-
-\tableofcontents
-
- \renewcommand{\baselinestretch}{1.2}
-\setlength{\parskip}{2ex plus 0.5ex minus 0.2ex}
 
 \section{Introduction}
-
 
 On s'intéresse à un système asservi classique. Les contraintes à respecter vis-à vis du cahier des charges sont des contraintes de stabilité, rapidité et de précision.
 
 \begin{center}
-\includegraphics[width=.55\textwidth]{png/bloc1}
+\includegraphics[width=.55\textwidth]{images/bloc1}
 \end{center}
 
 \begin{exemple}
 Pour modéliser l'axe asservi d'une machine outil la modélisation suivante :
 \begin{center}
-\includegraphics[width=.6\textwidth]{png/bloc2}
+\includegraphics[width=.6\textwidth]{images/bloc2}
 \end{center}
 On prendra $K(p)=1$, $H(p)$ une fonction de transfert du premier ordre de gain $K_M$ et de constante de temps $\tau$, $G(p)=K_T$ permet de transformer la vitesse de rotation en une vitesse de translation. $C(p)$ est un correcteur de la forme $C(p)=K_C$.
 \end{exemple}
@@ -136,7 +108,7 @@ On prendra $K(p)=1$, $H(p)$ une fonction de transfert du premier ordre de gain $
 
 \begin{minipage}[c]{.48\linewidth}
 \begin{center}
-\includegraphics[width=.95\textwidth]{png/bloc11}
+\includegraphics[width=.95\textwidth]{images/bloc11}
 \end{center}
 \end{minipage}\hfill
 \begin{minipage}[c]{.48\linewidth}
@@ -339,7 +311,7 @@ On montre en deuxième année que l'augmentation de $K$ ou de la classe peut êt
 
 \section{Étude du système soumis a une perturbation}
 \begin{center}
-\includegraphics[width=.5\textwidth]{png/bloc1.png}
+\includegraphics[width=.5\textwidth]{images/bloc1.png}
 \end{center}
 
 Exprimons l'erreur du système soumis à perturbation en fonction des deux entrées:
@@ -462,7 +434,7 @@ $$
 Dans ce cas, 
 
 \begin{center}
- \includegraphics[width=.8\textwidth]{png/poles_1}
+ \includegraphics[width=.8\textwidth]{images/poles_1}
 \end{center}
 
 \subsubsection{Cas où $\xi=1$}
@@ -500,7 +472,7 @@ $$
 
 
 \begin{center}
- \includegraphics[width=.8\textwidth]{png/poles_3}
+ \includegraphics[width=.8\textwidth]{images/poles_3}
 \end{center}
 
 %\begin{exemple}
