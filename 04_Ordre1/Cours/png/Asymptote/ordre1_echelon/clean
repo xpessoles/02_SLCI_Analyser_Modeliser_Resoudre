@@ -1,0 +1,10 @@
+rm -rf *.ps
+rm -rf *.pre
+rm -rf *.backup
+rm -rf *.dvi
+rm -rf *.aux
+rm -rf *.pdf
+rm -rf *.log
+rm -rf *.eps
+rm -rf *.asy
+rm -rf *.*~

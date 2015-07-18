@@ -1,0 +1,11 @@
+rm -rf *.asy 
+rm -rf *.aux 
+rm -rf *.dvi 
+rm -rf *.log 
+rm -rf *.ps 
+rm -rf *.pdf
+latex ordre2_dirac.tex
+asy ordre2_dirac-1.asy
+latex ordre2_dirac.tex
+dvips ordre2_dirac.dvi
+ps2pdf ordre2_dirac.ps

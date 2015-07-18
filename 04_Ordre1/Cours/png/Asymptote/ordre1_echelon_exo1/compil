@@ -1,0 +1,11 @@
+rm -rf *.asy 
+rm -rf *.aux 
+rm -rf *.dvi 
+rm -rf *.log 
+rm -rf *.ps 
+rm -rf *.pdf
+latex ordre1_echelon_exo1.tex
+asy ordre1_echelon_exo1.asy
+latex ordre1_echelon_exo1.tex
+dvips ordre1_echelon_exo1.dvi
+ps2pdf ordre1_echelon_exo1.ps
