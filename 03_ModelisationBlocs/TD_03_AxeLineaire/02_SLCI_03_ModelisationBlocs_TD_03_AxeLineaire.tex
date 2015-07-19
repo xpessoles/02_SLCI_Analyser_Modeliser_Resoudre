@@ -1,0 +1,508 @@
+\documentclass[10pt,fleqn]{article} % Default font size and left-justified equations
+\usepackage[%
+    pdftitle={SLCI : Modélisation par schéma blocs},
+    pdfauthor={Xavier Pessoles}]{hyperref}
+    
+\input{style/new_style}
+\input{style/macros_SII}
+\usepackage{style/schemabloc}
+\usepackage{multicol}
+%\fichetrue
+%\fichefalse
+
+%\proftrue
+\proffalse
+
+\tdtrue
+%\tdfalse
+
+%\courstrue
+\coursfalse
+
+\def\discipline{Sciences \\Industrielles de \\ l'Ingénieur}
+\def\xxtete{Sciences Industrielles de l'Ingénieur}
+
+\def\classe{PTSI}
+\def\xxnumpartie{Partie 2}
+\def\xxpartie{Découverte des Systèmes Linéaires Continus et Invariants\\
+Analyse, Modélisation, Résolution}
+
+\def\xxnumchapitre{Chapitre 3}
+\def\xxchapitre{Modélisation des SLCI par schémas blocs}
+
+\def\xxtitreexo{Asservissement d'un axe de robot cartésien}
+\def\xxsourceexo{\hspace{.2cm} D'après concours externe de l'agrégation de Génie Mécanique -- Épreuve d'Automatique et d'Informatique Industrielle  -- 2008.}
+
+
+\def\xxposongletx{2}
+\def\xxposonglettext{1.45}
+\def\xxposonglety{20}
+\def\xxonglet{Part. 2 -- Ch. 3}
+
+\def\xxactivite{TD 3}
+\def\xxauteur{\textsl{Xavier Pessoles}}
+
+\def\xxcompetences{%
+\textsl{%
+\textbf{Savoirs et compétences :}\\
+%\noindent \textbf{Résoudre :} à partir des modèles retenus :
+%\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+%\item choisir une méthode de résolution analytique, graphique, numérique;
+%\item mettre en \oe{}uvre une méthode de résolution.
+%\end{itemize}
+%\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+%\item \textit{Rés -- C1.1 :} Loi entrée sortie géométrique et cinématique -- Fermeture géométrique.
+%\end{itemize}
+%
+%\noindent \textit{Mod2 -- C4.1 :} Représentation par schéma bloc.
+}}
+
+\def\xxfigures{\includegraphics[width=.8\textwidth]{images/structure}
+}%figues de la page de garde
+
+\def\xxpied{%
+Partie 2 -- Découverte des SLCI\\
+Ch. 3 : Modélisation par schémas blocs -- \xxactivite%
+}
+
+
+\setcounter{secnumdepth}{5}
+%---------------------------------------------------------------------------
+
+
+\begin{document}
+%\chapterimage{png/Fond_Cin}
+\input{style/new_pagegarde}
+\vspace{10cm}
+\pagestyle{fancy}
+\thispagestyle{plain}
+
+
+\def\columnseprulecolor{\color{ocre}}
+\setlength{\columnseprule}{0.4pt} 
+\ifprof
+\else
+\begin{multicols}{2}
+\fi
+
+\begin{obj} 
+TODO
+\end{obj}
+
+\begin{center}
+\includegraphics[width=.45\textwidth]{images/RobotCartesien}
+
+\includegraphics[width=.45\textwidth]{images/chaine_01}
+
+\includegraphics[width=.45\textwidth]{images/chaine_02}
+\end{center}
+
+Une ligne d'assemblage est équipée d'un robot cartésien permettant de réaliser des opérations de chargement et de déchargement. Ce robot possède 3 axes perpendiculaires entre eux. 
+Nous nous intéressons à la commande d'un des axes dont ont donne un premier modèle.
+
+On note : 
+\begin{itemize}[label=$\blacksquare$,font=\tiny]
+\item $\omega_m(t)$, $\omega_p(t)$ ($\text{rad}\cdot \text{s}^{-1}$) : fréquences de rotation du moteur et de la poulie;
+\item $Y_c(t)$, $Y_m(t)$ ($\text{m}$): position de la courroie et du chariot;
+\item $V_c(t)$, $V_m(t)$ ($\text{m}\cdot \text{s}^{-1}$): vitesses linéaires de déplacement de la courroie et du chariot;
+\item $R =45\cdot 10^{-3} \; \text{m}$ : rayon de la poulie;
+\item $n=\dfrac{\omega_m}{\omega_p} = 7,25$ : rapport de transmission du réducteur simple;
+\item $K_e = 300\, 000 \; \text{N}\cdot \text{m}^{-1} $: raideur équivalent de la courroie;
+\item $f_m = 0,005\; \text{N}\cdot\text{m}\cdot\text{rad}^{-1}\cdot\text{s}^{-1}$ et $f_g = 100\; \text{N}\cdot\text{m}^{-1}\cdot\text{s}^{-1}$ : frottement visqueux équivalents dans les éléments en rotation et dans la glissière;
+\item $M = 150 \; \text{kg}$ : masse du chariot et de la charge à déplacer;
+\item $J_e = 0,0062 \; \text{kg} \cdot \text{m}^2 $ : inertie équivalente de l'arbre de la poulie et de l'arbre moteur ramenée à l'arbre moteur;
+\end{itemize}
+
+
+La relation entre la fréquence de rotation du moteur et la vitesse de déplacement de la courroie est donnée par la relation suivante :
+\begin{equation}
+V_c(t) = R \cdot  \omega_p(t) = \dfrac{R}{n} \cdot \omega_m(t)
+\end{equation}
+
+
+
+L'effort dû à l'élasticité de la courroie s'opposant à l'effort de traction de la courroie, on a :
+\begin{equation}
+F_c(t) = K_e \left(Y_c(t) - Y_m(t) \right)
+\end{equation}
+
+L'application du théorème de la résultante dynamique au chariot en projection sur l'axe de déplacement du chariot on a : 
+\begin{equation}
+M\dfrac{\text{d}V_m(t)}{\text{d}t} = F_c(t) - f_g V_m(t)
+\end{equation}
+
+L'application du théorème de l'énergie cinétique à l'ensemble \{Moteur, Réducteur, Courroie\} :
+\begin{equation}
+\dfrac{\text{d}}{\text{d}t}\left[ \dfrac{1}{2} J_e \omega_m(t)^2 \right] =  C_m(t) \omega_m(t) - f_m\omega_m(t)^2 - F_c(t) V_c(t) 
+\end{equation}
+
+\subparagraph{} \textit{Donner dans le domaine temporel puis dans le domaine de Laplace la relation entre $V_m(t)$ et $Y_m(t)$. Comment traduire cette relation en schéma bloc ?}
+\ifprof
+\begin{corrige}
+La vitesse étant la dérivée de la position, on a $V_m(t) = \dfrac{\text{d}Y_m(t)}{\text{d}t}$. Dans le domaine de Laplace sous réserve que les conditions initiales soient nulles, on a 
+$V_m(p)=pY_m(p)$. En conséquence, 
+
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbBloc[4]{blocA}{$\dfrac{1}{p}$}{E}
+    \sbRelier[$V_m(p)$]{E}{blocA}
+
+\sbSortie{S}{blocA}
+    \sbRelier{blocA}{S}
+    \sbNomLien[0.8]{S}{$Y_m(p)$}
+   
+\end{tikzpicture}
+\end{center}
+
+\end{corrige}
+\else
+\fi
+
+\subparagraph{} \textit{Appliquer la transformée de Laplace à chacune des équations et établir la modélisation par schéma bloc associée à chacune d'entre elles.}
+\ifprof
+\begin{corrige}
+On a :
+\begin{itemize}
+\item [\tiny\color{violet}{ $\blacksquare$}] $V_c(p)=R\Omega_p(p)=\dfrac{R}{n}\cdot \Omega_m(p)$;
+\item [\tiny\color{violet}{ $\blacksquare$}] $F_c(p)=K_e\left(Y_c(p) - Y_m(p) \right)$;
+\item [\tiny\color{violet}{ $\blacksquare$}] $MpV_m(p) = F_c(p) - f_g V_m(p)$
+
+ $\Longleftrightarrow V_m(p)\left(Mp + f_g \right) = F_c(p) $.
+\end{itemize}
+
+L'équation provenant du théorème de l'énergie cinétique peut s'exprimer de la façon suivante en calculant la dérivée et en remplaçant $V_C$ : 
+\begin{eqnarray*}J_e \dot{\omega}_m(t) \omega_m(t)= 
+C_m(t) \omega_m(t) - f_m\omega_m(t)^2 \\
+ - F_c(t) \dfrac{R}{n} \cdot \omega_m(t) 
+\end{eqnarray*}
+$$
+J_e \dot{\omega}_m(t) =  
+C_m(t) - f_m\omega_m(t) - F_c(t) \dfrac{R}{n} 
+$$
+D'où  $J_e p\Omega_m(p) =  
+C_m(p) - f_m\Omega_m(p) - F_c(p) \dfrac{R}{n} $. On a donc :
+$\Omega_m(p) \left( J_e p + f_m\right) =  
+C_m(p)  - F_c(p) \dfrac{R}{n} $ 
+
+\end{corrige}
+\begin{corrige}
+
+On peut alors établir les schémas blocs suivants :
+
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbBloc[4]{blocA}{$\dfrac{R}{n}$}{E}
+    \sbRelier[$\Omega_m(p)$]{E}{blocA}
+
+\sbSortie{S}{blocA}
+    \sbRelier{blocA}{S}
+    \sbNomLien[0.8]{S}{$V_c(p)$}
+\end{tikzpicture}
+\end{center}
+
+
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbComp{c1}{E}
+    \sbRelier[$Y_c(p)$]{E}{c1}
+    
+\sbBloc[7]{b1}{$K_e$}{c1}
+    \sbRelier[$Y_c(p)-Y_m(p)$]{c1}{b1}
+
+\sbSortie{S}{b1}
+    \sbRelier{b1}{S}
+    \sbNomLien[0.8]{S}{$F_c(p)$}
+    
+\sbDecaleNoeudy[4]{c1}{n1}
+    \sbRelier[$Y_m(p)$]{n1}{c1}
+
+\end{tikzpicture}
+\end{center}
+
+Ce schéma est équivalent à 
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbComp{c1}{E}
+    \sbRelier[$V_c(p)$]{E}{c1}
+    
+\sbBloc[7]{b1}{$\dfrac{K_e}{p}$}{c1}
+    \sbRelier[$V_c(p)-V_m(p)$]{c1}{b1}
+
+\sbSortie{S}{b1}
+    \sbRelier{b1}{S}
+    \sbNomLien[0.8]{S}{$F_c(p)$}
+    
+\sbDecaleNoeudy[4]{c1}{n1}
+    \sbRelier[$V_m(p)$]{n1}{c1}
+
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbBloc[4]{blocA}{$\dfrac{1}{Mp+f_g}$}{E}
+    \sbRelier[$F_c(p)$]{E}{blocA}
+
+\sbSortie{S}{blocA}
+    \sbRelier{blocA}{S}
+    \sbNomLien[0.8]{S}{$V_m(p)$}
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbComp{c1}{E}
+    \sbRelier[$C_m(p)$]{E}{c1}
+    
+\sbBloc{b1}{$\dfrac{1}{J_ep + f_m}$}{c1}
+    \sbRelier{c1}{b1}
+
+\sbSortie{S}{b1}
+    \sbRelier{b1}{S}
+    \sbNomLien[0.8]{S}{$\Omega_m(p)$}
+    
+\sbDecaleNoeudy[4]{S}{n1}
+\sbBlocr[3]{b2}{$\dfrac{R}{n}$}{n1}
+    \sbRelier{n1}{b2}
+    \sbNomLien[0.8]{n1}{$F_c(p)$}
+    \sbRelierxy{b2}{c1}
+
+\end{tikzpicture}
+\end{center}
+\end{corrige}
+\else
+\fi
+\subparagraph{} \textit{En utilisant la figure \ref{fig1}, établir le schéma bloc associé au déplacement du chariot en fonction du couple fourni par le moteur.}
+
+
+\subparagraph{} \textit{Établir la fonction de transfert (transmittance) : $H(p) = \dfrac{V_m(m)}{C_m(p)}$.}
+\ifprof
+\begin{corrige}
+En transformant le schéma bloc de la figure \ref{fig1} on obtient celui de la figure \ref{fig2}. On a alors :
+$$\dfrac{V_M(p)}{V_c(p)} = \dfrac{\dfrac{K_e}{p} \dfrac{1}{f_g+Mp}}{1+ \dfrac{K_e}{p} \dfrac{1}{f_g+Mp}} 
+= \dfrac{K_e}{p \cdot \left(f_g+Mp \right)+ K_e} 
+$$
+
+Par ailleurs, 
+$$
+H(p)= \dfrac{\dfrac{R}{n\left(f_m + J_e p \right)} \cdot \dfrac{K_e}{p \cdot \left(f_g+Mp \right)+ K_e} }{1+\dfrac{R}{n\left(f_m + J_e p \right)} \cdot \dfrac{K_e R\cdot \left(f_g+Mp \right)}{p \cdot \left(f_g+Mp \right)+ K_e} \dfrac{1}{n}}
+$$
+
+$$
+H(p)= \dfrac{R K_en}{n^2\left(f_m + J_e p \right)\left(p  \left(f_g+Mp \right)+ K_e\right)+R^2K_e  \left(f_g+Mp \right)}
+$$
+$$
+H(p)= \dfrac{R n K_e}{
+n^2J_e M p^3
++ n^2 p^2 \left(Jf_g + M f_m \right)
++ p \left( J_e K_e n^2 + f_m f_g n^2 + K_e M R^2 \right)
++n^2 f_m K_e + R^2 K_e f_g }
+$$
+
+$$
+H(p)= \dfrac{\dfrac{R n K_e}{n^2 f_m K_e + R^2 K_e f_g}}{
+\dfrac{n^2J_e M}{n^2 f_m K_e + R^2 K_e f_g}  p^3
++ \dfrac{n^2\left(Jf_g + M f_m \right)}{n^2 f_m K_e + R^2 K_e f_g}  p^2 
++ \dfrac{ J_e K_e n^2 + f_m f_g n^2 + K_e M R^2 }{n^2 f_m K_e + R^2 K_e f_g} p 
++1 }
+$$
+
+\end{corrige}
+\else
+\fi
+\subparagraph{} \textit{Montrer que $H$ peut se mettre sous la forme d'un produit d'une fonction de transfert du premier ordre et du second ordre dont on explicitera chacune des caractéristiques.}
+\ifprof
+\begin{corrige}
+En multipliant les fonctions de transfert d'un système d'ordre 1 et d'un système d'ordre 2, on obtient : 
+$$
+G(p)= \dfrac{K_1 K_2}{
+\dfrac{\tau}{\omega_0^2} p^3 
++ \left(\dfrac{2\tau \xi}{\omega_0}  +\dfrac{1}{\omega_0^2} \right) p^2
++ \left(\tau + \dfrac{2\xi}{\omega_0}  \right)p
++1}
+$$
+Par identification, on a donc : 
+\begin{itemize}[label=\ding{112},font=\color{violet}] 
+\item $K_1 K_2 = \dfrac{R n K_e}{n^2 f_m K_e + R^2 K_e f_g}$ 
+\item $ \dfrac{\tau}{\omega_0^2} = \dfrac{n^2J_e M}{n^2 f_m K_e + R^2 K_e f_g}$
+\item $\left(\dfrac{2\tau \xi}{\omega_0}  +\dfrac{1}{\omega_0^2} \right) = \dfrac{n^2\left(Jf_g + M f_m \right)}{n^2 f_m K_e + R^2 K_e f_g}$
+\item $\left(\tau + \dfrac{2\xi}{\omega_0}  \right) = \dfrac{ J_e K_e n^2 + f_m f_g n^2 + K_e M R^2 }{n^2 f_m K_e + R^2 K_e f_g}$.
+\end{itemize}
+
+On pourrait alors déterminer les valeurs de $\tau$, $\xi$, $\omega_0$ en fonction des différentes valeurs. $H$ pourrait alors se mettre sous la forme d'un produit de deux fonctions de transfert.
+\end{corrige}
+\else
+\fi
+
+\subparagraph{} \textit{Tracer le diagramme de Bode des deux fonctions de transfert élémentaires ainsi que du système complet.}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+\subparagraph{} \textit{En déduire à quelle condition, on peut considérer que le système est modélisable uniquement par un second ordre.}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+\subparagraph{} \textit{Montrer que si la raideur de la courroie est infiniment grande (et que $K_e$ est donc infinie) $H$ peut se mettre sous la forme d'une fonction de transfert du premier ordre dont on explicitera les caractéristiques.}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+\ifprof
+\else
+\end{multicols}
+\fi
+
+\ifprof
+
+\begin{figure*}[h]
+\begin{center}
+\begin{tikzpicture}
+% Blocs de la chaine directe
+\sbEntree{E}
+\sbComp{compA}{E}
+    \sbRelier[$C_m$]{E}{compA}
+
+\sbBloc{blocA}{$\dfrac{1}{f_m+J_e p}$}{compA}
+    \sbRelier{compA}{blocA}
+    
+\sbBloc{blocB}{$\dfrac{R}{n}$}{blocA}
+    \sbRelier[$\omega_m$]{blocA}{blocB}
+
+\sbComph{compB}{blocB}
+    \sbRelier[$V_c$]{blocB}{compB}
+    
+\sbBloc{blocC}{$\dfrac{K_e}{p}$}{compB}
+    \sbRelier{compB}{blocC}    
+
+\sbBloc{blocD}{$\dfrac{1}{f_g+Mp}$}{blocC}
+    \sbRelier[$F_c$]{blocC}{blocD}
+
+\sbSortie{S}{blocD}
+    \sbRelier{blocD}{S}
+    \sbNomLien[0.8]{S}{$V_M$}
+
+% Chaine de retour
+\sbRenvoi[-3]{blocD-S}{compB}{}
+
+\sbDecaleNoeudy{blocB}{n1}
+\sbBlocr{r1}{$\dfrac{R}{n}$}{n1}
+    \sbRelierxy{r1}{compA}
+    \sbRelieryx{blocC-blocD}{r1}
+   
+\end{tikzpicture}
+\end{center}
+\caption{Schéma bloc \label{fig1}}
+\end{figure*}
+
+
+\begin{figure*}[h]
+\begin{center}
+\begin{tikzpicture}
+% Blocs de la chaine directe
+\sbEntree{E}
+\sbComp{compA}{E}
+    \sbRelier[$C_m$]{E}{compA}
+
+\sbBloc{blocA}{$\dfrac{1}{f_m+J_e p}$}{compA}
+    \sbRelier{compA}{blocA}
+    
+\sbBloc{blocB}{$\dfrac{R}{n}$}{blocA}
+    \sbRelier[$\omega_m$]{blocA}{blocB}
+
+\sbComp{compB}{blocB}
+    \sbRelier[$V_c$]{blocB}{compB}
+    
+\sbBloc{blocC}{$\dfrac{K_e}{p}$}{compB}
+    \sbRelier{compB}{blocC}    
+
+\sbBloc{blocD}{$\dfrac{1}{f_g+Mp}$}{blocC}
+    \sbRelier[$F_c$]{blocC}{blocD}
+
+\sbSortie[4]{S}{blocD}
+    \sbRelier{blocD}{S}
+    \sbNomLien[0.8]{S}{$V_M$}
+
+% Chaine de retour
+\sbRenvoi{blocD-S}{compB}{}
+
+\sbDecaleNoeudy{compB}{n1}
+\sbDecaleNoeudx[-1]{S}{n2}
+\sbBlocr{r1}{$f_g+Mp$}{n1}
+\sbBlocr{r2}{$\dfrac{R}{n}$}{r1}
+   \sbRelieryx{n2}{r1}
+   \sbRelier{r1}{r2}
+    \sbRelierxy{r2}{compA}
+    
+   
+\end{tikzpicture}
+\end{center}
+\caption{Schéma bloc transformé \label{fig2}}
+\end{figure*}
+
+\else
+ 
+\begin{figure*}[h]
+\begin{center}
+\begin{tikzpicture}
+% Blocs de la chaine directe
+\sbEntree{E}
+\sbComp{compA}{E}
+    \sbRelier[$C_m$]{E}{compA}
+
+\sbBloc{blocA}{$\quad$}{compA}
+    \sbRelier{compA}{blocA}
+    
+\sbBloc{blocB}{$\quad$}{blocA}
+    \sbRelier{blocA}{blocB}
+
+\sbComph{compB}{blocB}
+    \sbRelier{blocB}{compB}
+    
+\sbBloc{blocC}{$\quad$}{compB}
+    \sbRelier{compB}{blocC}    
+
+\sbBloc{blocD}{$\quad$}{blocC}
+    \sbRelier{blocC}{blocD}
+
+\sbSortie{S}{blocD}
+    \sbRelier{blocD}{S}
+    \sbNomLien[0.8]{S}{$V_M$}
+
+% Chaine de retour
+\sbRenvoi[-3]{blocD-S}{compB}{}
+
+\sbDecaleNoeudy{blocB}{n1}
+\sbBlocr{r1}{$\quad$}{n1}
+    \sbRelierxy{r1}{compA}
+    \sbRelieryx{blocC-blocD}{r1}
+   
+\end{tikzpicture}
+\end{center}
+\caption{Schéma bloc à remplir \label{fig1}}
+\end{figure*}
+\fi
+
+
+\end{document}
+
+
