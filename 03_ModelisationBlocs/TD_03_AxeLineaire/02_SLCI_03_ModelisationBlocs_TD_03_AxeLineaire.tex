@@ -89,8 +89,14 @@ Ch. 3 : Modélisation par schémas blocs -- \xxactivite%
 TODO
 \end{obj}
 
+\subsection*{Mise en situation}
+
 \begin{center}
 \includegraphics[width=.45\textwidth]{images/RobotCartesien}
+\end{center}
+
+
+\begin{center}
 
 \includegraphics[width=.45\textwidth]{images/chaine_01}
 
@@ -110,10 +116,11 @@ On note :
 \item $K_e = 300\, 000 \; \text{N}\cdot \text{m}^{-1} $: raideur équivalent de la courroie;
 \item $f_m = 0,005\; \text{N}\cdot\text{m}\cdot\text{rad}^{-1}\cdot\text{s}^{-1}$ et $f_g = 100\; \text{N}\cdot\text{m}^{-1}\cdot\text{s}^{-1}$ : frottement visqueux équivalents dans les éléments en rotation et dans la glissière;
 \item $M = 150 \; \text{kg}$ : masse du chariot et de la charge à déplacer;
-\item $J_e = 0,0062 \; \text{kg} \cdot \text{m}^2 $ : inertie équivalente de l'arbre de la poulie et de l'arbre moteur ramenée à l'arbre moteur;
+\item $J_e = 0,0062 \; \text{kg} \cdot \text{m}^2 $ : inertie équivalente de l'arbre de la poulie et de l'arbre moteur ramenée à l'arbre moteur.
 \end{itemize}
 
 
+\subsection*{Modélisation du système mécanique}
 La relation entre la fréquence de rotation du moteur et la vitesse de déplacement de la courroie est donnée par la relation suivante :
 \begin{equation}
 V_c(t) = R \cdot  \omega_p(t) = \dfrac{R}{n} \cdot \omega_m(t)
@@ -284,88 +291,13 @@ Ce schéma est équivalent à
 \end{corrige}
 \else
 \fi
-\subparagraph{} \textit{En utilisant la figure \ref{fig1}, établir le schéma bloc associé au déplacement du chariot en fonction du couple fourni par le moteur.}
+\subparagraph{} \textit{En utilisant la figure \ref{fig1}, établir le schéma bloc associé au déplacement du chariot en fonction du couple fourni par le moteur. On explicitera chacune des fonctions de transfert $H_i$.}
+
+\subparagraph{} \textit{Après avoir modifié le schéma bloc, exprimer la fonction de transfert $H=\dfrac{C_m}{V_M}$ en fonction des différentes fonctions de transfert $H_i$.}
 
 
-\subparagraph{} \textit{Établir la fonction de transfert (transmittance) : $H(p) = \dfrac{V_m(m)}{C_m(p)}$.}
-\ifprof
-\begin{corrige}
-En transformant le schéma bloc de la figure \ref{fig1} on obtient celui de la figure \ref{fig2}. On a alors :
-$$\dfrac{V_M(p)}{V_c(p)} = \dfrac{\dfrac{K_e}{p} \dfrac{1}{f_g+Mp}}{1+ \dfrac{K_e}{p} \dfrac{1}{f_g+Mp}} 
-= \dfrac{K_e}{p \cdot \left(f_g+Mp \right)+ K_e} 
-$$
 
-Par ailleurs, 
-$$
-H(p)= \dfrac{\dfrac{R}{n\left(f_m + J_e p \right)} \cdot \dfrac{K_e}{p \cdot \left(f_g+Mp \right)+ K_e} }{1+\dfrac{R}{n\left(f_m + J_e p \right)} \cdot \dfrac{K_e R\cdot \left(f_g+Mp \right)}{p \cdot \left(f_g+Mp \right)+ K_e} \dfrac{1}{n}}
-$$
-
-$$
-H(p)= \dfrac{R K_en}{n^2\left(f_m + J_e p \right)\left(p  \left(f_g+Mp \right)+ K_e\right)+R^2K_e  \left(f_g+Mp \right)}
-$$
-$$
-H(p)= \dfrac{R n K_e}{
-n^2J_e M p^3
-+ n^2 p^2 \left(Jf_g + M f_m \right)
-+ p \left( J_e K_e n^2 + f_m f_g n^2 + K_e M R^2 \right)
-+n^2 f_m K_e + R^2 K_e f_g }
-$$
-
-$$
-H(p)= \dfrac{\dfrac{R n K_e}{n^2 f_m K_e + R^2 K_e f_g}}{
-\dfrac{n^2J_e M}{n^2 f_m K_e + R^2 K_e f_g}  p^3
-+ \dfrac{n^2\left(Jf_g + M f_m \right)}{n^2 f_m K_e + R^2 K_e f_g}  p^2 
-+ \dfrac{ J_e K_e n^2 + f_m f_g n^2 + K_e M R^2 }{n^2 f_m K_e + R^2 K_e f_g} p 
-+1 }
-$$
-
-\end{corrige}
-\else
-\fi
-\subparagraph{} \textit{Montrer que $H$ peut se mettre sous la forme d'un produit d'une fonction de transfert du premier ordre et du second ordre dont on explicitera chacune des caractéristiques.}
-\ifprof
-\begin{corrige}
-En multipliant les fonctions de transfert d'un système d'ordre 1 et d'un système d'ordre 2, on obtient : 
-$$
-G(p)= \dfrac{K_1 K_2}{
-\dfrac{\tau}{\omega_0^2} p^3 
-+ \left(\dfrac{2\tau \xi}{\omega_0}  +\dfrac{1}{\omega_0^2} \right) p^2
-+ \left(\tau + \dfrac{2\xi}{\omega_0}  \right)p
-+1}
-$$
-Par identification, on a donc : 
-\begin{itemize}[label=\ding{112},font=\color{violet}] 
-\item $K_1 K_2 = \dfrac{R n K_e}{n^2 f_m K_e + R^2 K_e f_g}$ 
-\item $ \dfrac{\tau}{\omega_0^2} = \dfrac{n^2J_e M}{n^2 f_m K_e + R^2 K_e f_g}$
-\item $\left(\dfrac{2\tau \xi}{\omega_0}  +\dfrac{1}{\omega_0^2} \right) = \dfrac{n^2\left(Jf_g + M f_m \right)}{n^2 f_m K_e + R^2 K_e f_g}$
-\item $\left(\tau + \dfrac{2\xi}{\omega_0}  \right) = \dfrac{ J_e K_e n^2 + f_m f_g n^2 + K_e M R^2 }{n^2 f_m K_e + R^2 K_e f_g}$.
-\end{itemize}
-
-On pourrait alors déterminer les valeurs de $\tau$, $\xi$, $\omega_0$ en fonction des différentes valeurs. $H$ pourrait alors se mettre sous la forme d'un produit de deux fonctions de transfert.
-\end{corrige}
-\else
-\fi
-
-\subparagraph{} \textit{Tracer le diagramme de Bode des deux fonctions de transfert élémentaires ainsi que du système complet.}
-\ifprof
-\begin{corrige}
-\end{corrige}
-\else
-\fi
-
-\subparagraph{} \textit{En déduire à quelle condition, on peut considérer que le système est modélisable uniquement par un second ordre.}
-\ifprof
-\begin{corrige}
-\end{corrige}
-\else
-\fi
-
-\subparagraph{} \textit{Montrer que si la raideur de la courroie est infiniment grande (et que $K_e$ est donc infinie) $H$ peut se mettre sous la forme d'une fonction de transfert du premier ordre dont on explicitera les caractéristiques.}
-\ifprof
-\begin{corrige}
-\end{corrige}
-\else
-\fi
+\subsection*{Modélisation de la commande du système}
 
 \ifprof
 \else
@@ -469,19 +401,19 @@ On pourrait alors déterminer les valeurs de $\tau$, $\xi$, $\omega_0$ en foncti
 \sbComp{compA}{E}
     \sbRelier[$C_m$]{E}{compA}
 
-\sbBloc{blocA}{$\quad$}{compA}
+\sbBloc{blocA}{$H_1(p)$}{compA}
     \sbRelier{compA}{blocA}
     
-\sbBloc{blocB}{$\quad$}{blocA}
+\sbBloc{blocB}{$H_2(p)$}{blocA}
     \sbRelier{blocA}{blocB}
 
 \sbComph{compB}{blocB}
     \sbRelier{blocB}{compB}
     
-\sbBloc{blocC}{$\quad$}{compB}
+\sbBloc{blocC}{$H_3(p)$}{compB}
     \sbRelier{compB}{blocC}    
 
-\sbBloc{blocD}{$\quad$}{blocC}
+\sbBloc{blocD}{$H_4(p)$}{blocC}
     \sbRelier{blocC}{blocD}
 
 \sbSortie{S}{blocD}
@@ -492,7 +424,7 @@ On pourrait alors déterminer les valeurs de $\tau$, $\xi$, $\omega_0$ en foncti
 \sbRenvoi[-3]{blocD-S}{compB}{}
 
 \sbDecaleNoeudy{blocB}{n1}
-\sbBlocr{r1}{$\quad$}{n1}
+\sbBlocr{r1}{$H_5(p)$}{n1}
     \sbRelierxy{r1}{compA}
     \sbRelieryx{blocC-blocD}{r1}
    
