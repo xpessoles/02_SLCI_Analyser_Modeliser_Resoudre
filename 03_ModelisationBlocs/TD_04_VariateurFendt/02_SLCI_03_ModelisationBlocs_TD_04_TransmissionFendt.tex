@@ -1,0 +1,185 @@
+\documentclass[10pt,fleqn]{article} % Default font size and left-justified equations
+\usepackage[%
+    pdftitle={SLCI : Modélisation par schéma blocs},
+    pdfauthor={Xavier Pessoles}]{hyperref}
+    
+\input{style/new_style}
+\input{style/macros_SII}
+
+\usepackage{multicol}
+%\fichetrue
+%\fichefalse
+
+\proftrue
+%\proffalse
+
+\tdtrue
+%\tdfalse
+
+\courstrue
+\coursfalse
+
+\def\discipline{Sciences \\Industrielles de \\ l'Ingénieur}
+\def\xxtete{Sciences Industrielles de l'Ingénieur}
+
+\def\classe{PTSI}
+\def\xxnumpartie{Partie 2}
+\def\xxpartie{Découverte des Systèmes Linéaires Continus et Invariants\\
+Analyse, Modélisation, Résolution}
+
+\def\xxnumchapitre{Chapitre 3}
+\def\xxchapitre{Modélisation des SLCI par schémas blocs}
+
+\def\xxtitreexo{Transmission à variation continue vario-fendt}
+\def\xxsourceexo{\hspace{.2cm} D'après concours CCP MP -- 2008.}
+
+
+\def\xxposongletx{2}
+\def\xxposonglettext{1.45}
+\def\xxposonglety{20}
+\def\xxonglet{Part. 2 -- Ch. 3}
+
+\def\xxactivite{TD 4}
+\def\xxauteur{\textsl{Xavier Pessoles}}
+
+\def\xxcompetences{%
+\textsl{%
+\textbf{Savoirs et compétences :}\\
+%\noindent \textbf{Résoudre :} à partir des modèles retenus :
+%\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+%\item choisir une méthode de résolution analytique, graphique, numérique;
+%\item mettre en \oe{}uvre une méthode de résolution.
+%\end{itemize}
+%\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+%\item \textit{Rés -- C1.1 :} Loi entrée sortie géométrique et cinématique -- Fermeture géométrique.
+%\end{itemize}
+%
+%\noindent \textit{Mod2 -- C4.1 :} Représentation par schéma bloc.
+}}
+
+\def\xxfigures{\includegraphics[width=.8\textwidth]{images/Tracteur}
+}%figues de la page de garde
+
+\def\xxpied{%
+Partie 2 -- Découverte des SLCI\\
+Ch. 3 : Modélisation par schémas blocs -- \xxactivite%
+}
+
+
+\setcounter{secnumdepth}{5}
+%---------------------------------------------------------------------------
+
+
+\begin{document}
+%\chapterimage{png/Fond_Cin}
+\input{style/new_pagegarde}
+\vspace{10cm}
+\pagestyle{fancy}
+\thispagestyle{plain}
+
+
+\def\columnseprulecolor{\color{ocre}}
+\setlength{\columnseprule}{0.4pt} 
+\begin{multicols}{2}
+
+\ifprof
+\else
+\fi
+\subsection*{Mise en situation}
+\begin{obj} 
+%Dans le but de valider le moteur électrique utilisé sur la prothèse ainsi que la structure mécanique, on cherche à valider l'exigence 1.3.1.
+\end{obj}
+Les tracteurs de la gamme \textit{Fendrt 900 Vario} sont équipés d'une transmission à variation continue. Ce dispositif permet de régler la vitesse de façon continue sans à-coups et d'exploiter au mieux les capacités du moteur thermique quelle que soit la configuration de travail. Pour cela le tracteur est équipé d'un groupe hydraulique constitué d'un arbre de commande, de deux moteurs hydrauliques ainsi que d'une pompe à débit variable.
+
+
+\subsection*{Asservissement de position de l'arbre de commande}
+Afin de régler le débit de la pompe, on actionne un arbre de commande à l'aide d'un moteur à courant continu dont les équations caractéristiques sont les suivantes : 
+\begin{itemize}
+\item $u(t) = Ri(t)+e(t)$;
+\item $e(t)=k_e \dfrac{\text{d}\theta(t)}{\text{d}t}$;
+\item $c(t)=k_a i(t)$;
+\item $J_e \cdot \dfrac{\text{d}^2\theta(t)}{\text{d}t^2} = c(t)$.
+\end{itemize}
+
+Le moteur est asservi en vitesse grâce à une génératrice tachymétrique de gain $k$.
+
+Le moteur est aussi asservi en position. On utilise pour cela  un capteur de gain $K_T$ fournissant une tension $u_r(t)$ proportionnel à la position angulaire de l'arbre moteur. Le signal de commande est élaboré après que l'écart $\varepsilon(t)$ a été modulé par un correcteur proportionnel de gain $K_C$. Ainsi, on a :
+\begin{itemize}
+\item $u(t)=K_c \left(u_e(t)-u_r(t)\right)$.
+\end{itemize}
+
+Le moteur à courant continu entraîne un arbre de commande comportant deux cames destinées à commander la pompe ainsi que deux moteurs hydrauliques (dont le but est de fournir de l'énergie hydraulique au système). 
+
+
+\subparagraph{}
+\textit{Donner les équations du moteur à courant continu dans le domaine de Laplace et tracer les schémas blocs élémentaires.}
+\begin{corrige}
+
+\end{corrige}
+
+\subparagraph{}
+\textit{Réaliser le schéma bloc du moteur à courant continu.}
+\begin{corrige}
+
+\end{corrige}
+
+\subparagraph{}
+\textit{Ajouter successivement l'asservissement en vitesse grâce à la génératrice tachymétrique puis l'asservissement en position en utilisant le correcteur proportionnel et le capteur de position angulaire. Compléter le schéma bloc pour que la grandeur asservie soit l'angle de l'arbre de commande.}
+\begin{corrige}
+
+\end{corrige}
+
+\subparagraph{}
+\textit{Une simulation correspondant à une sollicitation par un échelon d'un radian a été réalisée grâce à un logiciel de simulation multiphysique. L'asservissement de la position de l'arbre de commande respecte-t-il les exigences ** et ** du cahier des charges ?}
+\begin{corrige}
+
+\end{corrige}
+
+
+\subsection*{Suite}
+
+Sous l'action d'une rotation d'angle $\theta$ de l'arbre de commande, la came de pas $p_p$ provoque une translation $x_{P1}$ d'un galet provoquant lui même le déplacement $x_{P2}$ du distributeur. On note $x_{P2}=x_{P21}-x_{P22}$.
+
+Le débit volumique $q_P(t)$ en sortie du distributeur est proportionnel au déplacement $x_{P2}$ du tiroir : 
+\begin{itemize}
+\item $q_P(t)=K_d x_{P2}(t)$.
+\end{itemize}
+
+En circulant dans le distributeur, le fluide agit sur les vérins dont la vitesse de déplacement est proportionnel à leur section : 
+\begin{itemize}
+\item $y_{P5}(t)= S \dfrac{\text{d}y_{P5}(t)}{\text{d}t}$.
+\end{itemize}
+
+
+Le vérin permet alors de régler le débit de la pompe en modifiant l'inclinaison $\alpha$ du barillet.
+
+
+\subparagraph{}
+\textit{En faisant l'hypothèse des petits déplacements, donner la relation géométrique entre le déplacement $x_{P21}$ et $x_{P1}$.}
+\begin{corrige}
+
+\end{corrige}
+
+\subparagraph{}
+\textit{Donner les relations géométriques entre $y_{P5}(t)$ et $\alpha(t)$ puis entre $y_{P3}(t)$ et $\alpha(t)$.}
+\begin{corrige}
+
+\end{corrige}
+
+\subparagraph{}
+\textit{Compléter alors le schéma bloc de la figure ** traduisant la relation entre la rotation du moteur $\theta(t)$ et la rotation $\alpha(t)$ du barillet permettant le changement de débit de la pompe.}
+\begin{corrige}
+
+\end{corrige}
+
+\subparagraph{}
+\textit{Compléter alors le schéma bloc de la figure ** traduisant la relation entre la rotation du moteur $\theta(t)$ et la rotation $\alpha(t)$ du barillet permettant le changement de débit de la pompe.}
+\begin{corrige}
+
+\end{corrige}
+
+\end{multicols}
+
+\end{document}
+
+
