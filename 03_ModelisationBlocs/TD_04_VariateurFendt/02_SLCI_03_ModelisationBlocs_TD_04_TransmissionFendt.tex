@@ -98,6 +98,10 @@ Les tracteurs de la gamme \textit{Fendrt 900 Vario} sont équipés d'une transmi
 \includegraphics[width=.48\textwidth]{images/ibd.pdf}
 \end{center}
 
+\begin{center}
+\includegraphics[width=.45\textwidth]{images/CommandeTransmission}
+\end{center}
+
 \subsection*{Asservissement de position de l'arbre de commande}
 Afin de régler le débit de la pompe, on actionne un arbre de commande à l'aide d'un moteur à courant continu dont les équations caractéristiques sont les suivantes : 
 \begin{itemize}
@@ -283,13 +287,13 @@ Pour que la grandeur asservie soit un angle, on ajoute en entrée du schéma blo
 
 
 \subparagraph{}
-\textit{Une simulation correspondant à une sollicitation par un échelon d'un radian a été réalisée grâce à un logiciel de simulation multiphysique. L'asservissement de la position de l'arbre de commande respecte-t-il les exigences ** et ** du cahier des charges ?}
+\textit{Une simulation correspondant à une sollicitation par un échelon d'un radian a été réalisée grâce à un logiciel de simulation multiphysique. L'asservissement de la position de l'arbre de commande respecte-t-il les exigences 1.1.1, 1.1.2 et 1.2.1 du cahier des charges ?}
 \begin{center}
-\includegraphics[width=.45\textwidth]{images/simulation}
+\includegraphics[width=.45\textwidth]{images/Simulation2}
 \end{center}
 
 \begin{corrige}
-
+La mesure du temps de réponse à 5\% donne $0,475 \; \text{s}$. On observe aucun déplacement et l'écart statique est nul. L'asservissement de la position angulaire de l'arbre de commande permet donc de satisfaire les exigences 1.1.1, 1.1.2 et 1.2.1.
 \end{corrige}
 
 
@@ -319,7 +323,10 @@ Le vérin permet alors de régler le débit de la pompe en modifiant l'inclinais
 
 \subparagraph{}
 \textit{Donner les relations géométriques entre $y_{P5}(t)$ et $\alpha(t)$ puis entre $y_{P3}(t)$ et $\alpha(t)$.}
+INFO MANQUANTE SUR LE DIAMETRE.
 \begin{corrige}
+En linéarisant, les déplacements $y_{P5}(t)$ et $y_{P3}(t)$ sont proportionnels à $\alpha(t)$ et aux distances respectives $O_PP_5$ et $O_PP_7$ soient $c$ et $d$. 
+On a donc $y_{P5}(t)=c\alpha(t)$ et $y_{P3}(t)=d \alpha(t)$.
 
 \end{corrige}
 
@@ -329,13 +336,46 @@ Le vérin permet alors de régler le débit de la pompe en modifiant l'inclinais
 
 \end{corrige}
 
-\subparagraph{}
-\textit{Compléter alors le schéma bloc de la figure ** traduisant la relation entre la rotation du moteur $\theta(t)$ et la rotation $\alpha(t)$ du barillet permettant le changement de débit de la pompe.}
-\begin{corrige}
-
-\end{corrige}
 
 \end{multicols}
+
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbBloc{b1}{$P_1(p)$}{E}
+    \sbRelier[$\theta(p)$]{E}{b1}
+\sbBloc{b2}{$P_2(p)$}{b1}
+    \sbRelier[$X_{P1}(p)$]{b1}{b2}
+  
+\sbComp{c1}{b2}
+    \sbRelier{b2}{c1}
+
+\sbBloc{b3}{$P_3(p)$}{c1}
+    \sbRelier[$X_{P2}(p)$]{c1}{b3}
+\sbBloc{b4}{$P_3(p)$}{b3}
+    \sbRelier[$Q_{P}(p)$]{b3}{b4}
+\sbBloc{b5}{$P_5(p)$}{b4}
+    \sbRelier[$Y_{P5}(p)$]{b4}{b5}
+
+\sbSortie{S}{b5}
+    \sbRelier{b5}{S}
+    \sbNomLien[0.8]{S}{$\alpha(p)$}
+
+\sbDecaleNoeudy[4]{b5}{n1}
+
+\sbBlocr{r1}{$P_6(p)$}{n1}
+    \sbRelieryx{b5-S}{r1}
+    %\sbRenvoi{b3-n2}{r1}{}
+
+\sbBlocr{r2}{$P_7(p)$}{r1}
+    \sbRelier[$X_{P3}(p)$]{r1}{r2}
+    \sbRelierxy{r2}{c1}
+\end{tikzpicture}
+\end{center}
+
+
+
 
 \end{document}
 
