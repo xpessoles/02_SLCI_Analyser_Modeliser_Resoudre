@@ -5,7 +5,7 @@
     
 \input{style/new_style}
 \input{style/macros_SII}
-
+\usepackage{style/schemabloc}
 \usepackage{multicol}
 %\fichetrue
 %\fichefalse
@@ -95,7 +95,7 @@ Les tracteurs de la gamme \textit{Fendrt 900 Vario} sont équipés d'une transmi
 \end{center}
 
 \begin{center}
-\includegraphics[width=.48\textwidth]{images/ibd}
+\includegraphics[width=.48\textwidth]{images/ibd.pdf}
 \end{center}
 
 \subsection*{Asservissement de position de l'arbre de commande}
@@ -107,9 +107,9 @@ Afin de régler le débit de la pompe, on actionne un arbre de commande à l'aid
 \item $J_e \cdot \dfrac{\text{d}^2\theta(t)}{\text{d}t^2} = c(t)$.
 \end{itemize}
 
-Le moteur est asservi en vitesse grâce à une génératrice tachymétrique de gain $k$.
+Le moteur est asservi en vitesse grâce à une génératrice tachymétrique de gain $K_t$.
 
-Le moteur est aussi asservi en position. On utilise pour cela  un capteur de gain $K_T$ fournissant une tension $u_r(t)$ proportionnel à la position angulaire de l'arbre moteur. Le signal de commande est élaboré après que l'écart $\varepsilon(t)$ a été modulé par un correcteur proportionnel de gain $K_C$. Ainsi, on a :
+Le moteur est aussi asservi en position. On utilise pour cela  un capteur de gain $K_p$ fournissant une tension $u_r(t)$ proportionnel à la position angulaire de l'arbre moteur. Le signal de commande est élaboré après que l'écart $\varepsilon(t)$ a été modulé par un correcteur proportionnel de gain $K_C$. Ainsi, on a :
 \begin{itemize}
 \item $u(t)=K_c \left(u_e(t)-u_r(t)\right)$.
 \end{itemize}
@@ -118,25 +118,176 @@ Le moteur à courant continu entraîne un arbre de commande comportant deux came
 
 
 \subparagraph{}
-\textit{Donner les équations du moteur à courant continu dans le domaine de Laplace et tracer les schémas blocs élémentaires.}
+\textit{Donner les équations du moteur à courant continu dans le domaine de Laplace et tracer les schémas blocs élémentaires correspondant. Réaliser alors le schéma bloc du moteur à courant continu.}
 \begin{corrige}
+On a les équations suivantes : 
+\begin{itemize}
+\item $U(p) = RI(p)+E(p)$;
+\item $E(p)=k_e p\Theta(p)$;
+\item $C(p)=k_a I(p)$;
+\item $J_e p^2\Theta(p) = C(p)$.
+\end{itemize}
+On peut ainsi établir les schémas blocs suivants :
+
+
+\noindent \footnotesize{
+\begin{tabular}{cc}
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbBloc[4]{blocA}{$k_e p$}{E}
+    \sbRelier[$\Theta(p)$]{E}{blocA}
+
+\sbSortie{S}{blocA}
+    \sbRelier{blocA}{S}
+    \sbNomLien[0.8]{S}{$E(p)$}
+\end{tikzpicture}
+ &
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbBloc[4]{blocA}{$k_a$}{E}
+    \sbRelier[$I(p)$]{E}{blocA}
+
+\sbSortie{S}{blocA}
+    \sbRelier{blocA}{S}
+    \sbNomLien[0.8]{S}{$C(p)$}
+\end{tikzpicture}
+ \\
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbBloc[4]{blocA}{$\dfrac{1}{J_e p^2}$}{E}
+    \sbRelier[$C(p)$]{E}{blocA}
+
+\sbSortie{S}{blocA}
+    \sbRelier{blocA}{S}
+    \sbNomLien[0.8]{S}{$\Theta(p)$}
+\end{tikzpicture}
+&
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbComp{c1}{E}
+    \sbRelier[$U(p)$]{E}{c1}
+    
+\sbBloc{b1}{$\dfrac{1}{R}$}{c1}
+    \sbRelier{c1}{b1}
+
+\sbSortie{S}{b1}
+    \sbRelier{b1}{S}
+    \sbNomLien[0.8]{S}{$I(p)$}
+    
+\sbDecaleNoeudy{c1}{n1}
+    \sbRelier[$E(p)$]{n1}{c1}
+
+\end{tikzpicture}
+ \\
+\end{tabular}}
+
+
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbComp{c1}{E}
+    \sbRelier[$U(p)$]{E}{c1}
+    
+\sbBloc{b1}{$\dfrac{1}{R}$}{c1}
+    \sbRelier{c1}{b1}
+
+\sbBloc{b2}{$k_a$}{b1}
+    \sbRelier{b1}{b2}
+
+\sbBloc{b3}{$\dfrac{1}{J_e p^2}$}{b2}
+    \sbRelier{b2}{b3}
+    
+\sbSortie{S}{b3}
+    \sbRelier{b3}{S}
+    \sbNomLien[0.8]{S}{$\Theta(p)$}
+    
+\sbDecaleNoeudy{b3}{n1}
+
+\sbBlocr{r1}{$k_e p$}{n1}
+    \sbRelierxy{r1}{c1}
+    \sbRelieryx{b3-S}{r1}
+
+\end{tikzpicture}
+\end{center}
 
 \end{corrige}
+
+On note $M(p)=\dfrac{\Theta(p)}{U(p)}$.
 
 \subparagraph{}
-\textit{Réaliser le schéma bloc du moteur à courant continu.}
+\textit{Réaliser le schéma bloc de l'asservissement en vitesse grâce à la génératrice tachymétrique puis l'asservissement en position en utilisant le correcteur proportionnel et le capteur de position angulaire. Compléter le schéma bloc pour que la grandeur asservie soit l'angle de l'arbre de commande.}
 \begin{corrige}
+Le signal en sortie du moteur étant une position angulaire, il est nécessaire d'avoir recours à une dérivation pour réaliser le retour tachymétrique. Cela explique donc la présence d'une multiplication par $p$ dans la boucle d'asservissement en vitesse.
+
+Pour que la grandeur asservie soit un angle, on ajoute en entrée du schéma bloc un gain d'adaptation permettant de convertir un angle de consigne en tension de commande.
+
+\footnotesize{
+\begin{center}
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbBloc{b1}{$K_{adapt}$}{E}
+    \sbRelier{E}{b1}
+    
+\sbComp{c1}{b1}
+    \sbRelier{b1}{c1}
+    
+\sbBloc{b2}{$K_c$}{c1}
+    \sbRelier{c1}{b2}
+
+\sbComp{c2}{b2}
+    \sbRelier{b2}{c2}
+
+\sbBloc{b3}{$M(p)$}{c2}
+    \sbRelier{c2}{b3}
+        
+\sbSortie[7]{S}{b3}
+    \sbRelier{b3}{S}
+    \sbNomLien[0.8]{S}{$\Theta(p)$}
+    
+\sbDecaleNoeudy[4]{b3}{n1}
+\sbDecaleNoeudx[4]{b3}{n2}
+\sbDecaleNoeudy[8]{b3}{n3}
+\sbDecaleNoeudx[6]{b3}{n4}
+
+\sbBlocr[-1.5]{r1}{$K_T p$}{n1}
+    \sbRelieryx{n2}{r1}
+    %\sbRenvoi{b3-n2}{r1}{}
+    \sbRelierxy{r1}{c2}
+
+\sbBlocr{r2}{$K_P$}{n3}
+    \sbRelieryx{n4}{r2}
+    \sbRelierxy{r2}{c1}
+%    \sbrenvoi
+%
+%\sbDecaleNoeudx{b3}{n3}
+%
+%\sbBlocr{r1}{$k_e p$}{n1}
+%    \sbRelierxy{r1}{c2}
+%    \sbRelieryx{n3}{r1}
+%  
+%
+%\sbDecaleNoeudy[8]{c2}{n2}
+% \sbBlocr{r2}{$Kpos$}{n2}
+%    \sbRelierxy{r2}{c1}
+%    \sbRelieryx{n3}{r2}
+\end{tikzpicture}
+\end{center}}
 
 \end{corrige}
 
-\subparagraph{}
-\textit{Ajouter successivement l'asservissement en vitesse grâce à la génératrice tachymétrique puis l'asservissement en position en utilisant le correcteur proportionnel et le capteur de position angulaire. Compléter le schéma bloc pour que la grandeur asservie soit l'angle de l'arbre de commande.}
-\begin{corrige}
-
-\end{corrige}
 
 \subparagraph{}
 \textit{Une simulation correspondant à une sollicitation par un échelon d'un radian a été réalisée grâce à un logiciel de simulation multiphysique. L'asservissement de la position de l'arbre de commande respecte-t-il les exigences ** et ** du cahier des charges ?}
+\begin{center}
+\includegraphics[width=.45\textwidth]{images/simulation}
+\end{center}
+
 \begin{corrige}
 
 \end{corrige}
