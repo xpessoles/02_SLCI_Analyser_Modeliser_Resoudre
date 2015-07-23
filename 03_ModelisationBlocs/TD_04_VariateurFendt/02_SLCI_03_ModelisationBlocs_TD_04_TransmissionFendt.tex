@@ -98,9 +98,6 @@ Les tracteurs de la gamme \textit{Fendrt 900 Vario} sont équipés d'une transmi
 \includegraphics[width=.48\textwidth]{images/ibd.pdf}
 \end{center}
 
-\begin{center}
-\includegraphics[width=.45\textwidth]{images/CommandeTransmission}
-\end{center}
 
 \subsection*{Asservissement de position de l'arbre de commande}
 Afin de régler le débit de la pompe, on actionne un arbre de commande à l'aide d'un moteur à courant continu dont les équations caractéristiques sont les suivantes : 
@@ -297,9 +294,24 @@ La mesure du temps de réponse à 5\% donne $0,475 \; \text{s}$. On observe aucu
 \end{corrige}
 
 
-\subsection*{Suite}
+\subsection*{Transmission Vario}
+La figure suivante illustre le fonctionnement de la transmission Vario.
 
-Sous l'action d'une rotation d'angle $\theta$ de l'arbre de commande, la came de pas $p_p$ provoque une translation $x_{P1}$ d'un galet provoquant lui même le déplacement $x_{P2}$ du distributeur. On note $x_{P2}=x_{P21}-x_{P22}$.
+\begin{center}
+\includegraphics[width=.49\textwidth]{images/CommandeTransmission}
+\end{center}
+
+Ce fonctionnement peut se décrire en deux étapes : 
+\begin{enumerate}
+\item sous l'action une rotation d'angle $\theta$ de l'arbre de commande, la came de pas $p_p$ (en mm/rad) provoque une translation $x_{P1}$ d'un galet. Le levier pivote alors autour de $P_3$ provoquant un déplacement de $P_2$ noté $x_{P21}$ du distributeur puis une rotation d'un angle $\alpha$ de la pompe.
+\item en pivotant, la pompe entraine une translation du point $P_3$. Le levier pivote alors autour de $P_1$ provoquant un déplacement de $P_2$ noté $x_{P22}$.
+\end{enumerate}
+Au final, on note :
+\begin{itemize}
+\item $x_{P2}=x_{P21}-x_{P22}$ la translation de $P_2$;
+\item $P_1P_2 = a$, $P_2P_3 = b$;
+\item $O_PP_5 = c$, $O_PP_7 = d$.
+\end{itemize}
 
 Le débit volumique $q_P(t)$ en sortie du distributeur est proportionnel au déplacement $x_{P2}$ du tiroir : 
 \begin{itemize}
@@ -316,14 +328,24 @@ Le vérin permet alors de régler le débit de la pompe en modifiant l'inclinais
 
 
 \subparagraph{}
-\textit{En faisant l'hypothèse des petits déplacements, donner la relation géométrique entre le déplacement $x_{P21}$ et $x_{P1}$.}
+\textit{Par une étude géométrique, montrer que $\dfrac{x_{P21}}{x_{P1}}=\dfrac{b}{a+b}$. Déterminer alors le rapport $\dfrac{x_{P22}}{x_{P3}}$.}
 \begin{corrige}
+La figure suivante montre les configurations du levier lors des deux étapes.
 
+\begin{center}
+\includegraphics[width=.49\textwidth]{images/Levier}
+\end{center}
+
+En faisant l'hypothèse que l'angle de rotation est faible, on peut considérer les triangles formés comme étant rectangles et appliquer le théorème de Thalès :
+\begin{itemize}
+\item $\dfrac{x_{P21}}{x_{P1}}=\dfrac{b}{a+b}$;
+\item $\dfrac{x_{P22}}{x_{P3}}=\dfrac{a}{a+b}$.
+\end{itemize}
 \end{corrige}
 
 \subparagraph{}
 \textit{Donner les relations géométriques entre $y_{P5}(t)$ et $\alpha(t)$ puis entre $x_{P3}(t)$ et $\alpha(t)$.}
-INFO MANQUANTE SUR LE DIAMETRE.
+
 \begin{corrige}
 En linéarisant, les déplacements $y_{P5}(t)$ et $x_{P3}(t)$ sont proportionnels à $\alpha(t)$ et aux distances respectives $O_PP_5$ et $O_PP_7$ soient $c$ et $d$. 
 On a donc $y_{P5}(t)=c\alpha(t)$ et $x_{P3}(t)=d \alpha(t)$.
@@ -345,7 +367,7 @@ D'après la question précédente, $P_5(p)=\dfrac{1}{c}$ et $P_6(p)=d$.
 
 
 \subparagraph{}
-\textit{On donne alors le résultat de la simulation complète permettant de représenter l'angle de rotation de la pompe. Conclure sur la satisfaction des exigences 1.1.1 et 1.2.1.}
+\textit{On donne le résultat de la simulation complète permettant de représenter l'angle de rotation de la pompe en fonction de la commande du joystick. Conclure sur la satisfaction des exigences 1.1.1 et 1.2.1.}
 
 \begin{center}
 \includegraphics[width=.45\textwidth]{images/simu_2}
@@ -354,7 +376,7 @@ D'après la question précédente, $P_5(p)=\dfrac{1}{c}$ et $P_6(p)=d$.
 \begin{corrige}
 La valeur finale n'est pas dépassée, ce qui permet de satisfaire l'exigence 1.1.1. 
 
-La mesure du temps de réponse à5\% donne 0,87 s. L'exigence 1.2.1 est satisfaite.
+La mesure du temps de réponse à 5\% donne 0,87 s. L'exigence 1.2.1 est satisfaite.
 \end{corrige}
 
 
