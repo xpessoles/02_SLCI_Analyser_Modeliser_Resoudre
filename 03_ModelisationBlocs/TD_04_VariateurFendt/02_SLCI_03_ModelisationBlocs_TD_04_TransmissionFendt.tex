@@ -10,13 +10,13 @@
 %\fichetrue
 %\fichefalse
 
-\proftrue
-%\proffalse
+%\proftrue
+\proffalse
 
 \tdtrue
 %\tdfalse
 
-\courstrue
+%\courstrue
 \coursfalse
 
 \def\discipline{Sciences \\Industrielles de \\ l'Ingénieur}
@@ -120,6 +120,7 @@ Le moteur à courant continu entraîne un arbre de commande comportant deux came
 
 \subparagraph{}
 \textit{Donner les équations du moteur à courant continu dans le domaine de Laplace et tracer les schémas blocs élémentaires correspondant. Réaliser alors le schéma bloc du moteur à courant continu.}
+\ifprof
 \begin{corrige}
 On a les équations suivantes : 
 \begin{itemize}
@@ -217,11 +218,13 @@ On peut ainsi établir les schémas blocs suivants :
 \end{center}
 
 \end{corrige}
-
+\else
+\fi
 On note $M(p)=\dfrac{\Theta(p)}{U(p)}$.
 
 \subparagraph{}
 \textit{Réaliser le schéma bloc de l'asservissement en vitesse grâce à la génératrice tachymétrique puis l'asservissement en position en utilisant le correcteur proportionnel et le capteur de position angulaire. Compléter le schéma bloc pour que la grandeur asservie soit l'angle de l'arbre de commande.}
+\ifprof
 \begin{corrige}
 Le signal en sortie du moteur étant une position angulaire, il est nécessaire d'avoir recours à une dérivation pour réaliser le retour tachymétrique. Cela explique donc la présence d'une multiplication par $p$ dans la boucle d'asservissement en vitesse.
 
@@ -281,18 +284,22 @@ Pour que la grandeur asservie soit un angle, on ajoute en entrée du schéma blo
 \end{center}}
 
 \end{corrige}
-
+\else
+\fi
 
 \subparagraph{}
 \textit{Une simulation correspondant à une sollicitation par un échelon d'un radian a été réalisée grâce à un logiciel de simulation multiphysique. L'asservissement de la position de l'arbre de commande respecte-t-il les exigences 1.1.1, 1.1.2 et 1.2.1 du cahier des charges ?}
 \begin{center}
 \includegraphics[width=.45\textwidth]{images/simu_1}
 \end{center}
+\ifprof
 
 \begin{corrige}
 La mesure du temps de réponse à 5\% donne $0,475 \; \text{s}$. On observe aucun déplacement et l'écart statique est nul. L'asservissement de la position angulaire de l'arbre de commande permet donc de satisfaire les exigences 1.1.1, 1.1.2 et 1.2.1.
 \end{corrige}
 
+\else
+\fi
 
 \subsection*{Transmission Vario}
 La figure suivante illustre le fonctionnement de la transmission Vario.
@@ -329,6 +336,7 @@ Le vérin permet alors de régler le débit de la pompe en modifiant l'inclinais
 
 \subparagraph{}
 \textit{Par une étude géométrique, montrer que $\dfrac{x_{P21}}{x_{P1}}=\dfrac{b}{a+b}$. Déterminer alors le rapport $\dfrac{x_{P22}}{x_{P3}}$.}
+\ifprof 
 \begin{corrige}
 La figure suivante montre les configurations du levier lors des deux étapes.
 
@@ -342,18 +350,24 @@ En faisant l'hypothèse que l'angle de rotation est faible, on peut considérer 
 \item $\dfrac{x_{P22}}{x_{P3}}=\dfrac{a}{a+b}$.
 \end{itemize}
 \end{corrige}
+\else
+\fi
 
 \subparagraph{}
 \textit{Donner les relations géométriques entre $y_{P5}(t)$ et $\alpha(t)$ puis entre $x_{P3}(t)$ et $\alpha(t)$.}
-
+\ifprof
 \begin{corrige}
 En linéarisant, les déplacements $y_{P5}(t)$ et $x_{P3}(t)$ sont proportionnels à $\alpha(t)$ et aux distances respectives $O_PP_5$ et $O_PP_7$ soient $c$ et $d$. 
 On a donc $y_{P5}(t)=c\alpha(t)$ et $x_{P3}(t)=d \alpha(t)$.
 
 \end{corrige}
-
+\else 
+\fi
 \subparagraph{}
 \textit{Compléter alors le schéma bloc de la figure ** traduisant la relation entre la rotation du moteur $\theta(t)$ et la rotation $\alpha(t)$ du barillet permettant le changement de débit de la pompe.}
+\ifprof
+
+
 \begin{corrige}
 La came de pas $p_p$ transforme la rotation $\theta(t)$ en déplacement $x_{P1}(t)$. 
 On a donc $P_1(p)=p_p$.
@@ -364,7 +378,8 @@ On a aussi :
 \end{itemize}
 D'après la question précédente, $P_5(p)=\dfrac{1}{c}$ et $P_6(p)=d$.
 \end{corrige}
-
+\else
+\fi
 
 \subparagraph{}
 \textit{On donne le résultat de la simulation complète permettant de représenter l'angle de rotation de la pompe en fonction de la commande du joystick. Conclure sur la satisfaction des exigences 1.1.1 et 1.2.1.}
@@ -372,13 +387,15 @@ D'après la question précédente, $P_5(p)=\dfrac{1}{c}$ et $P_6(p)=d$.
 \begin{center}
 \includegraphics[width=.45\textwidth]{images/simu_2}
 \end{center}
+\ifprof
 
 \begin{corrige}
 La valeur finale n'est pas dépassée, ce qui permet de satisfaire l'exigence 1.1.1. 
 
 La mesure du temps de réponse à 5\% donne 0,87 s. L'exigence 1.2.1 est satisfaite.
 \end{corrige}
-
+\else
+\fi
 
 \end{multicols}
 

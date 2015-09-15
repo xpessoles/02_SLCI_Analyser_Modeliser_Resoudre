@@ -1,0 +1,262 @@
+\documentclass[10pt,fleqn]{article} % Default font size and left-justified equations
+\usepackage[%
+    pdftitle={CIN : Cinématique du solide},
+    pdfauthor={Xavier Pessoles}]{hyperref}
+    
+\input{style/new_style}
+\input{style/macros_SII}
+
+\usepackage{multicol}
+\usepackage{style/schemabloc}
+\fichetrue
+%\fichefalse
+
+\proftrue
+%\proffalse
+
+\tdtrue
+%\tdfalse
+
+%\courstrue
+\coursfalse
+
+\def\discipline{Sciences \\Industrielles de \\ l'Ingénieur}
+\def\xxtete{Sciences Industrielles de l'Ingénieur}
+
+\def\classe{PTSI}
+\def\xxnumpartie{Partie 2}
+\def\xxpartie{Découverte des Systèmes Linéaires Continus et Invariants\\
+Analyse, Modélisation, Résolution}
+
+\def\xxnumchapitre{Chapitre 2}
+\def\xxchapitre{Modélisation des Systèmes Linéaires Continus Invariants -- Transformée de Laplace}
+
+\def\xxtitreexo{Étude d'une cellule d'assemblage pour avion Falcon}
+\def\xxsourceexo{\hspace{.2cm} D'après concours E3A -- PSI -- 2015.}
+
+
+\def\xxposongletx{2}
+\def\xxposonglettext{1.45}
+\def\xxposonglety{20}
+\def\xxonglet{Part. 2 -- Ch. 2}
+
+\def\xxactivite{TD 2}
+\def\xxauteur{\textsl{Xavier Pessoles}}
+
+\def\xxcompetences{%
+\textsl{%
+\textbf{Savoirs et compétences :}\\
+\noindent \textbf{Résoudre :} à partir des modèles retenus :
+\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+\item ***
+\item ***
+\end{itemize}
+\begin{itemize}[label=\ding{112},font=\color{ocre}] 
+\item ***
+\end{itemize}
+%
+%\noindent \textit{Mod2 -- C4.1 :} Représentation par schéma bloc.
+}}
+
+\def\xxfigures{
+\includegraphics[width=\textwidth]{images/img_01}
+}%figues de la page de garde
+
+\def\xxpied{%
+Partie 2 -- Découverte des SLCI -- Analyse, Modélisation, Résolution \\
+Ch. 2 : Modélisation des Systèmes Linéaires Continus Invariants -- Transformée de Laplace -- \xxactivite%
+}
+
+
+\setcounter{secnumdepth}{5}
+%---------------------------------------------------------------------------
+
+
+\begin{document}
+%\chapterimage{png/Fond_Cin}
+\input{style/new_pagegarde}
+\vspace{10cm}
+\pagestyle{fancy}
+\thispagestyle{plain}
+
+
+\def\columnseprulecolor{\color{ocre}}
+\setlength{\columnseprule}{0.4pt} 
+\begin{multicols}{2}
+
+Afin d'assembler les différents tronçons d'un avion Falcon 7X, la société Dassault utilise un Robot permettant les opérations suivantes :
+\begin{enumerate}
+\item mise en place des éléments à assembler;
+\item perçage des éléments;
+\item dépose d'un rivet;
+\item pose d'une bague déformable;
+\item serrage du rivet par déformation de la bague.
+\end{enumerate}
+
+\begin{obj} 
+
+\end{obj}
+
+Les équations caractéristiques du moteur à courant continu sont les suivantes : 
+\begin{itemize}
+\item $u(t)=e(t)+L\dfrac{\mathrm{d}i(t)}{\mathrm{d}t} + Ri(t)$
+\item $e(t)=K_E \cdot \omega_m(t)$
+\item $C_M(t)=K_C \cdot i(t)$;
+\item $J_{eq}\dfrac{d\omega_m(t)}{dt} + f\omega_m(t) = C_M(t)-C_R(t)$.
+\end{itemize}
+
+Avec : 
+\begin{itemize}
+\item $u(t)$ : tension moteur;
+\item $i(t)$ : courant moteur;
+\item $e(t)$ : force contre-électromotrice;
+\item $\omega_m(t)$ : fréquence de rotation moteur;
+\item $C_M(t)$ : couple moteur;
+\item $C_R(t)$ : couple résistant modélisant l'action de pesanteur.
+\end{itemize}
+
+\subparagraph{}
+\textit{\`A partir des équations du moteur à courant continu, réaliser le schéma bloc du moteur à courant continu.}
+\ifprof
+\begin{corrige}
+Les équations caractéristiques du moteur à courant continu dans le domaine de Laplace sont les suivantes : 
+\begin{itemize}
+\item $U(p)=E(p)+LpI(p) + RI(p)$
+\item $E(p)=K_E \cdot \Omega_m(t)$
+\item $C_M(p)=K_C \cdot I(p)$;
+\item $J_{eq}p\Omega_m(p) + f\Omega_m(p) = C_M(p)-C_R(p)$.
+\end{itemize}
+
+\begin{center}
+\noindent\footnotesize{
+\begin{tikzpicture}
+\sbEntree{E}
+
+\sbComp{c1}{E}
+    \sbRelier[$U(p)$]{E}{c1}
+    
+\sbBloc{b1}{$\dfrac{1}{R+Lp}$}{c1}
+    \sbRelier{c1}{b1}
+
+\sbBloc{b2}{$K_C$}{b1}
+    \sbRelier[$I(p)$]{b1}{b2}
+
+\sbComph{c2}{b2}
+    \sbRelier[$C_M$]{b2}{c2}
+
+
+\sbBloc{b3}{$\dfrac{1}{J_{eq} p + f}$}{c2}
+    \sbRelier{c2}{b3}
+    
+\sbSortie{S}{b3}
+    \sbRelier{b3}{S}
+    \sbNomLien[0.8]{S}{$\Omega_m(p)$}
+    
+\sbDecaleNoeudy{b3}{n1}
+
+\sbBlocr{r1}{$K_E$}{n1}
+    \sbRelierxy[$E(p)$]{r1}{c1}
+    \sbRelieryx{b3-S}{r1}
+
+\sbDecaleNoeudy[-4]{c2}{n1}
+\sbRelier[$C_R(p)$]{n1}{c2}
+\end{tikzpicture}}
+
+\end{center}
+\end{corrige}
+\else
+\fi
+
+\subparagraph{}
+\textit{En considérant $C_R(p)=0$, déterminer la fonction de transfert $H_M(p)=\dfrac{\Omega_M(p)}{U(p)}$ sous sa forme canonique.}
+\ifprof
+\begin{corrige}
+Si $C_R(p)=0$, on a : 
+\begin{eqnarray*}
+H_M(p) &=& \dfrac{K_C  \dfrac{1}{R+Lp}  \dfrac{1}{J_{eq}p + f} }{1+K_CK_E  \dfrac{1}{R+Lp}  \dfrac{1}{J_{eq}p + f}} \\
+& = & \dfrac{K_C }{\left(R+Lp\right) \left(J_{eq}p + f \right) +K_CK_E} \\
+& = & \dfrac{K_C }{ RJ_{eq}p +LJ_{eq}p^2 + fR +Lpf +K_CK_E} \\
+& = & \dfrac{\dfrac{K_C}{K_CK_E + Rf} }{ \dfrac{LJ_{eq}}{K_CK_E + Rf}p^2 + \dfrac{ RJ_{eq}+Lf}{K_CK_E + Rf} p + 1} \\
+\end{eqnarray*}
+\end{corrige}
+\else
+\fi
+\subparagraph{}
+\textit{Montrer que $H_M(p)$ peut se mettre sous la forme simplifiée : $H_M(p)=\dfrac{K_C}{K_C K_E + RJ_{eq} p + LJ_{eq} p^2}$ puis sous la forme $H_M(p)=\dfrac{K_M}{\left(1+T_E p \right)\left(1+T_M p \right)}$ avec $T_E<T_M$.}
+\ifprof
+\begin{corrige}
+En negligeant le frottement fluide, on a donc $f\simeq 0$. En conséquences, $H_M(p)=\dfrac{K_C}{K_C K_E + RJ_{eq} p + LJ_{eq} p^2}$. En mettant cette expressions sous forme canonique, on obtient  
+$H_M(p)=\dfrac{1/K_E}{1+ \dfrac{RJ_{eq}}{K_C K_E} p + \dfrac{LJ_{eq}}{K_C K_E} p^2}$.
+
+Développons l'expression donnée dans la question : 
+$H_M(p)=\dfrac{K_M}{1+T_Ep + T_M p + T_E T_M p^2}$. En identifiant on a donc :
+
+$$
+\left\{ 
+\begin{array}{l}
+T_E + T_M = \dfrac{RJ_{eq}}{K_C K_E} \\
+T_E \cdot T_M = \dfrac{LJ_{eq}}{K_C K_E} \\
+\end{array}
+\right.
+$$
+
+
+\end{corrige}
+\else
+\fi
+\subparagraph{}
+\textit{Quelle doit être la valeur de $K_G$ pour assurer un asservissement correct (c'est-à-dire que l'écart $\varepsilon$ doit être nul si la position de l'axe est identique à la consigne) ?}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+\subparagraph{}
+\textit{Compléter le schéma bloc de l'asservissement de l'axe du document réponse.}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+\subparagraph{}
+\textit{Mettre le schéma bloc sous la forme d'un schéma bloc à retour unitaire ayant la forme suivante en explicitant la fonction de transfert $H_C(p)$.}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+On note $C(p)=1$.
+\subparagraph{}
+\textit{L'exigence *** est-elle vérifiée ?}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+On note $C(p)=K_I \left( 1+\dfrac{A}{T_i p} \right) \left(1+ T_D p \right)$.
+\subparagraph{}
+\textit{L'exigence *** est-elle vérifiée ?}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+
+Afin de vérifier maintenant le critère de rapidité, le document réponse donne la réponse temporelle de
+l'axe à un échelon de position de $1 m$.
+
+\subparagraph{}
+\textit{L'exigence *** est-elle vérifiée ?}
+\ifprof
+\begin{corrige}
+\end{corrige}
+\else
+\fi
+\end{multicols}
+
+\end{document}
+
+
