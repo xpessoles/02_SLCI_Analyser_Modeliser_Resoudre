@@ -90,7 +90,8 @@ TODO
 \end{obj}
 
 \subsection*{Mise en situation}
-
+\ifprof
+\else
 \begin{center}
 \includegraphics[width=.45\textwidth]{images/RobotCartesien}
 \end{center}
@@ -118,9 +119,11 @@ On note :
 \item $M = 150 \; \text{kg}$ : masse du chariot et de la charge à déplacer;
 \item $J_e = 0,0062 \; \text{kg} \cdot \text{m}^2 $ : inertie équivalente de l'arbre de la poulie et de l'arbre moteur ramenée à l'arbre moteur.
 \end{itemize}
-
+\fi
 
 \subsection*{Modélisation du système mécanique}
+\ifprof
+\else
 La relation entre la fréquence de rotation du moteur et la vitesse de déplacement de la courroie est donnée par la relation suivante :
 \begin{equation}
 V_c(t) = R \cdot  \omega_p(t) = \dfrac{R}{n} \cdot \omega_m(t)
@@ -143,6 +146,7 @@ L'application du théorème de l'énergie cinétique à l'ensemble \{Moteur, Ré
 \dfrac{\text{d}}{\text{d}t}\left[ \dfrac{1}{2} J_e \omega_m(t)^2 \right] =  C_m(t) \omega_m(t) - f_m\omega_m(t)^2 - F_c(t) V_c(t) 
 \end{equation}
 
+\fi
 \subparagraph{} \textit{Donner dans le domaine temporel puis dans le domaine de Laplace la relation entre $V_m(t)$ et $Y_m(t)$. Comment traduire cette relation en schéma bloc ?}
 \ifprof
 \begin{corrige}
